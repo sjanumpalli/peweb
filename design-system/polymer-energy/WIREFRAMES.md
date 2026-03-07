@@ -606,3 +606,171 @@ Typography: Space Grotesk 700, 56px/64px desktop, 36px/44px mobile
 | Animations   | Framer Motion (scroll-triggered, page transitions) |
 | Icons        | Lucide React                                       |
 | Fonts        | Space Grotesk + DM Sans (Google Fonts)             |
+
+---
+
+## Component Library Mapping — 21st.dev + Magic UI + shadcn/ui
+
+Every section of every page is mapped to a specific community component from
+[21st.dev](https://21st.dev), [Magic UI](https://magicui.design), or
+[shadcn.io](https://www.shadcn.io). This is the component shopping list.
+
+### BACKGROUNDS (Full Page)
+
+| Page / Section         | Component                          | Source                                           |
+|------------------------|------------------------------------|--------------------------------------------------|
+| Landing Hero bg        | **Particles Background**           | shadcn.io/background/particles — mouse-reactive floating dots with green tint |
+| Mission page bg        | **Aurora Background**              | shadcn.io/background/aurora — flowing emerald/teal waves, pure CSS 60fps |
+| Founders page bg       | **Gradient Mesh Background**       | shadcn.io/background/gradient — ambient drifting color blobs (green/cyan) |
+| Map page bg            | **Dark Veil / Noise Background**   | shadcn.io/background/noise — subtle grain texture on dark navy |
+| Calculator page bg     | **Gradient Animation Background**  | shadcn.io/background/gradient-animation — shifting green-to-cyan gradient |
+| All pages (overlay)    | **Dot Pattern** (21st.dev)         | Subtle grid dot overlay for depth, 0.03 opacity |
+
+### NAVBAR
+
+| Component              | Source                             | Notes                                            |
+|------------------------|------------------------------------|--------------------------------------------------|
+| Floating Glass Navbar  | **21st.dev** community navbar      | Glassmorphism navbar with backdrop-blur-xl, floating with top-6 inset |
+| Mobile Hamburger       | **shadcn/ui Sheet**                | Sheet component as fullscreen mobile nav overlay |
+
+### PAGE 1: LANDING — Component Breakdown
+
+| Section                | Component                          | Source                             |
+|------------------------|------------------------------------|------------------------------------|
+| Hero Title             | **Magic UI: Animated Gradient Text** | magicui.design — text with animated green→cyan gradient shift |
+| Hero Subtitle          | **Magic UI: Text Reveal / Fade Text** | Staggered word fade-in on load |
+| Hero CTA Buttons       | **Magic UI: Shimmer Button**       | Animated shimmer/shine border effect on primary CTA |
+| Hero 3D Machine        | **Spline Embed** or **Magic UI: Globe** | Interactive 3D scene, or globe with India focus as fallback |
+| Scroll Indicator       | **21st.dev** scroll indicator      | Breathing chevron-down animation |
+| Impact Counter Strip   | **Magic UI: Number Ticker**        | magicui.design/docs/components/number-ticker — animated count-up |
+| Counter Cards          | **Magic UI: Magic Card**           | Gradient spotlight follows cursor, glass bg |
+| Counter Border Glow    | **Magic UI: Border Beam**          | Animated beam traveling along card border (green) |
+| How It Works Section   | **Magic UI: Arc Timeline**         | magicui.design/docs/components/arc-timeline — step-by-step arc flow |
+| Process Step Cards     | **Magic UI: Neon Gradient Card**   | Cards with neon green/cyan gradient borders |
+| Process Icons          | **Lucide React** icons             | Recycle, Filter, Zap, Package, ArrowRight |
+| CTA Banner             | **Magic UI: Shine Border**         | Animated shine border wrapping the full CTA block |
+| CTA Background         | **Magic UI: Animated Beam**        | Subtle beam lines connecting dots in background |
+
+### PAGE 2: MISSION — Component Breakdown
+
+| Section                | Component                          | Source                             |
+|------------------------|------------------------------------|------------------------------------|
+| Hero Quote             | **Magic UI: Animated Gradient Text** | Large quote with green gradient text animation |
+| Problem Stats (4 cards)| **Magic UI: Bento Grid**           | magicui.design/docs/components/bento-grid — asymmetric card layout |
+| Stat Numbers           | **Magic UI: Number Ticker**        | Count-up animation on scroll |
+| Progress Bars          | **shadcn/ui Progress**             | Animated fill with green gradient |
+| Solution Flow          | **Magic UI: Animated Beam**        | Beam lines connecting the 3 solution stages |
+| Solution Stage Cards   | **Magic UI: Magic Card**           | Hover spotlight effect |
+| Pillars Grid           | **Magic UI: Bento Grid**           | 4-card bento layout with icons |
+| Pillar Icons           | **Magic UI: Orbiting Circles**     | Or simple Lucide icons with fade-in |
+
+### PAGE 3: FOUNDERS — Component Breakdown
+
+| Section                | Component                          | Source                             |
+|------------------------|------------------------------------|------------------------------------|
+| Page Header            | **Magic UI: Animated Gradient Text** | "The People Behind Polymer Energy" |
+| Founder Cards          | **Magic UI: Magic Card**           | Large cards with cursor-following spotlight |
+| Founder Photos         | Custom + **Framer Motion**         | grayscale → color filter transition on hover |
+| Social Links           | **21st.dev** icon buttons          | Hover glow effect (cyan) |
+| Advisors Grid          | **Magic UI: Avatar Circles**       | magicui.design — overlapping avatar circles for compact display |
+| Advisor Cards          | **Magic UI: Neon Gradient Card**   | Smaller cards with subtle neon border |
+
+### PAGE 4: MAP — Component Breakdown
+
+| Section                | Component                          | Source                             |
+|------------------------|------------------------------------|------------------------------------|
+| Map Container          | **react-leaflet** + custom tiles   | Dark-themed tiles (CartoDB Dark Matter) |
+| India GeoJSON          | **Custom GeoJSON overlay**         | India state/district boundaries from public datasets |
+| Data Point Markers     | **Custom SVG markers**             | Pulsing ring animation via CSS keyframes |
+| Region Detail Panel    | **shadcn/ui Sheet**                | Slide-in panel from right side |
+| Stat Bars in Panel     | **shadcn/ui Progress**             | Animated progress bars (green gradient fill) |
+| Stat Numbers           | **Magic UI: Number Ticker**        | Animated count on panel open |
+| Upload Zone            | **shadcn/ui** + **react-dropzone** | Drag & drop file area with dashed border |
+| Map Controls           | **shadcn/ui Button** (icon)        | Plus/Minus/Reset zoom controls |
+| Legend                  | Custom with **Lucide** circle icons| Color-coded dot legend |
+
+### PAGE 5: CALCULATOR — Component Breakdown
+
+| Section                | Component                          | Source                             |
+|------------------------|------------------------------------|------------------------------------|
+| Input Sliders          | **shadcn/ui Slider**               | Custom-styled with green thumb + track |
+| Model Dropdown         | **shadcn/ui Select**               | Glass-styled dropdown |
+| Number Inputs          | **shadcn/ui Input**                | With ₹ prefix formatting |
+| Result Cards           | **Magic UI: Magic Card**           | 3 result cards with spotlight effect |
+| Result Numbers         | **Magic UI: Number Ticker**        | Real-time animated number updates |
+| ROI Percentage         | **Magic UI: Animated Gradient Text** | Large 340% with green→amber gradient |
+| Revenue Chart          | **Recharts AreaChart**             | Gradient fill under the line (green) |
+| Breakeven Line         | **Recharts ReferenceLine**         | Dashed horizontal line |
+| Cost Breakdown Cards   | **Magic UI: Bento Grid**           | 3-column mini bento for costs/savings/processed |
+| CTA Section            | **Magic UI: Shimmer Button**       | "Download PDF" and "Get Quote" with shimmer |
+| CTA Border             | **Magic UI: Shine Border**         | Animated shine wrapping the CTA block |
+
+### GLOBAL COMPONENTS
+
+| Component              | Source                             | Used On                            |
+|------------------------|------------------------------------|-----------------------------------|
+| **Animated Gradient Text** | Magic UI                       | All page headings                  |
+| **Number Ticker**      | Magic UI                           | Landing stats, Mission stats, Map panel, Calculator results |
+| **Magic Card**         | Magic UI                           | All interactive cards              |
+| **Border Beam**        | Magic UI                           | Featured cards, CTA sections       |
+| **Shine Border**       | Magic UI                           | CTA banners                        |
+| **Shimmer Button**     | Magic UI                           | Primary CTA buttons                |
+| **Bento Grid**         | Magic UI                           | Mission pillars, Calculator breakdown |
+| **Sheet**              | shadcn/ui                          | Mobile nav, Map detail panel       |
+| **Slider**             | shadcn/ui                          | Calculator inputs                  |
+| **Progress**           | shadcn/ui                          | Map stats, Mission stats           |
+| **Button**             | shadcn/ui                          | All buttons (base)                 |
+| **Select / Input**     | shadcn/ui                          | Calculator form elements           |
+
+---
+
+## Installation Plan (npm packages)
+
+```bash
+# Core
+npx shadcn@latest init
+
+# shadcn/ui components
+npx shadcn@latest add button card input select slider progress sheet
+
+# Magic UI components (copy-paste from magicui.design)
+# - number-ticker
+# - animated-gradient-text
+# - bento-grid
+# - magic-card
+# - border-beam
+# - shine-border
+# - shimmer-button
+# - neon-gradient-card
+# - animated-beam
+# - orbiting-circles
+# - avatar-circles
+# - arc-timeline
+
+# Additional packages
+npm install framer-motion recharts react-leaflet leaflet xlsx react-dropzone
+npm install -D @types/leaflet
+```
+
+---
+
+## Sources & References
+
+- [21st.dev — Component Library](https://21st.dev)
+- [21st.dev — Hero Components](https://21st.dev/s/hero)
+- [21st.dev — Map Components](https://21st.dev/s/map)
+- [21st.dev — Background Components](https://21st.dev/community/components/s/background)
+- [21st.dev — Landing Page Components](https://21st.dev/community/components/s/landing-page)
+- [Magic UI — All Components](https://magicui.design/docs/components)
+- [Magic UI — Number Ticker](https://magicui.design/docs/components/number-ticker)
+- [Magic UI — Bento Grid](https://magicui.design/docs/components/bento-grid)
+- [Magic UI — Magic Card](https://magicui.design/docs/components/magic-card)
+- [Magic UI — Arc Timeline](https://magicui.design/docs/components/arc-timeline)
+- [shadcn.io — Animated Backgrounds](https://www.shadcn.io/background)
+- [shadcn.io — Aurora Background](https://www.shadcn.io/background/aurora)
+- [shadcn.io — Particles Background](https://www.shadcn.io/background/particles)
+- [shadcn.io — Gradient Mesh Shader](https://www.shadcn.io/shaders/gradient-mesh)
+- [shadcn/ui — Official Components](https://ui.shadcn.com/docs/components)
+- [Inspira UI — World Map](https://inspira-ui.com/docs/components/visualization/world-map)
+- [React Simple Maps](https://www.react-simple-maps.io/)
+- [ShadcnBlocks — Hero Blocks](https://www.shadcnblocks.com/blocks/hero)
