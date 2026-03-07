@@ -36,6 +36,9 @@ yarn-error.log*
 # mcp config (contains API keys)
 .mcp.json
 
+# python cache
+__pycache__/
+
 # vercel
 .vercel
 
