@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymer Energy — ROI Calculator Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0A0F1A; --surface: #111827; --primary: #00FF88; --secondary: #00D4FF;
+    --amber: #FFB800; --red: #FF4444;
+    --text: #F0FDF4; --text-muted: #94A3B8;
+    --border: rgba(0, 255, 136, 0.15); --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* Gradient Anim BG */
+  .grad-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: linear-gradient(-45deg, #0A0F1A, #0D1B2A, #0A1A14, #0A0F1A);
+    background-size: 400% 400%;
+    animation: grad-shift 15s ease infinite;
+  }
+  @keyframes grad-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .dot-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(rgba(0,255,136,0.05) 1px, transparent 1px); background-size: 30px 30px; }
+
+  .navbar { position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100; background: rgba(17,24,39,0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo .diamond { width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: rotate(45deg); border-radius: 4px; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--primary); }
+  .nav-cta { background: var(--primary); color: #0A0F1A; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; }
+
+  .content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 120px 24px 80px; }
+
+  .page-header { margin-bottom: 40px; }
+  .page-header .label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
+  .page-header h1 { font-size: 40px; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .page-header .subtitle { color: var(--text-muted); font-size: 16px; margin-top: 8px; }
+
+  /* Calculator Layout */
+  .calc-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+
+  .calc-panel {
+    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 36px;
+  }
+  .panel-title { font-size: 16px; font-weight: 600; margin-bottom: 28px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+  /* Input Controls */
+  .input-group { margin-bottom: 28px; }
+  .input-label {
+    font-size: 14px; font-weight: 500; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .input-value {
+    font-family: 'Space Grotesk'; font-weight: 700; color: var(--primary);
+  }
+
+  /* Custom Slider */
+  .slider-track {
+    width: 100%; height: 8px; border-radius: 4px;
+    background: rgba(255,255,255,0.05); position: relative;
+    cursor: pointer;
+  }
+  .slider-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    position: absolute; top: 0; left: 0;
+  }
+  .slider-thumb {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--primary); border: 3px solid var(--bg);
+    box-shadow: 0 0 12px rgba(0,255,136,0.4);
+    position: absolute; top: -7px;
+    transform: translateX(-50%);
+    cursor: grab;
+  }
+  .slider-range {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); margin-top: 8px; opacity: 0.6;
+  }
+
+  /* Select */
+  .custom-select {
+    width: 100%; padding: 12px 16px;
+    background: rgba(17,24,39,0.8); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text);
+    font-family: 'DM Sans'; font-size: 14px;
+    appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  /* Results */
+  .result-card {
+    background: rgba(17,24,39,0.8); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px; margin-bottom: 16px;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .result-card:hover { transform: scale(1.02); box-shadow: var(--glow); }
+  /* Spotlight effect */
+  .result-card::before {
+    content: ''; position: absolute; width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(0,255,136,0.06), transparent 70%);
+    border-radius: 50%; top: -80px; right: -80px;
+  }
+  .result-label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+  .result-value {
+    font-family: 'Space Grotesk'; font-size: 36px; font-weight: 700;
+  }
+  .result-value.green { color: var(--primary); }
+  .result-value.cyan { color: var(--secondary); }
+  .result-value.amber { color: var(--amber); }
+  .result-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .result-bar {
+    margin-top: 12px; height: 4px; border-radius: 2px;
+    background: rgba(255,255,255,0.05); overflow: hidden;
+  }
+  .result-bar-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+  }
+
+  /* Chart Area */
+  .chart-section {
+    margin-top: 32px; grid-column: 1 / -1;
+  }
+  .chart-card {
+    background: rgba(17,24,39,0.6); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px;
+  }
+  .chart-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+
+  /* Fake Chart */
+  .chart-area {
+    height: 240px; position: relative;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 16px;
+  }
+  .chart-line {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100%;
+  }
+  .revenue-area {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,255,136,0.15), transparent);
+    clip-path: polygon(0% 95%, 20% 75%, 40% 55%, 60% 38%, 80% 22%, 100% 8%, 100% 100%, 0% 100%);
+  }
+  .revenue-line {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--primary);
+    clip-path: polygon(0% 95%, 20% 75%, 40% 55%, 60% 38%, 80% 22%, 100% 8%, 100% 10%, 80% 24%, 60% 40%, 40% 57%, 20% 77%, 0% 97%);
+    box-shadow: 0 0 10px rgba(0,255,136,0.5);
+  }
+  .cost-line {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px; background: var(--red);
+    clip-path: polygon(0% 60%, 20% 58%, 40% 57%, 60% 55%, 80% 54%, 100% 52%, 100% 54%, 80% 56%, 60% 57%, 40% 59%, 20% 60%, 0% 62%);
+    opacity: 0.6;
+  }
+  .breakeven-line {
+    position: absolute; left: 0; right: 0;
+    border-top: 2px dashed rgba(255,255,255,0.15);
+    bottom: 55%;
+  }
+  .breakeven-label {
+    position: absolute; right: 8px; bottom: 56%;
+    font-size: 11px; color: var(--text-muted); opacity: 0.6;
+  }
+  .chart-x-labels {
+    display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); opacity: 0.6;
+    padding-left: 4px;
+  }
+  .chart-legend {
+    display: flex; gap: 24px; margin-top: 16px; font-size: 13px; color: var(--text-muted);
+  }
+  .chart-legend-item { display: flex; align-items: center; gap: 8px; }
+  .chart-legend-dot { width: 12px; height: 3px; border-radius: 2px; }
+
+  /* Breakdown Cards */
+  .breakdown-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    margin-top: 32px; grid-column: 1 / -1;
+  }
+  .breakdown-card {
+    background: rgba(17,24,39,0.6); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px;
+  }
+  .breakdown-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
+  .breakdown-value {
+    font-family: 'Space Grotesk'; font-size: 28px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .breakdown-items { list-style: none; }
+  .breakdown-items li {
+    font-size: 13px; color: var(--text-muted);
+    padding: 4px 0; display: flex; align-items: center; gap: 8px;
+  }
+  .breakdown-items li::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--primary); border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* CTA */
+  .calc-cta {
+    margin-top: 32px; grid-column: 1 / -1;
+    background: rgba(17,24,39,0.6); border-radius: 20px;
+    padding: 40px; text-align: center;
+    position: relative; overflow: hidden;
+    border: 1px solid transparent;
+  }
+  .calc-cta::before {
+    content: ''; position: absolute; inset: -1px; border-radius: 21px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
+    background-size: 200% 200%; z-index: -2;
+    animation: border-rotate 4s linear infinite;
+  }
+  @keyframes border-rotate {
+    0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; }
+  }
+  .calc-cta::after { content: ''; position: absolute; inset: 1px; background: rgba(17,24,39,0.95); border-radius: 19px; z-index: -1; }
+  .calc-cta h2 { font-size: 24px; margin-bottom: 20px; }
+  .cta-buttons { display: flex; gap: 16px; justify-content: center; }
+  .btn-primary {
+    background: var(--primary); color: #0A0F1A;
+    padding: 14px 32px; border-radius: 999px;
+    font-weight: 600; font-size: 16px; border: none;
+    cursor: pointer; position: relative; overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 30px rgba(0,255,136,0.5); }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%); animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+  .btn-outline {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text); padding: 14px 32px; border-radius: 999px;
+    font-weight: 500; font-size: 16px; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--primary); }
+
+  @media (max-width: 768px) {
+    .calc-layout { grid-template-columns: 1fr; }
+    .breakdown-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .page-header h1 { font-size: 28px; }
+    .cta-buttons { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grad-bg"></div>
+<div class="dot-overlay"></div>
+
+<nav class="navbar">
+  <a href="landing.html" class="nav-logo"><div class="diamond"></div>POLYMER ENERGY</a>
+  <div class="nav-links">
+    <a href="mission.html">Mission</a>
+    <a href="map.html">Map</a>
+    <a href="calculator.html" class="active">Calculator</a>
+    <a href="founders.html">Founders</a>
+    <button class="nav-cta">Get a Quote</button>
+  </div>
+</nav>
+
+<div class="content">
+
+  <div class="page-header">
+    <div class="label">ROI Calculator</div>
+    <h1>Recycling ROI Calculator</h1>
+    <p class="subtitle">See exactly what your investment returns. Adjust the sliders to model your scenario.</p>
+  </div>
+
+  <div class="calc-layout">
+
+    <!-- INPUT PANEL -->
+    <div class="calc-panel">
+      <div class="panel-title">Input Parameters</div>
+
+      <div class="input-group">
+        <div class="input-label">Equipment Model <span class="input-value"></span></div>
+        <select class="custom-select">
+          <option>PE-100 Compact (500 kg/day)</option>
+          <option>PE-200 Standard (1000 kg/day)</option>
+          <option>PE-500 Industrial (2000 kg/day)</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Investment Amount <span class="input-value">&#8377;25,00,000</span></div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:40%"></div>
+          <div class="slider-thumb" style="left:40%"></div>
+        </div>
+        <div class="slider-range"><span>&#8377;5L</span><span>&#8377;1Cr</span></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Daily Plastic Input <span class="input-value">750 kg</span></div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:35%"></div>
+          <div class="slider-thumb" style="left:35%"></div>
+        </div>
+        <div class="slider-range"><span>100 kg</span><span>2000 kg</span></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Operating Hours / Day <span class="input-value">10 hrs</span></div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:50%"></div>
+          <div class="slider-thumb" style="left:50%"></div>
+        </div>
+        <div class="slider-range"><span>4 hrs</span><span>16 hrs</span></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Workers Available <span class="input-value">3</span></div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:22%"></div>
+          <div class="slider-thumb" style="left:22%"></div>
+        </div>
+        <div class="slider-range"><span>1</span><span>10</span></div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">Electricity Cost <span class="input-value">&#8377;8.50/kWh</span></div>
+        <div class="slider-track">
+          <div class="slider-fill" style="width:55%"></div>
+          <div class="slider-thumb" style="left:55%"></div>
+        </div>
+        <div class="slider-range"><span>&#8377;4</span><span>&#8377;14</span></div>
+      </div>
+    </div>
+
+    <!-- RESULTS PANEL -->
+    <div class="calc-panel">
+      <div class="panel-title">Your Results</div>
+
+      <div class="result-card">
+        <div class="result-label">Monthly Revenue</div>
+        <div class="result-value green">&#8377;4,50,000</div>
+        <div class="result-sub">Based on current recycled material rates</div>
+        <div class="result-bar"><div class="result-bar-fill" style="width:75%"></div></div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-label">Breakeven Point</div>
+        <div class="result-value cyan">14 months</div>
+        <div class="result-sub">When cumulative revenue exceeds investment</div>
+        <div class="result-bar"><div class="result-bar-fill" style="width:58%;background:linear-gradient(90deg, var(--secondary), var(--primary))"></div></div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-label">5-Year ROI</div>
+        <div class="result-value amber" style="font-size:48px;">340%</div>
+        <div class="result-sub">Total return on your investment over 5 years</div>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="chart-section">
+      <div class="chart-card">
+        <div class="chart-title">Revenue Projection (5 Years)</div>
+        <div class="chart-area">
+          <div class="chart-line">
+            <div class="revenue-area" style="height:100%"></div>
+            <div class="revenue-line" style="height:100%"></div>
+            <div class="cost-line" style="height:100%"></div>
+          </div>
+          <div class="breakeven-line"></div>
+          <div class="breakeven-label">Breakeven</div>
+        </div>
+        <div class="chart-x-labels">
+          <span>Year 1</span><span>Year 2</span><span>Year 3</span><span>Year 4</span><span>Year 5</span>
+        </div>
+        <div class="chart-legend">
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--primary)"></div> Revenue</div>
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:var(--red)"></div> Costs</div>
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:rgba(255,255,255,0.15); border-top: 1px dashed rgba(255,255,255,0.3);height:0;"></div> Breakeven</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BREAKDOWN -->
+    <div class="breakdown-grid">
+      <div class="breakdown-card">
+        <h3>Monthly Costs</h3>
+        <div class="breakdown-value" style="color:var(--red)">&#8377;1,20,000</div>
+        <ul class="breakdown-items">
+          <li>Electricity: &#8377;45,000</li>
+          <li>Labor (3 workers): &#8377;54,000</li>
+          <li>Maintenance: &#8377;12,000</li>
+          <li>Consumables: &#8377;9,000</li>
+        </ul>
+      </div>
+      <div class="breakdown-card">
+        <h3>Annual Savings</h3>
+        <div class="breakdown-value" style="color:var(--primary)">&#8377;39,60,000</div>
+        <ul class="breakdown-items">
+          <li>vs landfill disposal costs</li>
+          <li>Revenue from recycled output</li>
+          <li>Carbon credit potential</li>
+        </ul>
+      </div>
+      <div class="breakdown-card">
+        <h3>Plastic Processed</h3>
+        <div class="breakdown-value" style="color:var(--secondary)">182 tons</div>
+        <ul class="breakdown-items">
+          <li>Per year at 750kg/day</li>
+          <li>70% converted to pellets</li>
+          <li>20% converted to flakes</li>
+          <li>10% fuel-grade output</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="calc-cta">
+      <h2>Want a Detailed Report for Your Location?</h2>
+      <div class="cta-buttons">
+        <button class="btn-outline">Download PDF Report</button>
+        <button class="btn-primary">Get a Custom Quote</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

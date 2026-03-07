@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymer Energy — India Plastic Data Explorer Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0A0F1A; --surface: #111827; --primary: #00FF88; --secondary: #00D4FF;
+    --amber: #FFB800; --red: #FF4444;
+    --text: #F0FDF4; --text-muted: #94A3B8;
+    --border: rgba(0, 255, 136, 0.15); --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* Noise BG */
+  .noise-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: var(--bg);
+  }
+  .noise-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat; background-size: 256px;
+    opacity: 0.5;
+  }
+  .dot-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(rgba(0,255,136,0.05) 1px, transparent 1px); background-size: 30px 30px; }
+
+  .navbar { position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100; background: rgba(17,24,39,0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo .diamond { width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: rotate(45deg); border-radius: 4px; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--primary); }
+  .nav-cta { background: var(--primary); color: #0A0F1A; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; }
+
+  .content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 120px 24px 60px; }
+
+  .page-header { margin-bottom: 32px; }
+  .page-header .label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
+  .page-header h1 { font-size: 40px; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  /* Map Layout */
+  .map-layout {
+    display: grid; grid-template-columns: 1fr 380px; gap: 24px;
+    min-height: 600px;
+  }
+
+  .map-container {
+    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 20px;
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* SVG India Map (simplified) */
+  .india-map {
+    width: 100%; height: 100%; padding: 40px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .india-outline {
+    width: 320px; height: 380px;
+    position: relative;
+  }
+  .india-outline svg { width: 100%; height: 100%; }
+
+  /* Data Points */
+  .data-point {
+    position: absolute; cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .data-point:hover { transform: scale(1.3); }
+  .data-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    position: relative;
+  }
+  .data-dot::after {
+    content: ''; position: absolute; inset: -4px;
+    border: 2px solid; border-radius: 50%;
+    animation: ping 2s infinite;
+    opacity: 0;
+  }
+  @keyframes ping {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+  .data-dot.high { background: var(--red); }
+  .data-dot.high::after { border-color: var(--red); }
+  .data-dot.medium { background: var(--amber); }
+  .data-dot.medium::after { border-color: var(--amber); }
+  .data-dot.low { background: #22C55E; }
+  .data-dot.low::after { border-color: #22C55E; }
+  .data-dot.site { background: var(--secondary); box-shadow: 0 0 10px rgba(0,212,255,0.5); }
+  .data-dot.site::after { border-color: var(--secondary); }
+
+  .data-label {
+    position: absolute; left: 20px; top: -4px;
+    font-size: 11px; color: var(--text-muted);
+    white-space: nowrap; font-weight: 500;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .data-point:hover .data-label { opacity: 1; }
+
+  /* Map Controls */
+  .map-controls {
+    position: absolute; bottom: 20px; left: 20px;
+    display: flex; gap: 8px;
+  }
+  .map-btn {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(17,24,39,0.8); border: 1px solid var(--border);
+    color: var(--text-muted); cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .map-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* Legend */
+  .map-legend {
+    position: absolute; bottom: 20px; right: 20px;
+    background: rgba(17,24,39,0.9); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .legend-item:last-child { margin-bottom: 0; }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* Side Panel */
+  .side-panel {
+    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 28px; overflow-y: auto;
+    display: flex; flex-direction: column;
+  }
+  .panel-header { margin-bottom: 24px; }
+  .panel-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+  .panel-header p { color: var(--text-muted); font-size: 14px; }
+
+  .panel-state {
+    font-size: 14px; color: var(--primary); font-weight: 600;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  }
+  .panel-state-name { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+
+  .stat-row {
+    margin-bottom: 20px;
+  }
+  .stat-row-label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+  .stat-row-value {
+    font-family: 'Space Grotesk'; font-size: 28px; font-weight: 700;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .stat-row-value span { font-size: 16px; color: var(--text-muted); font-weight: 400; }
+  .mini-bar {
+    height: 6px; border-radius: 3px; background: rgba(255,255,255,0.05);
+    overflow: hidden;
+  }
+  .mini-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+  }
+
+  .panel-sites { margin-top: 20px; }
+  .panel-sites h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+  .site-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px; padding: 6px 12px; font-size: 13px;
+    margin-right: 8px; margin-bottom: 8px;
+  }
+  .site-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); }
+
+  .panel-cta {
+    margin-top: auto; padding-top: 20px;
+  }
+  .panel-cta a {
+    display: block; text-align: center;
+    background: var(--primary); color: #0A0F1A;
+    padding: 12px; border-radius: 12px;
+    font-weight: 600; font-size: 14px;
+    text-decoration: none;
+    transition: box-shadow 0.3s;
+  }
+  .panel-cta a:hover { box-shadow: 0 0 20px rgba(0,255,136,0.4); }
+
+  /* Upload Zone */
+  .upload-zone {
+    margin-top: 20px; padding: 20px;
+    border: 2px dashed var(--border); border-radius: 12px;
+    text-align: center; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-zone:hover { border-color: var(--primary); background: rgba(0,255,136,0.03); }
+  .upload-zone .icon { font-size: 24px; margin-bottom: 8px; }
+  .upload-zone p { font-size: 13px; color: var(--text-muted); }
+  .upload-zone .format { font-size: 11px; color: var(--text-muted); opacity: 0.6; margin-top: 4px; }
+
+  @media (max-width: 768px) {
+    .map-layout { grid-template-columns: 1fr; }
+    .map-container { min-height: 400px; }
+    .nav-links { display: none; }
+    .page-header h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="noise-bg"></div>
+<div class="dot-overlay"></div>
+
+<nav class="navbar">
+  <a href="landing.html" class="nav-logo"><div class="diamond"></div>POLYMER ENERGY</a>
+  <div class="nav-links">
+    <a href="mission.html">Mission</a>
+    <a href="map.html" class="active">Map</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="founders.html">Founders</a>
+    <button class="nav-cta">Get a Quote</button>
+  </div>
+</nav>
+
+<div class="content">
+
+  <div class="page-header">
+    <div class="label">Data Explorer</div>
+    <h1>India Plastic Data Explorer</h1>
+  </div>
+
+  <div class="map-layout">
+
+    <!-- Map Area -->
+    <div class="map-container">
+      <div class="india-map">
+        <div class="india-outline">
+          <!-- Simplified India outline SVG -->
+          <svg viewBox="0 0 300 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M130 10 L170 8 L200 20 L220 15 L250 30 L265 50 L270 80 L260 100 L275 120 L280 150 L270 170 L260 180 L265 200 L255 230 L240 250 L220 260 L200 280 L180 300 L170 320 L155 340 L145 350 L140 340 L135 310 L125 290 L110 270 L95 255 L80 240 L65 220 L55 200 L50 180 L45 160 L40 140 L35 120 L40 100 L50 80 L60 60 L80 40 L100 25 L120 15Z"
+              fill="rgba(0,255,136,0.03)" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
+          </svg>
+
+          <!-- Data Points (positioned on India map) -->
+          <div class="data-point" style="top:15%;left:30%"><div class="data-dot medium"></div><div class="data-label">Punjab</div></div>
+          <div class="data-point" style="top:20%;left:50%"><div class="data-dot high"></div><div class="data-label">Delhi NCR</div></div>
+          <div class="data-point" style="top:25%;left:65%"><div class="data-dot medium"></div><div class="data-label">UP</div></div>
+          <div class="data-point" style="top:35%;left:35%"><div class="data-dot medium"></div><div class="data-label">Rajasthan</div></div>
+          <div class="data-point" style="top:40%;left:55%"><div class="data-dot low"></div><div class="data-label">MP</div></div>
+          <div class="data-point" style="top:35%;left:75%"><div class="data-dot medium"></div><div class="data-label">Bihar</div></div>
+          <div class="data-point" style="top:45%;left:80%"><div class="data-dot low"></div><div class="data-label">W. Bengal</div></div>
+          <div class="data-point" style="top:50%;left:30%"><div class="data-dot low"></div><div class="data-label">Gujarat</div></div>
+          <div class="data-point" style="top:55%;left:45%"><div class="data-dot high"></div><div class="data-label">Maharashtra</div></div>
+          <div class="data-point" style="top:60%;left:55%"><div class="data-dot medium"></div><div class="data-label">Telangana</div></div>
+          <div class="data-point" style="top:68%;left:40%"><div class="data-dot low"></div><div class="data-label">Karnataka</div></div>
+          <div class="data-point" style="top:72%;left:55%"><div class="data-dot medium"></div><div class="data-label">Tamil Nadu</div></div>
+          <div class="data-point" style="top:65%;left:30%"><div class="data-dot low"></div><div class="data-label">Kerala</div></div>
+
+          <!-- Polymer Energy Installation Sites -->
+          <div class="data-point" style="top:53%;left:38%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Mumbai (PE)</div></div>
+          <div class="data-point" style="top:57%;left:50%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Pune (PE)</div></div>
+          <div class="data-point" style="top:19%;left:45%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Delhi (PE)</div></div>
+        </div>
+      </div>
+
+      <div class="map-controls">
+        <button class="map-btn">+</button>
+        <button class="map-btn">-</button>
+        <button class="map-btn">&#8634;</button>
+      </div>
+
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#22C55E"></div> Low (&lt;100 tons/day)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Medium (100-500 tons)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> High (&gt;500 tons/day)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--secondary)"></div> PE Installation</div>
+      </div>
+    </div>
+
+    <!-- Side Panel -->
+    <div class="side-panel">
+      <div class="panel-header">
+        <h2>Region Details</h2>
+      </div>
+
+      <div class="panel-state">&#128205; Selected Region</div>
+      <div class="panel-state-name">Maharashtra</div>
+
+      <div class="stat-row">
+        <div class="stat-row-label">Daily Plastic Waste</div>
+        <div class="stat-row-value">2,847 <span>tons/day</span></div>
+        <div class="mini-bar"><div class="mini-bar-fill" style="width:85%"></div></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-row-label">Recyclable Potential</div>
+        <div class="stat-row-value" style="color:var(--primary)">1,994 <span>tons (70%)</span></div>
+        <div class="mini-bar"><div class="mini-bar-fill" style="width:70%"></div></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-row-label">Revenue Potential</div>
+        <div class="stat-row-value" style="color:var(--amber)">&#8377;4.2 Cr <span>/month</span></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-row-label">CO&#8322; Reduction Potential</div>
+        <div class="stat-row-value" style="color:var(--secondary)">892 <span>tons CO&#8322;/month</span></div>
+      </div>
+
+      <div class="panel-sites">
+        <h3>Polymer Energy Sites</h3>
+        <div class="site-tag"><div class="dot"></div> Mumbai</div>
+        <div class="site-tag"><div class="dot"></div> Pune</div>
+        <div class="site-tag"><div class="dot"></div> Nagpur</div>
+      </div>
+
+      <div class="panel-cta">
+        <a href="calculator.html">Calculate ROI for this region &rarr;</a>
+      </div>
+
+      <div class="upload-zone">
+        <div class="icon">&#128196;</div>
+        <p>Upload Excel data</p>
+        <div class="format">Drag & drop .xlsx or .csv</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

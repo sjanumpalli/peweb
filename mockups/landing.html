@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymer Energy — Landing Page Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0A0F1A;
+    --surface: #111827;
+    --surface-glow: #0D2818;
+    --primary: #00FF88;
+    --secondary: #00D4FF;
+    --amber: #FFB800;
+    --text: #F0FDF4;
+    --text-muted: #94A3B8;
+    --border: rgba(0, 255, 136, 0.15);
+    --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* ── PARTICLES BG ── */
+  .particles-bg {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: float 8s infinite ease-in-out;
+  }
+  .particle:nth-child(2n) { background: var(--secondary); animation-duration: 12s; }
+  .particle:nth-child(3n) { opacity: 0.15; width: 2px; height: 2px; animation-duration: 15s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-80px) translateX(30px); }
+    50% { transform: translateY(-40px) translateX(-20px); }
+    75% { transform: translateY(-100px) translateX(15px); }
+  }
+
+  /* ── DOT GRID OVERLAY ── */
+  .dot-overlay {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background-image: radial-gradient(rgba(0,255,136,0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100;
+    background: rgba(17, 24, 39, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 20px;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0,255,136,0.3);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo .diamond {
+    width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    transform: rotate(45deg);
+    border-radius: 4px;
+    box-shadow: var(--glow);
+  }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--primary); color: #0A0F1A;
+    padding: 10px 24px; border-radius: 999px;
+    font-weight: 600; font-size: 14px;
+    text-decoration: none; cursor: pointer;
+    transition: box-shadow 0.3s, transform 0.2s;
+    border: none;
+  }
+  .nav-cta:hover {
+    box-shadow: 0 0 25px rgba(0,255,136,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 140px 40px 80px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 64px; font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    max-width: 800px;
+    animation: fadeUp 0.8s ease-out;
+  }
+  .hero .subtitle {
+    font-size: 20px; color: var(--text-muted);
+    max-width: 560px; margin: 24px auto 40px;
+    line-height: 1.6;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+  .hero-buttons {
+    display: flex; gap: 16px;
+    animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+  .btn-primary {
+    background: var(--primary); color: #0A0F1A;
+    padding: 14px 32px; border-radius: 999px;
+    font-weight: 600; font-size: 16px;
+    text-decoration: none; cursor: pointer; border: none;
+    position: relative; overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  .btn-primary::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0,255,136,0.5);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text); padding: 14px 32px;
+    border-radius: 999px; font-weight: 500;
+    font-size: 16px; text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline:hover {
+    border-color: var(--primary);
+    background: rgba(0,255,136,0.05);
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── 3D MACHINE MOCKUP ── */
+  .hero-visual {
+    margin-top: 60px;
+    width: 500px; height: 320px;
+    background: radial-gradient(ellipse at center, var(--surface-glow), transparent 70%);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: fadeUp 1s ease-out 0.6s both;
+  }
+  .machine-placeholder {
+    text-align: center; color: var(--text-muted);
+  }
+  .machine-placeholder .icon {
+    font-size: 80px; margin-bottom: 16px;
+    filter: drop-shadow(0 0 20px rgba(0,255,136,0.3));
+    animation: pulse-glow 2s infinite ease-in-out;
+  }
+  @keyframes pulse-glow {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(0,255,136,0.3)); }
+    50% { filter: drop-shadow(0 0 40px rgba(0,255,136,0.6)); }
+  }
+
+  /* ── SCROLL INDICATOR ── */
+  .scroll-indicator {
+    margin-top: 40px;
+    animation: breathe 2s infinite ease-in-out;
+    color: var(--text-muted);
+    font-size: 14px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .scroll-indicator svg { width: 24px; height: 24px; stroke: var(--primary); }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.4; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(8px); }
+  }
+
+  /* ── IMPACT COUNTERS ── */
+  .impact-section {
+    position: relative; z-index: 2;
+    padding: 80px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .counter-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .counter-card {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .counter-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--glow);
+  }
+  /* Border beam effect */
+  .counter-card::before {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    animation: beam-slide 3s infinite;
+  }
+  @keyframes beam-slide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .counter-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px; font-weight: 700;
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0,255,136,0.2);
+  }
+  .counter-label {
+    font-size: 14px; font-weight: 600;
+    color: var(--text); margin-top: 4px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .counter-desc {
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-section {
+    position: relative; z-index: 2;
+    padding: 100px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .section-title {
+    font-size: 40px; font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    color: var(--text-muted); font-size: 18px;
+    margin-bottom: 60px; max-width: 500px;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex; align-items: flex-start; gap: 0;
+    position: relative;
+    padding-top: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute; top: 20px;
+    left: 40px; right: 40px; height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+    opacity: 0.3;
+  }
+  .timeline-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 12px;
+  }
+  .step-dot {
+    width: 16px; height: 16px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    position: relative;
+    box-shadow: 0 0 15px rgba(0,255,136,0.4);
+  }
+  .step-dot::after {
+    content: '';
+    position: absolute; inset: -6px;
+    border: 2px solid rgba(0,255,136,0.2);
+    border-radius: 50%;
+    animation: pulse-ring 2s infinite;
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.8); opacity: 0; }
+  }
+  .step-card {
+    background: rgba(17, 24, 39, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 20px;
+    transition: transform 0.2s, border-color 0.3s;
+    cursor: pointer;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--primary);
+  }
+  .step-icon {
+    font-size: 36px; margin-bottom: 16px;
+    filter: drop-shadow(0 0 10px rgba(0,255,136,0.3));
+  }
+  .step-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px; font-weight: 600;
+    margin-bottom: 8px; color: var(--text);
+  }
+  .step-desc {
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .step-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px; font-weight: 700;
+    color: var(--primary); opacity: 0.5;
+    margin-bottom: 8px;
+  }
+
+  /* ── CTA BANNER ── */
+  .cta-section {
+    position: relative; z-index: 2;
+    padding: 80px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .cta-banner {
+    background: rgba(17, 24, 39, 0.6);
+    border-radius: 24px;
+    padding: 60px;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    position: relative; overflow: hidden;
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute; inset: -1px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
+    z-index: -1;
+    animation: border-rotate 4s linear infinite;
+    background-size: 200% 200%;
+  }
+  @keyframes border-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .cta-banner::after {
+    content: '';
+    position: absolute; inset: 1px;
+    background: rgba(17, 24, 39, 0.95);
+    border-radius: 23px;
+    z-index: -1;
+  }
+  .cta-text h2 {
+    font-size: 32px; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .cta-text p { color: var(--text-muted); font-size: 16px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--border);
+    padding: 60px 40px 30px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px; margin-bottom: 40px;
+  }
+  .footer-brand { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+  .footer-brand .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--primary); margin-bottom: 12px;
+  }
+  .footer-col h4 {
+    font-size: 14px; font-weight: 600;
+    color: var(--text); margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .footer-col a {
+    display: block; color: var(--text-muted);
+    text-decoration: none; font-size: 14px;
+    margin-bottom: 8px; transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--primary); }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--text-muted);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 36px; }
+    .hero .subtitle { font-size: 16px; }
+    .counter-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline { flex-direction: column; gap: 24px; }
+    .timeline::before { display: none; }
+    .cta-banner { flex-direction: column; text-align: center; gap: 24px; }
+    .navbar { top: 12px; left: 12px; right: 12px; padding: 12px 20px; }
+    .nav-links { display: none; }
+    .hero-visual { width: 100%; height: 240px; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particle Background -->
+<div class="particles-bg" id="particles"></div>
+<div class="dot-overlay"></div>
+
+<!-- Floating Navbar -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <div class="diamond"></div>
+    POLYMER ENERGY
+  </div>
+  <div class="nav-links">
+    <a href="mission.html">Mission</a>
+    <a href="map.html">Map</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="founders.html">Founders</a>
+    <button class="nav-cta">Get a Quote</button>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1>Turning Plastic Waste Into Clean Energy</h1>
+  <p class="subtitle">
+    We build micro-recycling systems that transform plastic pollution
+    into reusable materials — one community at a time.
+  </p>
+  <div class="hero-buttons">
+    <a href="map.html" class="btn-outline">See Our Map</a>
+    <a href="calculator.html" class="btn-primary">Calculate ROI</a>
+  </div>
+  <div class="hero-visual">
+    <div class="machine-placeholder">
+      <div class="icon">&#9883;</div>
+      <p style="font-size:14px;">3D Micro-Recycler Visualization<br><span style="color:var(--primary);font-size:12px;">Spline / Three.js interactive scene</span></p>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll to explore</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+      <path d="M12 5v14M5 12l7 7 7-7"/>
+    </svg>
+  </div>
+</section>
+
+<!-- Impact Counter Strip -->
+<section class="impact-section">
+  <div class="counter-grid">
+    <div class="counter-card">
+      <div class="counter-number">12,450</div>
+      <div class="counter-label">Tons</div>
+      <div class="counter-desc">Plastic Recycled</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-number">85+</div>
+      <div class="counter-label">Locations</div>
+      <div class="counter-desc">Installed Across India</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-number" style="color:var(--amber)">&#8377;2.3Cr</div>
+      <div class="counter-label">Revenue</div>
+      <div class="counter-desc">Generated for Partners</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-number">340+</div>
+      <div class="counter-label">Jobs</div>
+      <div class="counter-desc">Created Locally</div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="how-section">
+  <div class="section-title">How Our Micro-Recycler Works</div>
+  <div class="section-subtitle">From waste collection to market-ready materials in 5 simple steps.</div>
+  <div class="timeline">
+    <div class="timeline-step">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <div class="step-icon">&#9851;</div>
+        <div class="step-title">Collect</div>
+        <div class="step-desc">Local collection from communities, businesses, and waste pickers.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <div class="step-icon">&#9881;</div>
+        <div class="step-title">Sort</div>
+        <div class="step-desc">AI-assisted sorting by polymer type for maximum recycling efficiency.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <div class="step-icon">&#9889;</div>
+        <div class="step-title">Process</div>
+        <div class="step-desc">Compact shredding and washing in our 200 sq ft micro-system.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <div class="step-icon">&#9850;</div>
+        <div class="step-title">Convert</div>
+        <div class="step-desc">Thermal conversion into pellets, flakes, or fuel-grade output.</div>
+      </div>
+    </div>
+    <div class="timeline-step">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="step-number">05</div>
+        <div class="step-icon">&#10003;</div>
+        <div class="step-title">Output</div>
+        <div class="step-desc">Market-ready recycled materials sold to manufacturers.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-section">
+  <div class="cta-banner">
+    <div class="cta-text">
+      <h2>Ready to Transform Your Community's Plastic Waste?</h2>
+      <p>Join 85+ locations across India already making an impact.</p>
+    </div>
+    <a href="#" class="btn-primary" style="font-size:18px;padding:16px 40px;">Get a Quote</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">&#9670; Polymer Energy</div>
+      Making plastic recycling accessible, profitable, and impactful for every community in India.
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="mission.html">Mission</a>
+      <a href="map.html">Data Map</a>
+      <a href="calculator.html">ROI Calculator</a>
+      <a href="founders.html">Founders</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="#">info@polymerenergy.in</a>
+      <a href="#">+91 98XXX XXXXX</a>
+      <a href="#">Mumbai, India</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Polymer Energy Pvt. Ltd.</span>
+    <span>Privacy &middot; Terms</span>
+  </div>
+</footer>
+
+<script>
+// Generate particles
+const container = document.getElementById('particles');
+for (let i = 0; i < 60; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = Math.random() * 100 + '%';
+  p.style.animationDelay = Math.random() * 8 + 's';
+  container.appendChild(p);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polymer Energy — Founders Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0A0F1A; --surface: #111827; --primary: #00FF88; --secondary: #00D4FF;
+    --text: #F0FDF4; --text-muted: #94A3B8;
+    --border: rgba(0, 255, 136, 0.15); --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+  /* Gradient Mesh BG */
+  .mesh-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+  .blob {
+    position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.06;
+  }
+  .blob:nth-child(1) { width: 600px; height: 600px; background: var(--primary); top: -10%; left: -10%; animation: drift1 20s infinite ease-in-out; }
+  .blob:nth-child(2) { width: 500px; height: 500px; background: var(--secondary); bottom: -10%; right: -10%; animation: drift2 25s infinite ease-in-out; }
+  .blob:nth-child(3) { width: 400px; height: 400px; background: var(--primary); top: 50%; left: 50%; animation: drift1 30s infinite ease-in-out reverse; opacity: 0.03; }
+  @keyframes drift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(80px, -60px); } }
+  @keyframes drift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-60px, 40px); } }
+
+  .dot-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(rgba(0,255,136,0.07) 1px, transparent 1px); background-size: 30px 30px; }
+
+  .navbar { position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100; background: rgba(17,24,39,0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; color: var(--primary); text-shadow: 0 0 20px rgba(0,255,136,0.3); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo .diamond { width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: rotate(45deg); border-radius: 4px; }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a.active { color: var(--primary); }
+  .nav-cta { background: var(--primary); color: #0A0F1A; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; }
+
+  .content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 140px 40px 80px; }
+
+  .page-header { text-align: center; margin-bottom: 80px; }
+  .page-header .label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); margin-bottom: 24px; opacity: 0.7; }
+  .page-header h1 {
+    font-size: 48px; font-weight: 700; line-height: 1.2;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .page-header .tagline { color: var(--text-muted); font-size: 18px; margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+  /* Founder Cards */
+  .founder-card {
+    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 48px; margin-bottom: 32px;
+    display: flex; align-items: center; gap: 48px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .founder-card:hover { border-color: rgba(0,255,136,0.3); box-shadow: var(--glow); }
+  .founder-card.reverse { flex-direction: row-reverse; }
+  /* Spotlight effect */
+  .founder-card::after {
+    content: '';
+    position: absolute; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,255,136,0.08), transparent 70%);
+    border-radius: 50%; pointer-events: none;
+    top: -150px; left: -150px;
+    transition: top 0.3s, left 0.3s;
+  }
+
+  .founder-photo {
+    flex-shrink: 0; width: 200px; height: 240px;
+    background: linear-gradient(135deg, #1a2332, #0f1724);
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    filter: grayscale(100%);
+    transition: filter 0.4s ease;
+  }
+  .founder-card:hover .founder-photo { filter: grayscale(0%); }
+  .founder-photo .placeholder {
+    font-size: 64px; opacity: 0.3;
+  }
+  .founder-info { flex: 1; }
+  .founder-info h2 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .founder-info .role { color: var(--primary); font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+  .founder-info .bio { color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+  .social-links { display: flex; gap: 12px; }
+  .social-link {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(0,255,136,0.05); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted); text-decoration: none; font-size: 16px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .social-link:hover {
+    background: rgba(0,212,255,0.1); border-color: var(--secondary);
+    color: var(--secondary); box-shadow: 0 0 15px rgba(0,212,255,0.2);
+  }
+
+  /* Advisors */
+  .advisors-section { margin-top: 80px; }
+  .advisors-section h2 { font-size: 32px; font-weight: 700; margin-bottom: 40px; }
+  .advisors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .advisor-card {
+    background: rgba(17,24,39,0.6); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 20px; text-align: center;
+    transition: transform 0.2s, border-color 0.3s; cursor: pointer;
+  }
+  .advisor-card:hover { transform: scale(1.03); border-color: var(--primary); }
+  .advisor-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.2));
+    margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; border: 2px solid var(--border);
+  }
+  .advisor-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .advisor-card p { font-size: 13px; color: var(--text-muted); }
+
+  @media (max-width: 768px) {
+    .founder-card, .founder-card.reverse { flex-direction: column; padding: 32px 24px; gap: 24px; }
+    .founder-photo { width: 100%; height: 200px; }
+    .advisors-grid { grid-template-columns: 1fr 1fr; }
+    .page-header h1 { font-size: 32px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mesh-bg"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
+<div class="dot-overlay"></div>
+
+<nav class="navbar">
+  <a href="landing.html" class="nav-logo"><div class="diamond"></div>POLYMER ENERGY</a>
+  <div class="nav-links">
+    <a href="mission.html">Mission</a>
+    <a href="map.html">Map</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="founders.html" class="active">Founders</a>
+    <button class="nav-cta">Get a Quote</button>
+  </div>
+</nav>
+
+<div class="content">
+
+  <div class="page-header">
+    <div class="label">Our Team</div>
+    <h1>The People Behind Polymer Energy</h1>
+    <p class="tagline">Born from frustration with India's plastic crisis, we quit our corporate jobs to build solutions that work.</p>
+  </div>
+
+  <!-- Founder 1 -->
+  <div class="founder-card">
+    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+    <div class="founder-info">
+      <h2>Founder Name</h2>
+      <div class="role">Co-Founder & CEO</div>
+      <p class="bio">
+        With 12 years in sustainable energy and waste management, [Name] saw firsthand
+        how India's plastic crisis was growing faster than any solution could address.
+        After leading operations at [Previous Company], they founded Polymer Energy to
+        make recycling not just sustainable — but profitable for local communities.
+      </p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Founder 2 -->
+  <div class="founder-card reverse">
+    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+    <div class="founder-info">
+      <h2>Founder Name</h2>
+      <div class="role">Co-Founder & CTO</div>
+      <p class="bio">
+        An engineer by training with expertise in polymer chemistry and machine design,
+        [Name] spent 8 years building industrial recycling systems before designing the
+        compact micro-recycler that became Polymer Energy's core product. Their vision:
+        a recycling system so small and efficient it can go anywhere.
+      </p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Founder 3 -->
+  <div class="founder-card">
+    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+    <div class="founder-info">
+      <h2>Founder Name</h2>
+      <div class="role">Co-Founder & COO</div>
+      <p class="bio">
+        With deep roots in social enterprise and community development across rural India,
+        [Name] brings the operational expertise to deploy and scale micro-recycling units
+        in underserved regions. Their focus is on building sustainable partnerships with
+        local governments, waste pickers, and community leaders.
+      </p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="LinkedIn">in</a>
+        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advisors -->
+  <div class="advisors-section">
+    <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:16px;opacity:0.6;">Advisors</div>
+    <h2>Our Advisory Board</h2>
+    <div class="advisors-grid">
+      <div class="advisor-card">
+        <div class="advisor-avatar">&#128218;</div>
+        <h3>Dr. Advisor Name</h3>
+        <p>Polymer Science, IIT Bombay</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">&#128188;</div>
+        <h3>Advisor Name</h3>
+        <p>Ex-CEO, Waste Solutions Ltd</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">&#127758;</div>
+        <h3>Advisor Name</h3>
+        <p>Climate Finance Expert</p>
+      </div>
+      <div class="advisor-card">
+        <div class="advisor-avatar">&#9878;</div>
+        <h3>Advisor Name</h3>
+        <p>Environmental Policy, Govt of India</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
