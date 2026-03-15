@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Claude Codr Superpowers",
-  description: "Explore the superpowers that make Claude Code the ultimate AI coding companion",
+  title: "PEWeb",
+  description: "PEWeb application",
 };
 
 export default function RootLayout({
