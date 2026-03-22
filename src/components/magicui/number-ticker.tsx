@@ -34,7 +34,10 @@ export function NumberTicker({
       const progress = Math.min(elapsed / duration, 1);
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(Math.round(eased * value));
+      const raw = eased * value;
+      // Preserve decimal places based on target value
+      const decimals = (value.toString().split(".")[1] ?? "").length;
+      setDisplay(parseFloat(raw.toFixed(decimals)));
 
       if (progress < 1) {
         raf = requestAnimationFrame(tick);
@@ -48,7 +51,10 @@ export function NumberTicker({
   return (
     <span ref={ref} className={cn("tabular-nums", className)}>
       {prefix}
-      {display.toLocaleString()}
+      {display.toLocaleString(undefined, {
+        minimumFractionDigits: (value.toString().split(".")[1] ?? "").length,
+        maximumFractionDigits: (value.toString().split(".")[1] ?? "").length,
+      })}
       {suffix}
     </span>
   );

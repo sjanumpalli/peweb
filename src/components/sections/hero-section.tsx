@@ -11,17 +11,17 @@ import { TextGenerateEffect } from "@/components/magicui/text-generate-effect";
 export function HeroSection() {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-20 pt-32">
-      {/* GLSL Hills — warm amber energy terrain shader */}
+      {/* GLSL Hills — Ocean Breeze green energy terrain shader */}
       <GLSLHills
-        color={[0.6, 0.3, 0.1]}
-        opacity={0.3}
-        speed={0.4}
+        color={[0.13, 0.77, 0.37]}
+        opacity={0.25}
+        speed={0.35}
         cameraZ={120}
       />
 
       {/* Gradient overlay for text readability */}
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-warm/90 via-bg-warm/40 to-bg-warm/70"
+        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#f0f8ff]/90 via-[#f0f8ff]/40 to-[#f0f8ff]/70"
         aria-hidden="true"
       />
 
@@ -53,14 +53,14 @@ export function HeroSection() {
         <FadeIn delay={1.0}>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <ShimmerButton
-              background="#FF6D2E"
-              shimmerColor="rgba(255, 255, 255, 0.3)"
+              background="#22C55E"
+              shimmerColor="rgba(255, 255, 255, 0.4)"
             >
               See How It Works
               <ArrowRight className="h-4 w-4" />
             </ShimmerButton>
             <Button
-              variant="secondary"
+              variant="outline"
               size="lg"
               className="rounded-full"
             >

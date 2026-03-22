@@ -25,8 +25,8 @@ export function CtaSection() {
         <FadeIn delay={0.4}>
           <div className="mt-10">
             <ShimmerButton
-              background="#FF6D2E"
-              shimmerColor="rgba(255, 255, 255, 0.3)"
+              background="#22C55E"
+              shimmerColor="rgba(255, 255, 255, 0.4)"
               className="animate-pulse-glow"
             >
               Calculate Your ROI

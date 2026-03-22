@@ -2,89 +2,126 @@
 
 import { FadeIn } from "@/components/ui/fade-in";
 import { SectionHeader } from "@/components/ui/section-header";
-import { BookOpen, Briefcase, FlaskConical, Landmark } from "lucide-react";
-import { type LucideIcon } from "lucide-react";
+import { MapPin, TrendingUp, ShieldCheck, Target, Lightbulb, Handshake } from "lucide-react";
 
-interface Advisor {
-  name: string;
-  title: string;
-  organization: string;
-  tags: string[];
-  icon: LucideIcon;
-}
+const modularAdvantages = [
+  {
+    icon: MapPin,
+    title: "Portability",
+    description: "Deploy anywhere, no infrastructure needed. Our container-sized units arrive ready to deploy.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Scalability",
+    description: "Start with one unit, scale as you grow. Add capacity incrementally without massive upfront investment.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Zero Risk",
+    description: "100% buyback guarantee on fuel produced. Your revenue is secured from day one.",
+  },
+];
 
-const advisors: Advisor[] = [
+const values = [
   {
-    name: "Dr. Meera Nair",
-    title: "Environmental Policy",
-    organization: "TERI",
-    tags: ["Regulation", "Policy", "Compliance"],
-    icon: Landmark,
+    icon: Target,
+    title: "Our Mission",
+    description:
+      "To provide scalable, sustainable waste-to-energy solutions that address India's growing plastic waste challenge while creating economic value.",
+    highlight: true,
   },
   {
-    name: "Vikram Singh",
-    title: "Venture Capital",
-    organization: "Climate Fund",
-    tags: ["Carbon Credits", "ESG", "Finance"],
-    icon: Briefcase,
+    icon: Lightbulb,
+    title: "Innovation",
+    description:
+      "Pioneering modular pyrolysis technology designed and manufactured in India for Indian conditions and global standards.",
+    highlight: false,
   },
   {
-    name: "Dr. Anand Rao",
-    title: "Chemical Engineering",
-    organization: "IIT Bombay",
-    tags: ["Polymer Chemistry", "R&D", "Materials"],
-    icon: FlaskConical,
-  },
-  {
-    name: "Sarah Chen",
-    title: "Impact Investing",
-    organization: "Circulate Capital",
-    tags: ["Operations", "Scale-up", "Strategy"],
-    icon: BookOpen,
+    icon: Handshake,
+    title: "Partnerships",
+    description:
+      "Collaborating with industries, municipalities, and waste management companies to create a circular economy ecosystem.",
+    highlight: false,
   },
 ];
 
 export function AdvisorGrid() {
   return (
-    <section className="mx-auto max-w-5xl px-6 pb-24">
-      <FadeIn>
-        <SectionHeader
-          label="Advisors"
-          title="Our Advisory Board"
-          align="left"
-        />
-      </FadeIn>
+    <>
+      {/* The Modular Advantage */}
+      <section className="mx-auto max-w-5xl px-6 pb-20">
+        <FadeIn>
+          <SectionHeader
+            label="Our Revolution"
+            title="The Modular Advantage"
+            description="Unlike massive plants that need infrastructure, permits, and years of construction, our container-sized units arrive ready to deploy. Drop one at your facility, and within weeks you're converting waste into valuable fuel."
+          />
+        </FadeIn>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {advisors.map((advisor, i) => {
-          const Icon = advisor.icon;
-          return (
-            <FadeIn key={advisor.name} delay={i * 0.08}>
-              <div className="group rounded-xl border border-border bg-white p-8 text-center shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card-hover">
-                <div className="mx-auto mb-4 flex h-[76px] w-[76px] items-center justify-center rounded-full border border-border bg-bg-cream transition-all duration-200 group-hover:border-brand/20 group-hover:bg-brand/5">
-                  <Icon className="h-7 w-7 stroke-heading" strokeWidth={1.5} />
+        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+          {modularAdvantages.map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <FadeIn key={item.title} delay={i * 0.1}>
+                <div className="group flex flex-col rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
+                  <div className="mb-4 inline-flex w-fit rounded-xl bg-bg-peach p-3">
+                    <Icon className="h-5 w-5 text-brand" />
+                  </div>
+                  <h3 className="font-heading text-lg font-bold text-heading">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{item.description}</p>
                 </div>
-                <h3 className="font-heading text-base font-semibold text-heading">
-                  {advisor.name}
-                </h3>
-                <p className="mt-1 text-[13px] leading-snug text-muted">
-                  {advisor.title}, {advisor.organization}
-                </p>
-                <div className="mt-0 flex max-h-0 flex-wrap justify-center gap-1.5 overflow-hidden opacity-0 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:mt-3.5 group-hover:max-h-20 group-hover:opacity-100">
-                  {advisor.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full border border-border bg-bg-warm px-3 py-1 text-[11px] font-medium text-brand"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              </FadeIn>
+            );
+          })}
+        </div>
+
+        {/* Made in India callout */}
+        <FadeIn delay={0.3}>
+          <div className="mt-8 rounded-2xl border border-brand/20 bg-gradient-to-br from-brand/5 to-bg-cream p-8 md:p-10">
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand">Made in India, For India</p>
+            <p className="mt-3 text-base leading-relaxed text-body md:text-lg">
+              Our engineering is rooted in understanding India&apos;s diverse waste streams, infrastructure challenges,
+              and climatic conditions. We don&apos;t just import technology — we innovate for local needs,
+              manufacture locally, and support with local teams.
+            </p>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Values */}
+      <section className="mx-auto max-w-5xl px-6 pb-20">
+        <FadeIn>
+          <SectionHeader
+            label="What Drives Us"
+            title="Our Values"
+            description="What drives us to build better waste-to-energy solutions"
+          />
+        </FadeIn>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-3">
+          {values.map((value, i) => {
+            const Icon = value.icon;
+            return (
+              <FadeIn key={value.title} delay={i * 0.1}>
+                <div
+                  className={`group flex h-full flex-col rounded-2xl border p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover ${
+                    value.highlight
+                      ? "border-brand/25 bg-gradient-to-br from-brand/5 to-bg-cream hover:border-brand/40"
+                      : "border-border bg-white hover:border-brand/20"
+                  }`}
+                >
+                  <div className="mb-4 inline-flex w-fit rounded-xl bg-bg-peach p-3">
+                    <Icon className="h-5 w-5 text-brand" />
+                  </div>
+                  <h3 className="font-heading text-lg font-bold text-heading">{value.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{value.description}</p>
                 </div>
-              </div>
-            </FadeIn>
-          );
-        })}
-      </div>
-    </section>
+              </FadeIn>
+            );
+          })}
+        </div>
+      </section>
+    </>
   );
 }

@@ -3,7 +3,7 @@ export const NAV_LINKS = [
   { label: "Mission", href: "/mission" },
   { label: "Map", href: "/map" },
   { label: "Calculator", href: "/calculator" },
-  { label: "Founders", href: "/founders" },
+  { label: "About", href: "/founders" },
 ] as const;
 
 export const SOCIAL_LINKS = {
