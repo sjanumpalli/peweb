@@ -17,7 +17,7 @@ const founders: Founder[] = [
   {
     name: "Dinesh Reddy",
     initials: "DR",
-    role: "Founder",
+    role: "Co-Founder",
     bio: "With decades building industrial ecosystems, Dinesh saw first-hand how traditional waste management was failing India. His vision: make waste-to-energy so accessible that every factory, every municipality could have their own solution.",
     quote:
       "We're not just building machines. We're creating an infrastructure revolution—one container at a time.",

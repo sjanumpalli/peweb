@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Linkedin, Twitter } from "lucide-react";
-import { NAV_LINKS, SOCIAL_LINKS, SITE_CONFIG } from "@/lib/constants";
+import { NAV_LINKS, SOCIAL_LINKS, SITE_CONFIG, CONTACT_INFO } from "@/lib/constants";
 
 const LEGAL_LINKS = [
   { label: "Privacy", href: "/privacy" },
@@ -67,12 +67,13 @@ export function Footer() {
             <h4 className="text-sm font-semibold text-heading">Contact</h4>
             <div className="mt-4 flex flex-col gap-3">
               <a
-                href="mailto:hello@polymerenergy.com"
+                href={`mailto:${CONTACT_INFO.email}`}
                 className="text-sm text-muted transition-colors hover:text-heading"
               >
-                hello@polymerenergy.com
+                {CONTACT_INFO.email}
               </a>
-              <p className="text-sm text-muted">Mumbai, India</p>
+              <p className="text-sm text-muted">{CONTACT_INFO.location}</p>
+              <p className="text-sm text-muted">Transforming waste into clean energy</p>
             </div>
           </div>
         </div>

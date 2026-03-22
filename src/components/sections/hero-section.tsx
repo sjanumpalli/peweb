@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowRight, Calculator } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Calculator, Mail } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/ui/fade-in";
 import { ShimmerButton } from "@/components/magicui/shimmer-button";
@@ -52,21 +53,26 @@ export function HeroSection() {
 
         <FadeIn delay={1.0}>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <ShimmerButton
-              background="#22C55E"
-              shimmerColor="rgba(255, 255, 255, 0.4)"
-            >
-              See How It Works
-              <ArrowRight className="h-4 w-4" />
-            </ShimmerButton>
-            <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full"
-            >
-              <Calculator className="h-4 w-4" />
-              Calculate Your ROI
-            </Button>
+            <Link href="/calculator">
+              <ShimmerButton
+                background="#22C55E"
+                shimmerColor="rgba(255, 255, 255, 0.4)"
+              >
+                <Calculator className="h-4 w-4" />
+                Try Calculator
+                <ArrowRight className="h-4 w-4" />
+              </ShimmerButton>
+            </Link>
+            <Link href="/contact">
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full"
+              >
+                <Mail className="h-4 w-4" />
+                Get in Touch
+              </Button>
+            </Link>
           </div>
         </FadeIn>
       </div>

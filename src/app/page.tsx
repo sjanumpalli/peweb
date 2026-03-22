@@ -1,16 +1,20 @@
 import { HeroSection } from "@/components/sections/hero-section";
-import { PartnersStrip } from "@/components/sections/partners-strip";
 import { ImpactStats } from "@/components/sections/impact-stats";
-import { HowItWorks } from "@/components/sections/how-it-works";
+import { TechFeatures } from "@/components/sections/tech-features";
+import { PolymerGuarantee } from "@/components/sections/polymer-guarantee";
+import { TechSpecs } from "@/components/sections/tech-specs";
+import { PartnersStrip } from "@/components/sections/partners-strip";
 import { CtaSection } from "@/components/sections/cta-section";
 
 export default function Home() {
   return (
     <>
       <HeroSection />
-      <PartnersStrip />
       <ImpactStats />
-      <HowItWorks />
+      <TechFeatures />
+      <PolymerGuarantee />
+      <TechSpecs />
+      <PartnersStrip />
       <CtaSection />
     </>
   );

@@ -1,9 +1,8 @@
 export const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Mission", href: "/mission" },
-  { label: "Map", href: "/map" },
-  { label: "Calculator", href: "/calculator" },
   { label: "About", href: "/founders" },
+  { label: "Calculator", href: "/calculator" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const SOCIAL_LINKS = {
@@ -11,10 +10,16 @@ export const SOCIAL_LINKS = {
   twitter: "https://twitter.com/polymerenergy",
 } as const;
 
+export const CONTACT_INFO = {
+  email: "info@polymerenergy.in",
+  phone: "+91 XXXX-XXXXXX",
+  location: "India-Based Operations",
+} as const;
+
 export const SITE_CONFIG = {
   name: "Polymer Energy",
-  tagline: "Redefining Circularity",
+  tagline: "Waste to Energy Solutions",
   description:
-    "Turning plastic waste into clean energy with micro-recycling systems across India.",
-  url: "https://polymerenergy.com",
+    "Leading provider of modular pyrolysis systems for sustainable waste-to-energy solutions across India.",
+  url: "https://polymerenergy.in",
 } as const;
