@@ -36,9 +36,6 @@ jobs:
       - name: Type check
         run: pnpm tsc --noEmit
 
-      - name: Build
-        run: pnpm build
-
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
@@ -46,6 +43,9 @@ jobs:
         run: |
           mkdir -p .vercel
           printf '{"orgId":"%s","projectId":"%s"}' "$VERCEL_ORG_ID" "$VERCEL_PROJECT_ID" > .vercel/project.json
+
+      - name: Build
+        run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
         id: deploy
