@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: CI
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
       - main
 
 jobs:
-  deploy:
-    name: ${{ github.ref == 'refs/heads/main' && 'Production Deploy' || 'Preview Deploy' }}
+  check:
+    name: Type Check
     runs-on: ubuntu-latest
 
     steps:
@@ -31,13 +31,3 @@ jobs:
 
       - name: Type check
         run: pnpm tsc --noEmit
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: ${{ github.ref == 'refs/heads/main' && '--prod' || '' }}
-          github-comment: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
