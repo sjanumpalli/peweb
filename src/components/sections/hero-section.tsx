@@ -1,81 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Calculator, Mail } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { FadeIn } from "@/components/ui/fade-in";
-import { ShimmerButton } from "@/components/magicui/shimmer-button";
-import { Button } from "@/components/ui/button";
-import { GLSLHills } from "@/components/ui/glsl-hills";
-import { TextGenerateEffect } from "@/components/magicui/text-generate-effect";
+import { Linkedin, Twitter } from "lucide-react";
+import { MinimalistHero } from "@/components/ui/minimalist-hero";
+import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
+
+const navLinks = NAV_LINKS.map((l) => ({ label: l.label.toUpperCase(), href: l.href }));
+
+const socialLinks = [
+  { icon: Linkedin, href: SOCIAL_LINKS.linkedin },
+  { icon: Twitter, href: SOCIAL_LINKS.twitter },
+];
 
 export function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pb-20 pt-32">
-      {/* GLSL Hills — Ocean Breeze green energy terrain shader */}
-      <GLSLHills
-        color={[0.13, 0.77, 0.37]}
-        opacity={0.25}
-        speed={0.35}
-        cameraZ={120}
-      />
-
-      {/* Gradient overlay for text readability */}
-      <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-[#f0f8ff]/90 via-[#f0f8ff]/40 to-[#f0f8ff]/70"
-        aria-hidden="true"
-      />
-
-      <div className="relative z-10 mx-auto max-w-4xl text-center">
-        <FadeIn delay={0.1}>
-          <Badge className="mb-6">
-            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-brand animate-pulse" />
-            India&apos;s Plastic-to-Energy Opportunity
-          </Badge>
-        </FadeIn>
-
-        <h1 className="font-heading text-5xl font-bold leading-[1.08] tracking-tight text-heading md:text-7xl lg:text-8xl">
-          <TextGenerateEffect
-            words="What if plastic was never waste?"
-            highlightWords={["never", "waste?"]}
-            highlightClassName="text-brand"
-            duration={0.6}
-          />
-        </h1>
-
-        <FadeIn delay={0.8}>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-body md:text-xl">
-            Polymer Energy deploys compact, community-scale machines that
-            transform plastic waste into clean fuel — profitably, locally, and
-            sustainably across India.
-          </p>
-        </FadeIn>
-
-        <FadeIn delay={1.0}>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/calculator">
-              <ShimmerButton
-                background="#22C55E"
-                shimmerColor="rgba(255, 255, 255, 0.4)"
-              >
-                <Calculator className="h-4 w-4" />
-                Try Calculator
-                <ArrowRight className="h-4 w-4" />
-              </ShimmerButton>
-            </Link>
-            <Link href="/contact">
-              <Button
-                variant="outline"
-                size="lg"
-                className="rounded-full"
-              >
-                <Mail className="h-4 w-4" />
-                Get in Touch
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
-      </div>
-    </section>
+    <MinimalistHero
+      logoText="POLYMER ENERGY"
+      navLinks={navLinks}
+      mainText="Deploy container-sized pyrolysis plants with a 100% buyback guarantee on produced fuel oil — portable, scalable, and built for India."
+      readMoreLink="/founders"
+      readMoreLabel="Our Story"
+      imageSrc="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600&auto=format&fit=crop&q=80"
+      imageAlt="Industrial engineer in protective gear working with machinery"
+      overlayText={{
+        part1: "waste is",
+        part2: "energy.",
+      }}
+      socialLinks={socialLinks}
+      locationText="India-Based Operations"
+      accentColor="#22C55E"
+    />
   );
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
-import { Navbar } from "@/components/layout/navbar";
+import { ConditionalNavbar } from "@/components/layout/conditional-navbar";
 import { Footer } from "@/components/layout/footer";
 import { PageBackground } from "@/components/layout/page-background";
 import { SITE_CONFIG } from "@/lib/constants";
@@ -44,7 +44,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen overflow-x-hidden antialiased">
         <PageBackground />
-        <Navbar />
+        <ConditionalNavbar />
         <main className="relative z-10">{children}</main>
         <Footer />
       </body>
