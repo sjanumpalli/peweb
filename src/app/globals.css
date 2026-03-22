@@ -1,26 +1,213 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ══════════════════════════════════════════
+   DESIGN TOKENS — "Ocean Breeze"
+   Green energy + ocean blue freshness
+   ══════════════════════════════════════════ */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: "Arial", "Helvetica", sans-serif;
-  --font-mono: "Courier New", monospace;
+  /* Brand Colors — Ocean Breeze Green Energy */
+  --color-brand: #22C55E;
+  --color-brand-light: oklch(0.87 0.08 145 / 0.1);
+  --color-brand-dark: #16A34A;
+  --color-accent: #d1fae5;
+  --color-secondary: #e0f2fe;
+  --color-secondary-fg: #4b5563;
+  --color-red: #EF4444;
+
+  /* Backgrounds — Ocean Breeze */
+  --color-bg-warm: #f0f8ff;
+  --color-bg-peach: #ecfdf5;
+  --color-bg-sky: #e0f2fe;
+  --color-bg-cream: #f0fdf4;
+  --color-bg-dark: #111111;
+
+  /* Text — Ocean Breeze */
+  --color-heading: #374151;
+  --color-body: #4b5563;
+  --color-muted: #6b7280;
+
+  /* Borders & Input */
+  --color-border: #e5e7eb;
+  --color-input: #e5e7eb;
+  --color-ring: #22C55E;
+
+  /* Glass — fresh ocean glass */
+  --color-glass: oklch(1 0 0 / 0.7);
+  --color-glass-hover: oklch(1 0 0 / 0.85);
+  --color-glass-border: oklch(0 0 0 / 0.04);
+
+  /* Shadows — clean, lifted */
+  --shadow-glass: 0 8px 32px oklch(0 0 0 / 0.05);
+  --shadow-glass-hover: 0 16px 48px oklch(0 0 0 / 0.1);
+  --shadow-soft: 0 2px 16px oklch(0 0 0 / 0.04);
+  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.06), 0 6px 20px oklch(0 0 0 / 0.04);
+  --shadow-card-hover: 0 8px 32px oklch(0 0 0 / 0.1);
+
+  /* Typography */
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Animations */
+  --animate-drift-1: drift-1 22s infinite ease-in-out;
+  --animate-drift-2: drift-2 26s infinite ease-in-out;
+  --animate-drift-3: drift-3 30s infinite ease-in-out;
+  --animate-drift-1-reverse: drift-1 24s infinite ease-in-out reverse;
+  --animate-shimmer: shimmer 2.5s infinite linear;
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+
+  /* Border beam */
+  --animate-border-beam: border-beam-rotate 4s linear infinite;
+
+  /* Meteor */
+  --animate-meteor: meteor-fall 3s linear infinite;
+
+  /* Beam */
+  --animate-beam: beam-slide 3s linear infinite;
+
+  /* Neon rotate */
+  --animate-neon-rotate: neon-rotate 4s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(80px, 40px) scale(1.1); }
+  66% { transform: translate(-40px, 80px) scale(0.95); }
+}
+
+@keyframes drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-60px, -50px) scale(1.05); }
+  66% { transform: translate(50px, -30px) scale(0.9); }
+}
+
+@keyframes drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, -60px) scale(1.15); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px oklch(0.75 0.15 145 / 0.25); }
+  50% { box-shadow: 0 0 40px oklch(0.75 0.15 145 / 0.5); }
+}
+
+/* Border beam */
+@keyframes border-beam-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Meteor */
+@keyframes meteor-fall {
+  0% { transform: translateY(0) translateX(0) rotate(-45deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateY(300px) translateX(-300px) rotate(-45deg); opacity: 0; }
+}
+
+/* Beam slide */
+@keyframes beam-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+/* Neon rotate */
+@property --neon-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes neon-rotate {
+  0% { --neon-angle: 0deg; }
+  100% { --neon-angle: 360deg; }
+}
+
+/* ══════════════════════════════════════════
+   BASE STYLES
+   ══════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  color: var(--color-body);
+  background: var(--color-bg-warm);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-heading);
+}
+
+/* ══════════════════════════════════════════
+   FOCUS STATES
+   ══════════════════════════════════════════ */
+
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ══════════════════════════════════════════
+   REDUCED MOTION
+   ══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ══════════════════════════════════════════
+   SCROLLBAR
+   ══════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0 0 0 / 0.08);
+  border-radius: var(--radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0 0 0 / 0.15);
 }
