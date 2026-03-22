@@ -3,616 +3,1161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polymer Energy — Landing Page Mockup</title>
+<title>Polymer Energy — Turning Plastic Waste Into Clean Energy</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ══════════════════════════════════════════
+     RESET & CUSTOM PROPERTIES
+     ══════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0A0F1A;
-    --surface: #111827;
-    --surface-glow: #0D2818;
-    --primary: #00FF88;
-    --secondary: #00D4FF;
-    --amber: #FFB800;
-    --text: #F0FDF4;
-    --text-muted: #94A3B8;
-    --border: rgba(0, 255, 136, 0.15);
-    --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+    --bg-peach: #FFF5EB;
+    --bg-blue: #F0F7FF;
+    --bg-warm: #FEFCFA;
+    --glass: rgba(255,255,255,0.45);
+    --glass-hover: rgba(255,255,255,0.55);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.04);
+    --glass-border: rgba(0,0,0,0.03);
+    --heading: #2D2D3F;
+    --body: #64748B;
+    --muted: #94A3B8;
+    --green: #22C55E;
+    --green-light: rgba(34,197,94,0.1);
+    --teal: #0EA5E9;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --radius: 24px;
+    --radius-sm: 20px;
+    --radius-xs: 14px;
+    --transition: 300ms ease;
   }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--body);
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--bg-warm);
+    min-height: 100vh;
   }
-  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--heading);
+  }
 
-  /* ── PARTICLES BG ── */
-  .particles-bg {
+  /* ══════════════════════════════════════════
+     WARM GRADIENT BACKGROUND
+     ══════════════════════════════════════════ */
+  .page-bg {
     position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-peach) 0%, var(--bg-blue) 50%, var(--bg-warm) 100%);
   }
-  .particle {
+  .warm-blob {
     position: absolute;
-    width: 3px; height: 3px;
-    background: var(--primary);
     border-radius: 50%;
-    opacity: 0.3;
-    animation: float 8s infinite ease-in-out;
+    filter: blur(160px);
+    will-change: transform;
   }
-  .particle:nth-child(2n) { background: var(--secondary); animation-duration: 12s; }
-  .particle:nth-child(3n) { opacity: 0.15; width: 2px; height: 2px; animation-duration: 15s; }
-  @keyframes float {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    25% { transform: translateY(-80px) translateX(30px); }
-    50% { transform: translateY(-40px) translateX(-20px); }
-    75% { transform: translateY(-100px) translateX(15px); }
+  .warm-blob:nth-child(1) {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(255,236,210,0.35) 0%, transparent 70%);
+    top: -15%; left: -5%;
+    animation: drift1 22s infinite ease-in-out;
+  }
+  .warm-blob:nth-child(2) {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(232,244,253,0.3) 0%, transparent 70%);
+    bottom: -10%; right: -5%;
+    animation: drift2 26s infinite ease-in-out;
+  }
+  .warm-blob:nth-child(3) {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,248,240,0.25) 0%, transparent 70%);
+    top: 45%; left: 35%;
+    animation: drift3 30s infinite ease-in-out;
+  }
+  .warm-blob:nth-child(4) {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
+    top: 25%; right: 15%;
+    animation: drift1 24s infinite ease-in-out reverse;
+  }
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(80px, 40px) scale(1.1); }
+    66% { transform: translate(-40px, 80px) scale(0.95); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-60px, -50px) scale(1.05); }
+    66% { transform: translate(50px, -30px) scale(0.9); }
+  }
+  @keyframes drift3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, -60px) scale(1.15); }
   }
 
-  /* ── DOT GRID OVERLAY ── */
-  .dot-overlay {
-    position: fixed; inset: 0; z-index: 1; pointer-events: none;
-    background-image: radial-gradient(rgba(0,255,136,0.07) 1px, transparent 1px);
-    background-size: 30px 30px;
+  /* ══════════════════════════════════════════
+     FOCUS STATES
+     ══════════════════════════════════════════ */
+  a:focus-visible,
+  button:focus-visible,
+  label:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
-  /* ── NAVBAR ── */
-  .navbar {
-    position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100;
-    background: rgba(17, 24, 39, 0.8);
+  /* ══════════════════════════════════════════
+     UTILITY
+     ══════════════════════════════════════════ */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .glass-panel {
+    background: var(--glass);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius);
+  }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: var(--glass);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px 32px;
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #16A34A;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .section-label svg {
+    width: 14px;
+    height: 14px;
+    stroke: var(--green);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* ══════════════════════════════════════════
+     SCROLL ANIMATIONS
+     ══════════════════════════════════════════ */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s 300ms ease, transform 0.7s 300ms ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in { opacity: 1; transform: none; transition: none; }
+    .page-bg { animation: none; }
+    .hero-machine-particle { animation: none !important; }
+    .scroll-indicator { animation: none; }
+    .warm-blob { animation: none !important; }
+  }
+
+  /* ══════════════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════════════ */
+  .navbar {
+    position: fixed; top: 20px; left: 24px; right: 24px; z-index: 100;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 12px 28px;
     display: flex; align-items: center; justify-content: space-between;
+    transition: background var(--transition);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
   }
   .nav-logo {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700; font-size: 20px;
-    color: var(--primary);
-    text-shadow: 0 0 20px rgba(0,255,136,0.3);
+    font-weight: 700; font-size: 18px;
+    color: var(--heading);
     display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    transition: opacity var(--transition);
   }
+  .nav-logo:hover { opacity: 0.8; }
   .nav-logo .diamond {
-    width: 28px; height: 28px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, var(--green), var(--teal));
     transform: rotate(45deg);
     border-radius: 4px;
-    box-shadow: var(--glow);
+    flex-shrink: 0;
   }
-  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
   .nav-links a {
-    color: var(--text-muted); text-decoration: none;
+    color: var(--body); text-decoration: none;
     font-size: 14px; font-weight: 500;
-    transition: color 0.2s;
+    transition: color var(--transition);
+    position: relative;
   }
-  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover { color: var(--heading); }
+  .nav-links a.active { color: var(--green); font-weight: 600; }
+  .nav-links a.active::after {
+    content: '';
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--green);
+  }
   .nav-cta {
-    background: var(--primary); color: #0A0F1A;
+    background: var(--green); color: #fff;
     padding: 10px 24px; border-radius: 999px;
-    font-weight: 600; font-size: 14px;
-    text-decoration: none; cursor: pointer;
-    transition: box-shadow 0.3s, transform 0.2s;
-    border: none;
+    font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform var(--transition), box-shadow var(--transition);
   }
-  .nav-cta:hover {
-    box-shadow: 0 0 25px rgba(0,255,136,0.4);
-    transform: translateY(-1px);
+  .nav-cta:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none; border: none; padding: 8px; z-index: 101;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--heading); border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed; top: 80px; left: 24px; right: 24px; z-index: 99;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-shadow);
+    padding: 16px;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; padding: 12px 16px;
+    text-decoration: none; color: var(--body);
+    font-weight: 500; border-radius: var(--radius-xs);
+    transition: background var(--transition), color var(--transition);
+  }
+  .mobile-menu a:hover { background: var(--green-light); color: var(--green); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .navbar { padding: 12px 20px; }
   }
 
-  /* ── HERO ── */
+  /* ══════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════ */
   .hero {
-    position: relative; z-index: 2;
     min-height: 100vh;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    padding: 140px 40px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    padding: 120px 24px 60px;
+    position: relative;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 28px;
+  }
+  .hero-badge svg {
+    width: 20px;
+    height: 14px;
+    flex-shrink: 0;
   }
   .hero h1 {
-    font-size: 64px; font-weight: 700;
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 700;
     line-height: 1.1;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--heading);
     max-width: 800px;
-    animation: fadeUp 0.8s ease-out;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
   }
-  .hero .subtitle {
-    font-size: 20px; color: var(--text-muted);
-    max-width: 560px; margin: 24px auto 40px;
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--muted);
+    max-width: 560px;
     line-height: 1.6;
-    animation: fadeUp 0.8s ease-out 0.2s both;
+    margin-bottom: 36px;
   }
   .hero-buttons {
-    display: flex; gap: 16px;
-    animation: fadeUp 0.8s ease-out 0.4s both;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 48px;
   }
   .btn-primary {
-    background: var(--primary); color: #0A0F1A;
-    padding: 14px 32px; border-radius: 999px;
-    font-weight: 600; font-size: 16px;
-    text-decoration: none; cursor: pointer; border: none;
-    position: relative; overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.2s;
-  }
-  .btn-primary::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transform: translateX(-100%);
-    animation: shimmer 3s infinite;
-  }
-  @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: var(--green);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 300ms ease, transform 300ms ease, box-shadow 300ms ease;
   }
   .btn-primary:hover {
-    box-shadow: 0 0 30px rgba(0,255,136,0.5);
+    background: #16A34A;
     transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
   }
+  .btn-primary svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2; }
+
   .btn-outline {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text); padding: 14px 32px;
-    border-radius: 999px; font-weight: 500;
-    font-size: 16px; text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: var(--heading);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
     cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none;
+    transition: background 300ms ease, transform 300ms ease, border-color 300ms ease;
   }
   .btn-outline:hover {
-    border-color: var(--primary);
-    background: rgba(0,255,136,0.05);
+    background: var(--glass-hover);
+    border-color: rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .btn-outline svg { width: 18px; height: 18px; stroke: var(--teal); fill: none; stroke-width: 2; }
 
-  /* ── 3D MACHINE MOCKUP ── */
-  .hero-visual {
-    margin-top: 60px;
-    width: 500px; height: 320px;
-    background: radial-gradient(ellipse at center, var(--surface-glow), transparent 70%);
-    border-radius: 24px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
+  /* Hero illustration card */
+  .hero-illustration {
+    width: min(100%, 700px);
+    padding: 58px 38px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius);
     position: relative;
-    animation: fadeUp 1s ease-out 0.6s both;
+    overflow: hidden;
   }
-  .machine-placeholder {
-    text-align: center; color: var(--text-muted);
-  }
-  .machine-placeholder .icon {
-    font-size: 80px; margin-bottom: 16px;
-    filter: drop-shadow(0 0 20px rgba(0,255,136,0.3));
-    animation: pulse-glow 2s infinite ease-in-out;
-  }
-  @keyframes pulse-glow {
-    0%, 100% { filter: drop-shadow(0 0 20px rgba(0,255,136,0.3)); }
-    50% { filter: drop-shadow(0 0 40px rgba(0,255,136,0.6)); }
+  .hero-illustration svg {
+    width: 100%;
+    max-height: 280px;
   }
 
-  /* ── SCROLL INDICATOR ── */
+  /* Animated particles */
+  .hero-machine-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .hero-machine-particle:nth-child(1) {
+    background: var(--green);
+    top: 25%;
+    left: 18%;
+    animation: floatParticle 4s ease-in-out infinite;
+  }
+  .hero-machine-particle:nth-child(2) {
+    background: var(--teal);
+    top: 40%;
+    right: 22%;
+    animation: floatParticle 5s ease-in-out 1s infinite;
+  }
+  .hero-machine-particle:nth-child(3) {
+    background: #FBBF24;
+    bottom: 30%;
+    left: 35%;
+    animation: floatParticle 3.5s ease-in-out 0.5s infinite;
+  }
+  .hero-machine-particle:nth-child(4) {
+    background: var(--green);
+    top: 55%;
+    right: 38%;
+    animation: floatParticle 4.5s ease-in-out 2s infinite;
+    width: 6px;
+    height: 6px;
+  }
+  .hero-machine-particle:nth-child(5) {
+    background: var(--teal);
+    bottom: 25%;
+    right: 15%;
+    animation: floatParticle 5.5s ease-in-out 1.5s infinite;
+    width: 5px;
+    height: 5px;
+  }
+  @keyframes floatParticle {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    25% { transform: translate(8px, -14px) scale(1.3); opacity: 0.8; }
+    50% { transform: translate(-6px, -24px) scale(1); opacity: 0.4; }
+    75% { transform: translate(10px, -10px) scale(1.2); opacity: 0.7; }
+  }
+
+  /* Scroll indicator */
   .scroll-indicator {
     margin-top: 40px;
-    animation: breathe 2s infinite ease-in-out;
-    color: var(--text-muted);
-    font-size: 14px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    animation: scrollBounce 2s ease-in-out infinite;
   }
-  .scroll-indicator svg { width: 24px; height: 24px; stroke: var(--primary); }
-  @keyframes breathe {
-    0%, 100% { opacity: 0.4; transform: translateY(0); }
-    50% { opacity: 1; transform: translateY(8px); }
+  .scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 2;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
   }
 
-  /* ── IMPACT COUNTERS ── */
-  .impact-section {
-    position: relative; z-index: 2;
-    padding: 80px 40px;
-    max-width: 1200px; margin: 0 auto;
+  /* ══════════════════════════════════════════
+     IMPACT COUNTERS
+     ══════════════════════════════════════════ */
+  .impact {
+    padding: 100px 24px;
   }
-  .counter-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
-  .counter-card {
-    background: rgba(17, 24, 39, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 32px 24px;
+  .impact-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-sm);
+    padding: 38px 29px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
+    transition: box-shadow 300ms ease, transform 300ms ease;
   }
-  .counter-card:hover {
-    transform: scale(1.02);
-    box-shadow: var(--glow);
-  }
-  /* Border beam effect */
-  .counter-card::before {
+  .impact-card::before {
     content: '';
-    position: absolute; bottom: 0; left: 0; right: 0;
+    position: absolute;
+    top: 0;
+    left: 24px;
+    right: 24px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    animation: beam-slide 3s infinite;
+    background: var(--green);
+    border-radius: 0 0 2px 2px;
   }
-  @keyframes beam-slide {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+  .impact-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px);
   }
-  .counter-number {
+  .impact-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    background: var(--green-light);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .impact-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--green);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .impact-number {
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 42px; font-weight: 700;
-    color: var(--primary);
-    text-shadow: 0 0 20px rgba(0,255,136,0.2);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1.1;
+    margin-bottom: 6px;
   }
-  .counter-label {
-    font-size: 14px; font-weight: 600;
-    color: var(--text); margin-top: 4px;
-    text-transform: uppercase; letter-spacing: 1px;
+  .impact-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 500;
   }
-  .counter-desc {
-    font-size: 13px; color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  /* ── HOW IT WORKS ── */
-  .how-section {
-    position: relative; z-index: 2;
-    padding: 100px 40px;
-    max-width: 1200px; margin: 0 auto;
-  }
-  .section-title {
-    font-size: 40px; font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .section-subtitle {
-    color: var(--text-muted); font-size: 18px;
-    margin-bottom: 60px; max-width: 500px;
+  @media (max-width: 768px) {
+    .impact-grid { grid-template-columns: repeat(2, 1fr); }
   }
 
-  /* Timeline */
+  /* ══════════════════════════════════════════
+     TRUSTED BY
+     ══════════════════════════════════════════ */
+  .trusted {
+    padding: 50px 24px 100px;
+    text-align: center;
+  }
+  .trusted-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+  }
+  .trusted-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .trusted-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--body);
+    transition: box-shadow 300ms ease;
+  }
+  .trusted-pill:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  }
+  .trusted-pill svg {
+    width: 20px;
+    height: 20px;
+    stroke: var(--muted);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  /* ══════════════════════════════════════════
+     HOW IT WORKS
+     ══════════════════════════════════════════ */
+  .how-it-works {
+    padding: 100px 24px;
+  }
+  .how-it-works .container { text-align: center; }
+  .how-it-works h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .how-it-works .section-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 500px;
+    margin: 0 auto 56px;
+    line-height: 1.6;
+  }
   .timeline {
-    display: flex; align-items: flex-start; gap: 0;
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: flex-start;
     position: relative;
-    padding-top: 40px;
-  }
-  .timeline::before {
-    content: '';
-    position: absolute; top: 20px;
-    left: 40px; right: 40px; height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
-    opacity: 0.3;
+    max-width: 1100px;
+    margin: 0 auto;
   }
   .timeline-step {
     flex: 1;
-    text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     padding: 0 12px;
   }
-  .step-dot {
-    width: 16px; height: 16px;
-    background: var(--primary);
-    border-radius: 50%;
-    margin: 0 auto 24px;
-    position: relative;
-    box-shadow: 0 0 15px rgba(0,255,136,0.4);
-  }
-  .step-dot::after {
+  /* Dotted connector line */
+  .timeline-step:not(:last-child)::after {
     content: '';
-    position: absolute; inset: -6px;
-    border: 2px solid rgba(0,255,136,0.2);
-    border-radius: 50%;
-    animation: pulse-ring 2s infinite;
-  }
-  @keyframes pulse-ring {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.8); opacity: 0; }
-  }
-  .step-card {
-    background: rgba(17, 24, 39, 0.6);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 20px;
-    transition: transform 0.2s, border-color 0.3s;
-    cursor: pointer;
-  }
-  .step-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--primary);
-  }
-  .step-icon {
-    font-size: 36px; margin-bottom: 16px;
-    filter: drop-shadow(0 0 10px rgba(0,255,136,0.3));
-  }
-  .step-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 18px; font-weight: 600;
-    margin-bottom: 8px; color: var(--text);
-  }
-  .step-desc {
-    font-size: 14px; color: var(--text-muted);
-    line-height: 1.5;
+    position: absolute;
+    top: 40px;
+    left: calc(50% + 36px);
+    width: calc(100% - 72px);
+    height: 0;
+    border-top: 2px dashed rgba(0, 0, 0, 0.06);
   }
   .step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--green-light);
+    color: #16A34A;
     font-family: 'Space Grotesk', sans-serif;
-    font-size: 12px; font-weight: 700;
-    color: var(--primary); opacity: 0.5;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .step-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-sm);
+    padding: 34px 24px;
+    width: 100%;
+    transition: box-shadow 300ms ease, transform 300ms ease;
+  }
+  .step-card:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+    transform: translateY(-4px);
+  }
+  .step-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 14px;
+    background: linear-gradient(135deg, var(--green-light), #fff);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step-icon svg {
+    width: 26px;
+    height: 26px;
+    stroke: var(--green);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .step-card h3 {
+    font-size: 1rem;
+    font-weight: 700;
     margin-bottom: 8px;
+    color: var(--heading);
+  }
+  .step-card p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  @media (max-width: 768px) {
+    .timeline {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .timeline-step { max-width: 340px; width: 100%; }
+    .timeline-step:not(:last-child)::after {
+      top: auto;
+      left: 50%;
+      width: 0;
+      height: 24px;
+      border-top: none;
+      border-left: 2px dashed rgba(0, 0, 0, 0.06);
+      bottom: -22px;
+    }
   }
 
-  /* ── CTA BANNER ── */
-  .cta-section {
-    position: relative; z-index: 2;
-    padding: 80px 40px;
-    max-width: 1200px; margin: 0 auto;
-  }
+  /* ══════════════════════════════════════════
+     CTA BANNER
+     ══════════════════════════════════════════ */
   .cta-banner {
-    background: rgba(17, 24, 39, 0.6);
-    border-radius: 24px;
-    padding: 60px;
-    display: flex; align-items: center;
-    justify-content: space-between;
-    position: relative; overflow: hidden;
-    border: 1px solid transparent;
+    padding: 80px 24px 100px;
+  }
+  .cta-card {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 76px 58px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
     background-clip: padding-box;
   }
-  .cta-banner::before {
+  .cta-card::before {
     content: '';
-    position: absolute; inset: -1px;
-    border-radius: 25px;
-    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--primary));
-    z-index: -1;
-    animation: border-rotate 4s linear infinite;
-    background-size: 200% 200%;
-  }
-  @keyframes border-rotate {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-  .cta-banner::after {
-    content: '';
-    position: absolute; inset: 1px;
-    background: rgba(17, 24, 39, 0.95);
-    border-radius: 23px;
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--radius) + 2px);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(14, 165, 233, 0.1), rgba(34, 197, 94, 0.15));
     z-index: -1;
   }
-  .cta-text h2 {
-    font-size: 32px; font-weight: 700;
-    margin-bottom: 8px;
+  .cta-card h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
   }
-  .cta-text p { color: var(--text-muted); font-size: 16px; }
+  .cta-card p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
 
-  /* ── FOOTER ── */
+  /* ══════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════ */
   .footer {
-    position: relative; z-index: 2;
-    border-top: 1px solid var(--border);
-    padding: 60px 40px 30px;
-    max-width: 1200px; margin: 0 auto;
+    padding: 48px 24px 32px;
+    border-top: 1px solid rgba(0, 0, 0, 0.03);
   }
   .footer-grid {
-    display: grid; grid-template-columns: 2fr 1fr 1fr;
-    gap: 40px; margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
   }
-  .footer-brand { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
-  .footer-brand .logo {
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 700; font-size: 18px;
-    color: var(--primary); margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--heading);
+    text-decoration: none;
+  }
+  .footer-brand p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 300px;
   }
   .footer-col h4 {
-    font-size: 14px; font-weight: 600;
-    color: var(--text); margin-bottom: 16px;
-    text-transform: uppercase; letter-spacing: 1px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--heading);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 16px;
+  }
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .footer-col a {
-    display: block; color: var(--text-muted);
-    text-decoration: none; font-size: 14px;
-    margin-bottom: 8px; transition: color 0.2s;
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--muted);
+    transition: color 300ms ease;
   }
-  .footer-col a:hover { color: var(--primary); }
+  .footer-col a:hover { color: var(--heading); }
   .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-    display: flex; justify-content: space-between;
-    font-size: 13px; color: var(--text-muted);
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.02);
+    max-width: 1200px;
+    margin: 0 auto;
   }
-
-  /* ── RESPONSIVE ── */
   @media (max-width: 768px) {
-    .hero h1 { font-size: 36px; }
-    .hero .subtitle { font-size: 16px; }
-    .counter-grid { grid-template-columns: repeat(2, 1fr); }
-    .timeline { flex-direction: column; gap: 24px; }
-    .timeline::before { display: none; }
-    .cta-banner { flex-direction: column; text-align: center; gap: 24px; }
-    .navbar { top: 12px; left: 12px; right: 12px; padding: 12px 20px; }
-    .nav-links { display: none; }
-    .hero-visual { width: 100%; height: 240px; }
-    .footer-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   }
 </style>
 </head>
 <body>
 
-<!-- Particle Background -->
-<div class="particles-bg" id="particles"></div>
-<div class="dot-overlay"></div>
+<!-- Warm gradient background -->
+<div class="page-bg" aria-hidden="true">
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+</div>
 
-<!-- Floating Navbar -->
+<!-- ═══════════════ NAVBAR ═══════════════ -->
 <nav class="navbar">
-  <div class="nav-logo">
+  <a href="landing.html" class="nav-logo">
     <div class="diamond"></div>
-    POLYMER ENERGY
-  </div>
+    Polymer Energy
+  </a>
   <div class="nav-links">
+    <a href="landing.html" class="active">Home</a>
     <a href="mission.html">Mission</a>
     <a href="map.html">Map</a>
     <a href="calculator.html">Calculator</a>
     <a href="founders.html">Founders</a>
-    <button class="nav-cta">Get a Quote</button>
+    <a href="#" class="nav-cta">Get a Quote</a>
   </div>
+  <button class="hamburger" onclick="this.classList.toggle('active'); document.querySelector('.mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu">
+  <a href="landing.html">Home</a>
+  <a href="mission.html">Mission</a>
+  <a href="map.html">Map</a>
+  <a href="calculator.html">Calculator</a>
+  <a href="founders.html">Founders</a>
+  <a href="#" class="nav-cta" style="display:block;text-align:center;margin-top:8px;">Get a Quote</a>
+</div>
 
-<!-- Hero Section -->
+<!-- ═══════════════ HERO ═══════════════ -->
 <section class="hero">
-  <h1>Turning Plastic Waste Into Clean Energy</h1>
-  <p class="subtitle">
-    We build micro-recycling systems that transform plastic pollution
-    into reusable materials — one community at a time.
-  </p>
-  <div class="hero-buttons">
-    <a href="map.html" class="btn-outline">See Our Map</a>
-    <a href="calculator.html" class="btn-primary">Calculate ROI</a>
-  </div>
-  <div class="hero-visual">
-    <div class="machine-placeholder">
-      <div class="icon">&#9883;</div>
-      <p style="font-size:14px;">3D Micro-Recycler Visualization<br><span style="color:var(--primary);font-size:12px;">Spline / Three.js interactive scene</span></p>
+  <div class="fade-in">
+    <!-- Made in India badge -->
+    <div class="hero-badge">
+      <svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg" aria-label="Indian flag">
+        <rect y="0" width="30" height="6.67" fill="#FF9933"/>
+        <rect y="6.67" width="30" height="6.67" fill="#FFFFFF"/>
+        <rect y="13.33" width="30" height="6.67" fill="#138808"/>
+        <circle cx="15" cy="10" r="2.5" fill="none" stroke="#000080" stroke-width="0.5"/>
+      </svg>
+      Made in India
+    </div>
+
+    <h1>Turning Plastic Waste<br>Into Clean Energy</h1>
+    <p class="hero-sub">
+      Our patented pyrolysis technology converts non-recyclable plastic waste into clean, usable fuel — reducing landfill burden and creating sustainable energy for India.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#cta" class="btn-primary">
+        <svg viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+        Calculate ROI
+      </a>
+      <a href="#" class="btn-outline">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 7 8 11.7z"/></svg>
+        See Our Map
+      </a>
     </div>
   </div>
-  <div class="scroll-indicator">
-    <span>Scroll to explore</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-      <path d="M12 5v14M5 12l7 7 7-7"/>
+
+  <!-- Machine illustration -->
+  <div class="hero-illustration fade-in">
+    <div class="hero-machine-particle"></div>
+    <div class="hero-machine-particle"></div>
+    <div class="hero-machine-particle"></div>
+    <div class="hero-machine-particle"></div>
+    <div class="hero-machine-particle"></div>
+    <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Plastic to energy conversion machine illustration">
+      <!-- Input hopper -->
+      <path d="M60 100 L100 60 L140 60 L180 100 L180 160 L60 160 Z" stroke="#22C55E" stroke-width="2" fill="rgba(34,197,94,0.06)"/>
+      <path d="M90 80 L100 70 L130 70 L140 80" stroke="#22C55E" stroke-width="1.5" fill="none"/>
+      <!-- Plastic bottles in hopper -->
+      <rect x="95" y="85" width="12" height="20" rx="3" stroke="#0EA5E9" stroke-width="1.5" fill="rgba(14,165,233,0.08)"/>
+      <rect x="115" y="90" width="10" height="18" rx="3" stroke="#0EA5E9" stroke-width="1.5" fill="rgba(14,165,233,0.08)"/>
+      <rect x="133" y="87" width="11" height="19" rx="3" stroke="#0EA5E9" stroke-width="1.5" fill="rgba(14,165,233,0.08)"/>
+      <!-- Arrow from hopper to reactor -->
+      <path d="M180 130 L220 130" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <path d="M215 125 L225 130 L215 135" stroke="#22C55E" stroke-width="1.5" fill="none"/>
+      <!-- Reactor cylinder -->
+      <ellipse cx="300" cy="90" rx="70" ry="20" stroke="#22C55E" stroke-width="2" fill="rgba(34,197,94,0.04)"/>
+      <path d="M230 90 L230 170" stroke="#22C55E" stroke-width="2"/>
+      <path d="M370 90 L370 170" stroke="#22C55E" stroke-width="2"/>
+      <ellipse cx="300" cy="170" rx="70" ry="20" stroke="#22C55E" stroke-width="2" fill="rgba(34,197,94,0.06)"/>
+      <!-- Heat waves inside reactor -->
+      <path d="M270 120 Q280 110 270 100" stroke="#FBBF24" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M300 125 Q310 115 300 105" stroke="#FBBF24" stroke-width="1" fill="none" opacity="0.6"/>
+      <path d="M330 120 Q340 110 330 100" stroke="#FBBF24" stroke-width="1" fill="none" opacity="0.6"/>
+      <!-- Temp label -->
+      <text x="300" y="148" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#94A3B8" font-weight="600">PYROLYSIS</text>
+      <!-- Arrow from reactor to output -->
+      <path d="M370 130 L410 130" stroke="#22C55E" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <path d="M405 125 L415 130 L405 135" stroke="#22C55E" stroke-width="1.5" fill="none"/>
+      <!-- Output tank / fuel -->
+      <rect x="420" y="80" width="80" height="100" rx="12" stroke="#0EA5E9" stroke-width="2" fill="rgba(14,165,233,0.05)"/>
+      <!-- Fuel level -->
+      <rect x="430" y="120" width="60" height="50" rx="6" fill="rgba(14,165,233,0.12)"/>
+      <!-- Drop icon -->
+      <path d="M460 100 Q465 108 460 116 Q455 108 460 100Z" stroke="#0EA5E9" stroke-width="1.5" fill="rgba(14,165,233,0.2)"/>
+      <!-- Labels -->
+      <text x="120" y="195" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#94A3B8" font-weight="600">PLASTIC WASTE</text>
+      <text x="460" y="195" text-anchor="middle" font-family="Space Grotesk" font-size="11" fill="#94A3B8" font-weight="600">CLEAN FUEL</text>
+      <!-- Energy bolt output -->
+      <path d="M530 110 L540 90 L550 90 L535 130 L545 130 L530 150" stroke="#FBBF24" stroke-width="2" fill="none"/>
+      <text x="540" y="170" text-anchor="middle" font-family="Space Grotesk" font-size="10" fill="#94A3B8" font-weight="600">ENERGY</text>
     </svg>
   </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator" aria-hidden="true">
+    <span>Scroll to explore</span>
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
 </section>
 
-<!-- Impact Counter Strip -->
-<section class="impact-section">
-  <div class="counter-grid">
-    <div class="counter-card">
-      <div class="counter-number">12,450</div>
-      <div class="counter-label">Tons</div>
-      <div class="counter-desc">Plastic Recycled</div>
+<!-- ═══════════════ IMPACT COUNTERS ═══════════════ -->
+<section class="impact" id="impact">
+  <div class="container" style="text-align:center; margin-bottom: 48px;">
+    <span class="section-label fade-in">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Our Impact
+    </span>
+    <h2 class="fade-in" style="font-size: clamp(1.8rem,4vw,2.6rem); font-weight:700; letter-spacing:-0.02em; margin-bottom: 8px;">Real Numbers, Real Change</h2>
+    <p class="fade-in" style="color: var(--muted); font-size: 1.05rem; max-width: 460px; margin: 0 auto; line-height:1.6;">Measurable environmental impact through cutting-edge pyrolysis technology.</p>
+  </div>
+  <div class="impact-grid">
+    <!-- Card 1 -->
+    <div class="impact-card fade-in">
+      <div class="impact-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </div>
+      <div class="impact-number">12,400+</div>
+      <div class="impact-label">Tonnes Plastic Processed</div>
     </div>
-    <div class="counter-card">
-      <div class="counter-number">85+</div>
-      <div class="counter-label">Locations</div>
-      <div class="counter-desc">Installed Across India</div>
+    <!-- Card 2 -->
+    <div class="impact-card fade-in">
+      <div class="impact-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 2a8 8 0 11-8 8 8 8 0 018-8z"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="impact-number">8.7M</div>
+      <div class="impact-label">Litres Clean Fuel Produced</div>
     </div>
-    <div class="counter-card">
-      <div class="counter-number" style="color:var(--amber)">&#8377;2.3Cr</div>
-      <div class="counter-label">Revenue</div>
-      <div class="counter-desc">Generated for Partners</div>
+    <!-- Card 3 -->
+    <div class="impact-card fade-in">
+      <div class="impact-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="impact-number">340+</div>
+      <div class="impact-label">Communities Served</div>
     </div>
-    <div class="counter-card">
-      <div class="counter-number">340+</div>
-      <div class="counter-label">Jobs</div>
-      <div class="counter-desc">Created Locally</div>
+    <!-- Card 4 -->
+    <div class="impact-card fade-in">
+      <div class="impact-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="impact-number">26,000</div>
+      <div class="impact-label">Tonnes CO2 Offset</div>
     </div>
   </div>
 </section>
 
-<!-- How It Works -->
-<section class="how-section">
-  <div class="section-title">How Our Micro-Recycler Works</div>
-  <div class="section-subtitle">From waste collection to market-ready materials in 5 simple steps.</div>
-  <div class="timeline">
-    <div class="timeline-step">
-      <div class="step-dot"></div>
-      <div class="step-card">
-        <div class="step-number">01</div>
-        <div class="step-icon">&#9851;</div>
-        <div class="step-title">Collect</div>
-        <div class="step-desc">Local collection from communities, businesses, and waste pickers.</div>
-      </div>
+<!-- ═══════════════ TRUSTED BY ═══════════════ -->
+<section class="trusted" id="partners">
+  <p class="trusted-label fade-in">Trusted by Industry Leaders</p>
+  <div class="trusted-row fade-in">
+    <div class="trusted-pill">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      TechCorp India
     </div>
-    <div class="timeline-step">
-      <div class="step-dot"></div>
-      <div class="step-card">
-        <div class="step-number">02</div>
-        <div class="step-icon">&#9881;</div>
-        <div class="step-title">Sort</div>
-        <div class="step-desc">AI-assisted sorting by polymer type for maximum recycling efficiency.</div>
-      </div>
+    <div class="trusted-pill">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      GreenGlobe
     </div>
-    <div class="timeline-step">
-      <div class="step-dot"></div>
-      <div class="step-card">
-        <div class="step-number">03</div>
-        <div class="step-icon">&#9889;</div>
-        <div class="step-title">Process</div>
-        <div class="step-desc">Compact shredding and washing in our 200 sq ft micro-system.</div>
-      </div>
+    <div class="trusted-pill">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      EcoStack
     </div>
-    <div class="timeline-step">
-      <div class="step-dot"></div>
-      <div class="step-card">
-        <div class="step-number">04</div>
-        <div class="step-icon">&#9850;</div>
-        <div class="step-title">Convert</div>
-        <div class="step-desc">Thermal conversion into pellets, flakes, or fuel-grade output.</div>
-      </div>
+    <div class="trusted-pill">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      NotiGreen
     </div>
-    <div class="timeline-step">
-      <div class="step-dot"></div>
-      <div class="step-card">
-        <div class="step-number">05</div>
-        <div class="step-icon">&#10003;</div>
-        <div class="step-title">Output</div>
-        <div class="step-desc">Market-ready recycled materials sold to manufacturers.</div>
+    <div class="trusted-pill">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      FuelStar
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <span class="section-label fade-in">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      Our Process
+    </span>
+    <h2 class="fade-in">How It Works</h2>
+    <p class="section-sub fade-in">From waste collection to clean energy in five streamlined steps.</p>
+
+    <div class="timeline">
+      <!-- Step 1 -->
+      <div class="timeline-step fade-in">
+        <div class="step-number">1</div>
+        <div class="step-card">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          </div>
+          <h3>Collection</h3>
+          <p>Non-recyclable plastic waste gathered from municipalities and industrial partners.</p>
+        </div>
+      </div>
+      <!-- Step 2 -->
+      <div class="timeline-step fade-in">
+        <div class="step-number">2</div>
+        <div class="step-card">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          </div>
+          <h3>Sorting</h3>
+          <p>Advanced sorting removes contaminants and categorizes plastic by polymer type.</p>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div class="timeline-step fade-in">
+        <div class="step-number">3</div>
+        <div class="step-card">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3>Pyrolysis</h3>
+          <p>Thermal decomposition at 400-500 C breaks down plastics into hydrocarbon vapors.</p>
+        </div>
+      </div>
+      <!-- Step 4 -->
+      <div class="timeline-step fade-in">
+        <div class="step-number">4</div>
+        <div class="step-card">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+          </div>
+          <h3>Condensation</h3>
+          <p>Vapors are cooled and condensed into liquid fuel, gas, and carbon black residue.</p>
+        </div>
+      </div>
+      <!-- Step 5 -->
+      <div class="timeline-step fade-in">
+        <div class="step-number">5</div>
+        <div class="step-card">
+          <div class="step-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>Distribution</h3>
+          <p>Clean fuel is tested, certified, and distributed to industries and communities.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA Banner -->
-<section class="cta-section">
-  <div class="cta-banner">
-    <div class="cta-text">
-      <h2>Ready to Transform Your Community's Plastic Waste?</h2>
-      <p>Join 85+ locations across India already making an impact.</p>
-    </div>
-    <a href="#" class="btn-primary" style="font-size:18px;padding:16px 40px;">Get a Quote</a>
+<!-- ═══════════════ CTA BANNER ═══════════════ -->
+<section class="cta-banner" id="cta">
+  <div class="cta-card fade-in">
+    <span class="section-label">
+      <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Ready to Start?
+    </span>
+    <h2>Partner With Us to Build a Cleaner India</h2>
+    <p>Join hundreds of municipalities and businesses turning waste into opportunity. Calculate your potential impact today.</p>
+    <a href="#" class="btn-primary">
+      <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Get Your Free ROI Report
+    </a>
   </div>
 </section>
 
-<!-- Footer -->
+<!-- ═══════════════ FOOTER ═══════════════ -->
 <footer class="footer">
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="logo">&#9670; Polymer Energy</div>
-      Making plastic recycling accessible, profitable, and impactful for every community in India.
+      <a href="#" class="footer-logo">
+        <span class="nav-logo-icon" aria-hidden="true"></span>
+        POLYMER ENERGY
+      </a>
+      <p>Converting India's plastic waste crisis into clean, sustainable energy through advanced pyrolysis technology.</p>
     </div>
     <div class="footer-col">
-      <h4>Quick Links</h4>
-      <a href="mission.html">Mission</a>
-      <a href="map.html">Data Map</a>
-      <a href="calculator.html">ROI Calculator</a>
-      <a href="founders.html">Founders</a>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Technology</a></li>
+        <li><a href="#">Impact Report</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
     </div>
     <div class="footer-col">
-      <h4>Contact</h4>
-      <a href="#">info@polymerenergy.in</a>
-      <a href="#">+91 98XXX XXXXX</a>
-      <a href="#">Mumbai, India</a>
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">ROI Calculator</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>&copy; 2026 Polymer Energy Pvt. Ltd.</span>
-    <span>Privacy &middot; Terms</span>
+    &copy; 2026 Polymer Energy Pvt. Ltd. All rights reserved. Made with care in India.
   </div>
 </footer>
 
+<!-- ═══════════════ SCROLL ANIMATIONS ═══════════════ -->
 <script>
-// Generate particles
-const container = document.getElementById('particles');
-for (let i = 0; i < 60; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random() * 100 + '%';
-  p.style.top = Math.random() * 100 + '%';
-  p.style.animationDelay = Math.random() * 8 + 's';
-  container.appendChild(p);
-}
+  (function() {
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(function(el) {
+      observer.observe(el);
+    });
+  })();
 </script>
+
 </body>
 </html>

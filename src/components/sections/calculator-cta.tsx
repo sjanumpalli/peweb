@@ -5,9 +5,9 @@ import { FadeIn } from "@/components/ui/fade-in";
 
 export function CalculatorCta() {
   return (
-    <section className="px-6 pb-24 pt-8 md:pb-32">
+    <section className="px-8 pb-24 pt-8 md:pb-32">
       <FadeIn>
-        <div className="mx-auto max-w-4xl rounded-xl border border-border bg-white shadow-card">
+        <div className="mx-auto max-w-4xl rounded-xl border border-border bg-surface shadow-card">
           <div className="px-8 py-14 text-center md:px-16">
             <h2 className="font-heading text-2xl font-bold text-heading md:text-3xl">
               Get a Custom Quote

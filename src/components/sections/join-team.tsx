@@ -32,7 +32,7 @@ export function JoinTeam() {
   return (
     <>
       {/* Impact section */}
-      <section className="mx-auto max-w-5xl px-6 pb-16">
+      <section className="mx-auto max-w-7xl px-6 pb-16">
         <FadeIn>
           <SectionHeader
             label="Beyond Technology"
@@ -46,8 +46,8 @@ export function JoinTeam() {
             const Icon = item.icon;
             return (
               <FadeIn key={item.audience} delay={i * 0.1}>
-                <div className="group flex h-full flex-col rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
-                  <div className="mb-4 inline-flex w-fit rounded-xl bg-bg-peach p-3">
+                <div className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
+                  <div className="mb-4 inline-flex w-fit rounded-xl bg-brand/10 p-3">
                     <Icon className="h-5 w-5 text-brand" />
                   </div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-brand">
@@ -67,9 +67,9 @@ export function JoinTeam() {
       </section>
 
       {/* Closing quote */}
-      <section className="mx-auto max-w-5xl px-6 pb-24">
+      <section className="mx-auto max-w-7xl px-6 pb-24">
         <FadeIn>
-          <div className="rounded-2xl border border-brand/20 bg-gradient-to-br from-brand/5 via-bg-cream to-bg-sky p-10 text-center md:p-16">
+          <div className="rounded-2xl border border-brand/20 bg-brand/10 p-10 text-center md:p-16">
             <p className="mx-auto max-w-3xl font-heading text-xl font-medium leading-relaxed text-heading md:text-2xl">
               &ldquo;We&apos;re creating a distributed energy network powered by
               waste. Every industrial cluster, every municipality can become

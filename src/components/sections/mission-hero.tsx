@@ -9,7 +9,8 @@ export function MissionHero() {
     <section className="relative overflow-hidden px-6 pb-24 pt-32 md:pb-36 md:pt-44">
       {/* Warm gradient background */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-bg-peach via-bg-peach/60 to-bg-warm"
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to bottom, color-mix(in oklch, var(--color-bg-warm) 80%, transparent), transparent)' }}
         aria-hidden="true"
       />
 
@@ -21,7 +22,7 @@ export function MissionHero() {
 
       <div className="relative z-10 mx-auto max-w-4xl text-center">
         <FadeIn delay={0.1}>
-          <Badge className="border-brand/20 bg-white/80 text-brand">
+          <Badge className="border-brand/20 bg-brand/10 text-brand">
             Our Mission
           </Badge>
         </FadeIn>

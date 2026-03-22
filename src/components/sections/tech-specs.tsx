@@ -52,8 +52,8 @@ const additionalStats = [
 
 export function TechSpecs() {
   return (
-    <section className="bg-bg-cream px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl">
         <FadeIn>
           <SectionHeader
             label="The Machine"
@@ -66,10 +66,10 @@ export function TechSpecs() {
         <div className="grid gap-6 sm:grid-cols-2">
           {specCards.map((card, i) => (
             <FadeIn key={card.title} delay={0.1 + i * 0.1}>
-              <div className="h-full rounded-2xl border border-border bg-white p-6 shadow-card">
+              <div className="h-full rounded-2xl border border-border bg-surface p-6 shadow-card">
                 {/* Card header */}
                 <div className="mb-5 flex items-center gap-3">
-                  <div className="inline-flex rounded-xl bg-bg-peach p-2.5">
+                  <div className="inline-flex rounded-xl bg-brand/10 p-2.5">
                     <card.icon className="h-5 w-5 text-brand" />
                   </div>
                   <h3 className="font-heading text-lg font-bold text-heading">
@@ -98,7 +98,7 @@ export function TechSpecs() {
 
         {/* Additional Specifications callout */}
         <FadeIn delay={0.5}>
-          <div className="mt-8 rounded-2xl border border-brand/20 bg-brand/5 p-8">
+          <div className="mt-8 rounded-2xl border border-brand/20 bg-brand/10 p-8">
             <h3 className="mb-6 font-heading text-xl font-bold text-heading">
               Additional Specifications
             </h3>

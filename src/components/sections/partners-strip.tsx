@@ -26,15 +26,15 @@ export function PartnersStrip() {
 
         {/* Infinite marquee */}
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-bg-warm to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-bg-warm to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32" style={{ background: 'linear-gradient(to right, var(--color-bg-warm), transparent)' }} />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32" style={{ background: 'linear-gradient(to left, var(--color-bg-warm), transparent)' }} />
 
           <div className="flex animate-marquee gap-8">
             {[...partners, ...partners].map((name, i) => (
               <div
                 key={`${name}-${i}`}
                 className={cn(
-                  "flex shrink-0 items-center gap-2.5 rounded-full border border-border bg-white px-6 py-3",
+                  "flex shrink-0 items-center gap-2.5 rounded-full border border-border bg-surface px-6 py-3",
                   "text-sm font-medium text-muted transition-all duration-200 hover:border-brand/20 hover:text-heading",
                 )}
               >

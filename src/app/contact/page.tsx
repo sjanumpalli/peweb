@@ -37,7 +37,7 @@ const whyChooseUs = [
 export default function ContactPage() {
   return (
     <div className="min-h-screen px-6 pb-24 pt-32">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl">
         {/* Hero */}
         <FadeIn>
           <div className="mb-16 text-center">
@@ -58,8 +58,8 @@ export default function ContactPage() {
           <div className="flex flex-col gap-4 lg:col-span-1">
             {contactInfo.map((item, i) => (
               <FadeIn key={item.label} delay={0.1 + i * 0.1}>
-                <div className="flex gap-4 rounded-2xl border border-border bg-white p-6 shadow-card">
-                  <div className="inline-flex shrink-0 rounded-xl bg-bg-peach p-2.5">
+                <div className="flex gap-4 rounded-2xl border border-border bg-surface p-6 shadow-card">
+                  <div className="inline-flex shrink-0 rounded-xl bg-brand/10 p-2.5">
                     <item.icon className="h-5 w-5 text-brand" />
                   </div>
                   <div>

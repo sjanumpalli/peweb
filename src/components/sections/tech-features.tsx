@@ -33,8 +33,8 @@ const features = [
 
 export function TechFeatures() {
   return (
-    <section className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl">
         <FadeIn>
           <SectionHeader
             label="How It Works"
@@ -46,8 +46,8 @@ export function TechFeatures() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, i) => (
             <FadeIn key={feature.title} delay={0.1 + i * 0.1}>
-              <div className="group flex h-full flex-col rounded-2xl border border-border bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover">
-                <div className="mb-4 inline-flex rounded-xl bg-bg-peach p-2.5">
+              <div className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover">
+                <div className="mb-4 w-fit rounded-xl bg-brand/10 p-2.5">
                   <feature.icon className="h-5 w-5 text-brand" />
                 </div>
                 <h3 className="mb-2 font-heading text-lg font-bold text-heading">

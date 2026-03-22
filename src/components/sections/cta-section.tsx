@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export function CtaSection() {
   return (
-    <section className="px-6 py-32 md:py-40">
+    <section className="px-8 py-32 md:py-40">
       <div className="mx-auto max-w-3xl text-center">
         <FadeIn>
           <h2 className="font-heading text-4xl leading-[1.1] text-heading md:text-6xl">

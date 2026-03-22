@@ -50,7 +50,7 @@ export function AdvisorGrid() {
   return (
     <>
       {/* The Modular Advantage */}
-      <section className="mx-auto max-w-5xl px-6 pb-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20">
         <FadeIn>
           <SectionHeader
             label="Our Revolution"
@@ -64,8 +64,8 @@ export function AdvisorGrid() {
             const Icon = item.icon;
             return (
               <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="group flex flex-col rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
-                  <div className="mb-4 inline-flex w-fit rounded-xl bg-bg-peach p-3">
+                <div className="group flex flex-col rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
+                  <div className="mb-4 inline-flex w-fit rounded-xl bg-brand/10 p-3">
                     <Icon className="h-5 w-5 text-brand" />
                   </div>
                   <h3 className="font-heading text-lg font-bold text-heading">{item.title}</h3>
@@ -78,7 +78,7 @@ export function AdvisorGrid() {
 
         {/* Made in India callout */}
         <FadeIn delay={0.3}>
-          <div className="mt-8 rounded-2xl border border-brand/20 bg-gradient-to-br from-brand/5 to-bg-cream p-8 md:p-10">
+          <div className="mt-8 rounded-2xl border border-brand/20 bg-brand/10 p-8 md:p-10">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand">Made in India, For India</p>
             <p className="mt-3 text-base leading-relaxed text-body md:text-lg">
               Our engineering is rooted in understanding India&apos;s diverse waste streams, infrastructure challenges,
@@ -90,7 +90,7 @@ export function AdvisorGrid() {
       </section>
 
       {/* Values */}
-      <section className="mx-auto max-w-5xl px-6 pb-20">
+      <section className="mx-auto max-w-7xl px-6 pb-20">
         <FadeIn>
           <SectionHeader
             label="What Drives Us"
@@ -107,11 +107,11 @@ export function AdvisorGrid() {
                 <div
                   className={`group flex h-full flex-col rounded-2xl border p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover ${
                     value.highlight
-                      ? "border-brand/25 bg-gradient-to-br from-brand/5 to-bg-cream hover:border-brand/40"
-                      : "border-border bg-white hover:border-brand/20"
+                      ? "border-brand/25 bg-brand/10 hover:border-brand/40"
+                      : "border-border bg-surface hover:border-brand/20"
                   }`}
                 >
-                  <div className="mb-4 inline-flex w-fit rounded-xl bg-bg-peach p-3">
+                  <div className="mb-4 inline-flex w-fit rounded-xl bg-brand/10 p-3">
                     <Icon className="h-5 w-5 text-brand" />
                   </div>
                   <h3 className="font-heading text-lg font-bold text-heading">{value.title}</h3>

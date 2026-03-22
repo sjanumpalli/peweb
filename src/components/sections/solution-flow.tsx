@@ -27,8 +27,8 @@ const steps = [
 
 export function SolutionFlow() {
   return (
-    <section className="bg-bg-cream/40 px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl">
         <FadeIn>
           <SectionHeader
             label="Our Solution"
@@ -41,7 +41,7 @@ export function SolutionFlow() {
             <FadeIn key={step.title} delay={0.15 * i}>
               <div className="flex flex-col items-center md:flex-row md:items-center">
                 {/* Step card */}
-                <div className="w-72 rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/25 hover:shadow-card-hover">
+                <div className="w-72 rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/25 hover:bg-surface-hover hover:shadow-card-hover">
                   <div className="mb-4 flex items-center gap-3">
                     <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand/10 font-mono text-xs font-bold text-brand">
                       {step.step}
@@ -49,7 +49,7 @@ export function SolutionFlow() {
                     <div className="h-px flex-1 bg-border" />
                   </div>
 
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border bg-bg-peach">
+                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl border border-border bg-brand/10">
                     <step.icon className="h-6 w-6 text-brand" />
                   </div>
 

@@ -1,191 +1,138 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { type LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
+import Globe from "@/components/ui/globe";
+import { useTheme } from "@/components/providers/theme-provider";
 
 interface MinimalistHeroProps {
-  logoText: string;
-  navLinks: { label: string; href: string }[];
   mainText: string;
   readMoreLink: string;
   readMoreLabel?: string;
-  imageSrc: string;
-  imageAlt: string;
   overlayText: { part1: string; part2: string };
-  socialLinks: { icon: LucideIcon; href: string }[];
-  locationText: string;
+  socialLinks: { icon: ComponentType<{ className?: string }>; href: string }[];
   accentColor?: string;
   className?: string;
 }
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <Link
-    href={href}
-    className="text-xs font-semibold tracking-[0.18em] text-muted uppercase transition-colors duration-200 hover:text-heading"
-  >
-    {children}
-  </Link>
-);
-
-const SocialIcon = ({ href, icon: Icon }: { href: string; icon: LucideIcon }) => (
+const SocialIcon = ({ href, icon: Icon }: { href: string; icon: ComponentType<{ className?: string }> }) => (
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="cursor-pointer text-muted transition-colors duration-200 hover:text-heading"
+    className="cursor-pointer text-heading transition-colors duration-200 hover:text-brand"
   >
     <Icon className="h-4 w-4" />
   </a>
 );
 
 export const MinimalistHero = ({
-  logoText,
-  navLinks,
   mainText,
   readMoreLink,
   readMoreLabel = "Learn More",
-  imageSrc,
-  imageAlt,
   overlayText,
   socialLinks,
-  locationText,
   accentColor = "#22C55E",
   className,
 }: MinimalistHeroProps) => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div
       className={cn(
-        "relative flex h-screen w-full flex-col items-center justify-between overflow-hidden bg-[#f0f8ff] px-8 py-8 md:px-12 md:py-10",
+        "relative flex w-full flex-col items-center justify-center overflow-hidden",
+        "h-[calc(100vh-88px)] md:h-[calc(100vh-100px)]",
         className,
       )}
+      style={{
+        background: isDark
+          ? "radial-gradient(ellipse 80% 60% at 50% 0%, #0d1f3c 0%, #060c1a 50%, #030711 100%)"
+          : "radial-gradient(ellipse 80% 60% at 50% 0%, #f0f9ff 0%, #ffffff 50%, #fafafa 100%)",
+      }}
     >
-      {/* Header */}
-      <header className="z-30 flex w-full max-w-7xl items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-sm font-semibold tracking-[0.2em] text-heading uppercase"
-          style={{ fontFamily: "var(--font-body)" }}
-        >
-          {logoText}
-        </motion.div>
-
-        <motion.nav
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="hidden items-center gap-10 md:flex"
-        >
-          {navLinks.map((link) => (
-            <NavLink key={link.label} href={link.href}>
-              {link.label}
-            </NavLink>
-          ))}
-        </motion.nav>
-
-        {/* Mobile hamburger placeholder */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col gap-1.5 md:hidden"
-          aria-label="Open menu"
-        >
-          <span className="block h-px w-6 bg-heading" />
-          <span className="block h-px w-6 bg-heading" />
-          <span className="block h-px w-4 bg-heading" />
-        </motion.button>
-      </header>
-
-      {/* Main grid */}
-      <div className="relative grid w-full max-w-7xl flex-1 grid-cols-1 items-center md:grid-cols-3">
-        {/* Left — descriptor text */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.0 }}
-          className="z-20 order-2 text-center md:order-1 md:text-left"
-        >
-          <p className="mx-auto max-w-[220px] text-sm leading-relaxed text-body md:mx-0">
-            {mainText}
-          </p>
-          <a
-            href={readMoreLink}
-            className="mt-4 inline-block text-xs font-semibold uppercase tracking-wider text-heading underline underline-offset-4 transition-colors duration-200 hover:text-brand"
-          >
-            {readMoreLabel}
-          </a>
-        </motion.div>
-
-        {/* Center — image with circle */}
-        <div className="relative order-1 flex h-full items-center justify-center md:order-2">
-          {/* Accent circle */}
-          <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-            className="absolute z-0 h-[280px] w-[280px] rounded-full md:h-[400px] md:w-[400px] lg:h-[480px] lg:w-[480px]"
-            style={{ backgroundColor: accentColor, opacity: 0.85 }}
-          />
-          {/* Image */}
-          <motion.img
-            src={imageSrc}
-            alt={imageAlt}
-            className="relative z-10 h-auto w-52 scale-125 object-cover md:w-64 lg:w-72"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-            onError={(e) => {
-              const t = e.target as HTMLImageElement;
-              t.onerror = null;
-              t.src = `https://placehold.co/400x600/22C55E/ffffff?text=PE`;
+      {/* Star field — dark mode only */}
+      {isDark && <div className="pointer-events-none absolute inset-0 z-0">
+        {[
+          [12, 18], [28, 72], [45, 35], [67, 15], [82, 58], [93, 30],
+          [8, 85], [55, 90], [75, 5], [38, 50], [20, 42], [60, 78],
+          [15, 62], [88, 88], [50, 22], [32, 8], [70, 45], [5, 50],
+          [95, 70], [42, 95], [78, 25], [22, 30], [62, 60], [35, 80],
+        ].map(([x, y], i) => (
+          <span
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              width: i % 3 === 0 ? "2px" : "1px",
+              height: i % 3 === 0 ? "2px" : "1px",
+              opacity: 0.2 + (i % 5) * 0.12,
+              animation: `twinkle-a ${2 + (i % 3)}s ease-in-out infinite ${(i * 0.4) % 3}s`,
             }}
           />
-        </div>
+        ))}
+      </div>}
 
-        {/* Right — big type */}
+      {/* Main — 2 col on desktop, stacked on mobile */}
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-3 px-6 py-2 md:flex-row md:items-center md:gap-0 md:px-12 md:py-0">
+
+        {/* Left — Globe, responsive size */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.8 }}
-          className="z-20 order-3 flex items-center justify-center md:justify-start"
+          className="flex items-center justify-center md:flex-1"
+          initial={{ opacity: 0, scale: 0.75 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
-          <h1
-            className="text-center font-heading text-6xl font-extrabold leading-[0.9] tracking-tight text-heading md:text-left md:text-7xl lg:text-[7rem]"
-            style={{ letterSpacing: "-0.03em" }}
+          <Globe size={420} className="w-[min(52vw,200px)] md:w-[420px] lg:w-[480px]" />
+        </motion.div>
+
+        {/* Right — headline + descriptor stacked */}
+        <div className="flex flex-1 flex-col items-center gap-4 md:items-start md:pl-8">
+          <motion.h1
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="text-center font-heading text-[2.6rem] font-extrabold leading-[0.88] text-heading md:text-left md:text-[5.5rem] lg:text-[7rem]"
+            style={{ letterSpacing: "-0.04em" }}
           >
             {overlayText.part1}
             <br />
             <span style={{ color: accentColor }}>{overlayText.part2}</span>
-          </h1>
-        </motion.div>
-      </div>
+          </motion.h1>
 
-      {/* Footer row */}
-      <footer className="z-30 flex w-full max-w-7xl items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.3 }}
-          className="flex items-center gap-4"
-        >
-          {socialLinks.map((link, i) => (
-            <SocialIcon key={i} href={link.href} icon={link.icon} />
-          ))}
-        </motion.div>
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.4 }}
-          className="text-xs font-medium tracking-wider text-muted uppercase"
-        >
-          {locationText}
-        </motion.p>
-      </footer>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.1 }}
+            className="flex flex-col items-center gap-3 md:items-start"
+          >
+            <p className="max-w-[340px] text-center text-xs leading-relaxed text-body md:text-left md:text-base">
+              {mainText}
+            </p>
+            <a
+              href={readMoreLink}
+              className="text-xs font-semibold uppercase tracking-wider text-heading underline underline-offset-4 transition-colors duration-200 hover:text-brand"
+            >
+              {readMoreLabel}
+            </a>
+          </motion.div>
+
+          {/* Social links */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.3 }}
+            className="flex items-center gap-4"
+          >
+            {socialLinks.map((link, i) => (
+              <SocialIcon key={i} href={link.href} icon={link.icon} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -1,0 +1,65 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <!-- Main ring gradient: lime-green top-left → forest green → teal bottom-right -->
+    <linearGradient id="ringMain" x1="25" y1="15" x2="175" y2="185" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#A8D84E"/>
+      <stop offset="30%"  stop-color="#68C048"/>
+      <stop offset="60%"  stop-color="#2E9A42"/>
+      <stop offset="100%" stop-color="#0A6845"/>
+    </linearGradient>
+
+    <!-- Highlight: bright shine on upper-left of ring -->
+    <linearGradient id="ringShine" x1="140" y1="20" x2="60" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#D4F075" stop-opacity="0.55"/>
+      <stop offset="50%"  stop-color="#A8D84E" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#A8D84E" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Inner rim shadow for 3-D depth -->
+    <radialGradient id="innerRim" cx="42%" cy="40%" r="58%" gradientUnits="objectBoundingBox">
+      <stop offset="0%"   stop-color="#1A7A50" stop-opacity="0"/>
+      <stop offset="70%"  stop-color="#0A5840" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#073D30" stop-opacity="0.6"/>
+    </radialGradient>
+
+    <!-- Bottom shadow for depth -->
+    <linearGradient id="bottomShadow" x1="100" y1="30" x2="100" y2="185" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.22"/>
+    </linearGradient>
+
+    <!-- Inner ribbon arc gradient (the dark teal interior visible strip) -->
+    <linearGradient id="innerArc" x1="30" y1="170" x2="170" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%"   stop-color="#0C5E46"/>
+      <stop offset="50%"  stop-color="#1A8050"/>
+      <stop offset="100%" stop-color="#3AAA50"/>
+    </linearGradient>
+
+    <!-- Ring mask: outer circle minus center hole -->
+    <mask id="ringMask">
+      <circle cx="100" cy="100" r="91" fill="white"/>
+      <circle cx="100" cy="100" r="51" fill="black"/>
+    </mask>
+
+    <!-- Thin inner-edge ring mask (just the innermost 14px of ring) -->
+    <mask id="innerEdgeMask">
+      <circle cx="100" cy="100" r="65" fill="white"/>
+      <circle cx="100" cy="100" r="51" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- === LAYER 1: Main ring body === -->
+  <circle cx="100" cy="100" r="91" fill="url(#ringMain)"    mask="url(#ringMask)"/>
+
+  <!-- === LAYER 2: Shine highlight (upper-left arc) === -->
+  <circle cx="100" cy="100" r="91" fill="url(#ringShine)"   mask="url(#ringMask)"/>
+
+  <!-- === LAYER 3: Bottom depth shadow === -->
+  <circle cx="100" cy="100" r="91" fill="url(#bottomShadow)" mask="url(#ringMask)"/>
+
+  <!-- === LAYER 4: Inner-rim dark teal arc (3-D ribbon effect) === -->
+  <circle cx="100" cy="100" r="91" fill="url(#innerArc)"    mask="url(#innerEdgeMask)" opacity="0.75"/>
+
+  <!-- === LAYER 5: Radial inner shadow for concavity === -->
+  <circle cx="100" cy="100" r="91" fill="url(#innerRim)"    mask="url(#ringMask)" opacity="0.85"/>
+</svg>

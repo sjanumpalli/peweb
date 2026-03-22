@@ -38,16 +38,16 @@ const guaranteeItems = [
 
 export function PolymerGuarantee() {
   return (
-    <section className="bg-[#111111] px-6 py-20 md:py-28">
-      <div className="mx-auto max-w-6xl">
+    <section className="bg-surface px-6 py-20 md:py-28">
+      <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left column */}
           <FadeIn direction="left">
             <div className="flex flex-col justify-center">
-              <h2 className="font-heading text-3xl font-bold text-white md:text-4xl">
+              <h2 className="font-heading text-3xl font-bold text-heading md:text-4xl">
                 A Different Approach to Waste-to-Energy
               </h2>
-              <p className="mt-4 text-white/70 leading-relaxed">
+              <p className="mt-4 text-muted leading-relaxed">
                 Traditional plants take years to build and millions to finance.
                 We bring the solution to you — in a container, ready to deploy,
                 with guaranteed returns on your fuel production.
@@ -57,7 +57,7 @@ export function PolymerGuarantee() {
                 {checklistItems.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand" />
-                    <span className="text-white/80 text-sm leading-relaxed">
+                    <span className="text-body text-sm leading-relaxed">
                       {item}
                     </span>
                   </li>
@@ -68,8 +68,8 @@ export function PolymerGuarantee() {
 
           {/* Right column — guarantee card */}
           <FadeIn direction="right" delay={0.15}>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-              <h3 className="mb-4 font-heading text-lg font-semibold text-white">
+            <div className="rounded-2xl border border-border bg-surface-hover p-6">
+              <h3 className="mb-4 font-heading text-lg font-semibold text-heading">
                 The Polymer Guarantee
               </h3>
 
@@ -82,7 +82,7 @@ export function PolymerGuarantee() {
                     <p className={`font-heading text-base font-bold ${item.titleColor}`}>
                       {item.title}
                     </p>
-                    <p className="mt-1 text-sm text-white/70 leading-relaxed">
+                    <p className="mt-1 text-sm text-muted leading-relaxed">
                       {item.description}
                     </p>
                   </div>

@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function MapPage() {
   return (
-    <div className="bg-bg-dark min-h-screen">
+    <div className="min-h-screen">
       <MapHero />
       <MapExplorer />
       <MapSummary />

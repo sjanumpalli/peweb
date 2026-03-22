@@ -3,337 +3,876 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polymer Energy — India Plastic Data Explorer Mockup</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Polymer Energy — India Plastic Data Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* ══════════════════════════════════════════
+     RESET & CUSTOM PROPERTIES
+     ══════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0A0F1A; --surface: #111827; --primary: #00FF88; --secondary: #00D4FF;
-    --amber: #FFB800; --red: #FF4444;
-    --text: #F0FDF4; --text-muted: #94A3B8;
-    --border: rgba(0, 255, 136, 0.15); --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+    --bg-peach: #FFF5EB;
+    --bg-blue: #F0F7FF;
+    --bg-warm: #FEFCFA;
+    --glass: rgba(255,255,255,0.45);
+    --glass-hover: rgba(255,255,255,0.55);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.04);
+    --glass-border: rgba(0,0,0,0.03);
+    --heading: #2D2D3F;
+    --body: #64748B;
+    --muted: #94A3B8;
+    --green: #22C55E;
+    --green-light: rgba(34,197,94,0.1);
+    --teal: #0EA5E9;
+    --teal-light: rgba(14,165,233,0.1);
+    --amber: #F59E0B;
+    --amber-light: rgba(245,158,11,0.1);
+    --red: #EF4444;
+    --red-light: rgba(239,68,68,0.1);
+    --radius: 24px;
+    --radius-sm: 20px;
+    --radius-xs: 14px;
+    --transition: 300ms ease;
   }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
-
-  /* Noise BG */
-  .noise-bg {
-    position: fixed; inset: 0; z-index: 0;
-    background: var(--bg);
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: var(--bg-warm);
+    color: var(--body);
+    overflow-x: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
-  .noise-bg::after {
-    content: ''; position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    background-repeat: repeat; background-size: 256px;
-    opacity: 0.5;
+  h1, h2, h3, h4, h5 { font-family: 'Space Grotesk', sans-serif; color: var(--heading); }
+
+  /* ── FOCUS STATES ── */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  .dot-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(rgba(0,255,136,0.05) 1px, transparent 1px); background-size: 30px 30px; }
 
-  .navbar { position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100; background: rgba(17,24,39,0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .nav-logo .diamond { width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: rotate(45deg); border-radius: 4px; }
-  .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-links a.active { color: var(--primary); }
-  .nav-cta { background: var(--primary); color: #0A0F1A; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; }
+  /* ── REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 
-  .content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; padding: 120px 24px 60px; }
+  /* ══════════════════════════════════════════
+     WARM GRADIENT BACKGROUND
+     ══════════════════════════════════════════ */
+  .warm-bg {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-peach) 0%, var(--bg-blue) 50%, var(--bg-warm) 100%);
+  }
+  .warm-blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(160px); will-change: transform;
+  }
+  .warm-blob:nth-child(1) { width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,236,210,0.35) 0%, transparent 70%); top: -15%; left: -5%; animation: drift1 22s infinite ease-in-out; }
+  .warm-blob:nth-child(2) { width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,244,253,0.3) 0%, transparent 70%); bottom: -10%; right: -5%; animation: drift2 26s infinite ease-in-out; }
+  .warm-blob:nth-child(3) { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,248,240,0.25) 0%, transparent 70%); top: 45%; left: 35%; animation: drift3 30s infinite ease-in-out; }
+  .warm-blob:nth-child(4) { width: 400px; height: 400px; background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%); top: 25%; right: 15%; animation: drift1 24s infinite ease-in-out reverse; }
+  @keyframes drift1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(80px, 40px) scale(1.1); }
+    66% { transform: translate(-40px, 80px) scale(0.95); }
+  }
+  @keyframes drift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(-60px, -50px) scale(1.05); }
+    66% { transform: translate(50px, -30px) scale(0.9); }
+  }
+  @keyframes drift3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(60px, -60px) scale(1.15); }
+  }
 
-  .page-header { margin-bottom: 32px; }
-  .page-header .label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--primary); margin-bottom: 12px; opacity: 0.7; }
-  .page-header h1 { font-size: 40px; font-weight: 700; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  /* ══════════════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════════════ */
+  .navbar {
+    position: fixed; top: 20px; left: 24px; right: 24px; z-index: 100;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 12px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background var(--transition);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--heading);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+  }
+  .nav-logo:hover { opacity: 0.8; }
+  .nav-logo .diamond {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, var(--green), var(--teal));
+    transform: rotate(45deg);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    color: var(--body); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color var(--transition);
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--heading); }
+  .nav-links a.active { color: var(--green); font-weight: 600; }
+  .nav-links a.active::after {
+    content: '';
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--green);
+  }
+  .nav-cta {
+    background: var(--green); color: #fff;
+    padding: 10px 24px; border-radius: 999px;
+    font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .nav-cta:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
 
-  /* Map Layout */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 8px; z-index: 101;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--heading); border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 80px; left: 24px; right: 24px; z-index: 99;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-shadow);
+    padding: 16px;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; padding: 12px 16px;
+    text-decoration: none; color: var(--body);
+    font-weight: 500; border-radius: var(--radius-xs);
+    transition: background var(--transition), color var(--transition);
+  }
+  .mobile-menu a:hover { background: var(--green-light); color: var(--green); }
+
+  /* ══════════════════════════════════════════
+     MAIN CONTENT
+     ══════════════════════════════════════════ */
+  .main { position: relative; z-index: 2; padding: 144px 28px 48px; max-width: 1400px; margin: 0 auto; }
+
+  /* ── PAGE HEADER ── */
+  .page-header { margin-bottom: 34px; }
+  .page-header h1 { font-size: 2.2rem; font-weight: 800; color: var(--heading); margin-bottom: 8px; }
+  .page-header .label-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--green-light); color: var(--green);
+    padding: 5px 14px; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 600;
+  }
+  .page-header .label-badge svg { width: 14px; height: 14px; }
+
+  /* ── SEARCH/FILTER BAR ── */
+  .filter-bar {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: 999px;
+    padding: 10px 10px 10px 24px; margin-bottom: 34px;
+    box-shadow: var(--glass-shadow);
+  }
+  .filter-bar .search-icon { width: 20px; height: 20px; color: var(--muted); flex-shrink: 0; }
+  .filter-bar input {
+    flex: 1; border: none; background: transparent; outline: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--heading);
+    min-width: 0;
+  }
+  .filter-bar input::placeholder { color: var(--muted); }
+  .filter-bar select {
+    appearance: none; border: none; background: rgba(0,0,0,0.02);
+    padding: 10px 36px 10px 16px; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    color: var(--heading); cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394A3B8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .filter-bar .search-btn {
+    background: var(--green); color: #fff; border: none;
+    padding: 10px 20px; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; transition: transform 0.2s ease;
+    white-space: nowrap;
+  }
+  .filter-bar .search-btn:hover { transform: translateY(-1px); }
+
+  /* ── MAP LAYOUT ── */
   .map-layout {
     display: grid; grid-template-columns: 1fr 380px; gap: 24px;
-    min-height: 600px;
+    align-items: start;
   }
 
-  .map-container {
-    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
-    border: 1px solid var(--border); border-radius: 20px;
-    position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
+  /* ── GLASS CARD ── */
+  .glass-card {
+    background: var(--glass); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: var(--radius);
+    box-shadow: var(--glass-shadow); overflow: hidden;
   }
 
-  /* SVG India Map (simplified) */
-  .india-map {
-    width: 100%; height: 100%; padding: 40px;
-    display: flex; align-items: center; justify-content: center;
+  /* ── MAP CONTAINER ── */
+  .map-container { position: relative; padding: 28px; min-height: 580px; }
+  .map-svg-wrap {
+    width: 100%; height: 500px; display: flex; align-items: center; justify-content: center;
     position: relative;
   }
-  .india-outline {
-    width: 320px; height: 380px;
-    position: relative;
-  }
-  .india-outline svg { width: 100%; height: 100%; }
+  .map-svg-wrap svg.india-map { width: 100%; max-width: 460px; height: auto; }
 
-  /* Data Points */
+  /* Data points */
   .data-point {
-    position: absolute; cursor: pointer;
-    transition: transform 0.2s;
+    position: absolute; width: 18px; height: 18px; border-radius: 50%;
+    border: 2.5px solid #fff; cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    z-index: 5;
   }
-  .data-point:hover { transform: scale(1.3); }
-  .data-dot {
-    width: 14px; height: 14px; border-radius: 50%;
-    position: relative;
-  }
-  .data-dot::after {
-    content: ''; position: absolute; inset: -4px;
-    border: 2px solid; border-radius: 50%;
-    animation: ping 2s infinite;
-    opacity: 0;
-  }
-  @keyframes ping {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(2); opacity: 0; }
-  }
-  .data-dot.high { background: var(--red); }
-  .data-dot.high::after { border-color: var(--red); }
-  .data-dot.medium { background: var(--amber); }
-  .data-dot.medium::after { border-color: var(--amber); }
-  .data-dot.low { background: #22C55E; }
-  .data-dot.low::after { border-color: #22C55E; }
-  .data-dot.site { background: var(--secondary); box-shadow: 0 0 10px rgba(0,212,255,0.5); }
-  .data-dot.site::after { border-color: var(--secondary); }
+  .data-point:hover { transform: scale(1.35); }
+  .data-point.high { background: var(--red); box-shadow: 0 2px 8px rgba(239,68,68,0.3); }
+  .data-point.medium { background: var(--amber); box-shadow: 0 2px 8px rgba(245,158,11,0.3); }
+  .data-point.low { background: var(--green); box-shadow: 0 2px 8px rgba(34,197,94,0.3); }
+  .data-point.pe-site { background: var(--teal); box-shadow: 0 2px 8px rgba(14,165,233,0.3); }
+  .data-point.active { transform: scale(1.4); box-shadow: 0 0 0 4px rgba(34,197,94,0.2); }
 
-  .data-label {
-    position: absolute; left: 20px; top: -4px;
-    font-size: 11px; color: var(--text-muted);
-    white-space: nowrap; font-weight: 500;
-    opacity: 0; transition: opacity 0.2s;
+  /* Tooltip */
+  .map-tooltip {
+    position: absolute; display: none;
+    background: var(--glass-hover); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: var(--radius-xs);
+    padding: 14px 19px; box-shadow: var(--glass-shadow);
+    z-index: 10; pointer-events: none; white-space: nowrap;
+    font-size: 0.85rem;
   }
-  .data-point:hover .data-label { opacity: 1; }
-
-  /* Map Controls */
-  .map-controls {
-    position: absolute; bottom: 20px; left: 20px;
-    display: flex; gap: 8px;
-  }
-  .map-btn {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: rgba(17,24,39,0.8); border: 1px solid var(--border);
-    color: var(--text-muted); cursor: pointer; font-size: 16px;
-    display: flex; align-items: center; justify-content: center;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .map-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .map-tooltip .tt-title { font-weight: 600; color: var(--heading); margin-bottom: 4px; }
+  .map-tooltip .tt-stat { color: var(--muted); }
+  .map-tooltip .tt-stat strong { color: var(--heading); }
 
   /* Legend */
   .map-legend {
-    position: absolute; bottom: 20px; right: 20px;
-    background: rgba(17,24,39,0.9); border: 1px solid var(--border);
-    border-radius: 12px; padding: 16px;
+    position: absolute; bottom: 32px; right: 32px;
+    background: var(--glass-hover); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: var(--radius-xs);
+    padding: 17px 22px; box-shadow: var(--glass-shadow);
+    display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;
   }
-  .legend-item {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 12px; color: var(--text-muted); margin-bottom: 6px;
-  }
-  .legend-item:last-child { margin-bottom: 0; }
-  .legend-dot {
-    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-  }
+  .map-legend .legend-title { font-weight: 700; color: var(--heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; color: var(--body); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-  /* Side Panel */
-  .side-panel {
-    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
-    border: 1px solid var(--border); border-radius: 20px;
-    padding: 28px; overflow-y: auto;
-    display: flex; flex-direction: column;
+  /* Zoom controls */
+  .zoom-controls {
+    position: absolute; bottom: 32px; left: 32px;
+    display: flex; flex-direction: column; gap: 4px;
   }
-  .panel-header { margin-bottom: 24px; }
-  .panel-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-  .panel-header p { color: var(--text-muted); font-size: 14px; }
+  .zoom-btn {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    background: var(--glass-hover); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-radius: 12px;
+    cursor: pointer; color: var(--heading); font-size: 1.2rem; font-weight: 600;
+    transition: background 0.2s ease;
+  }
+  .zoom-btn:hover { background: rgba(255,255,255,0.65); }
+  .zoom-btn svg { width: 18px; height: 18px; }
 
-  .panel-state {
-    font-size: 14px; color: var(--primary); font-weight: 600;
-    margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+  /* ── SIDE PANEL ── */
+  .side-panel { padding: 34px; }
+  .side-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .side-panel-header .pin-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: var(--green-light); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
-  .panel-state-name { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 20px; }
+  .side-panel-header .pin-icon svg { width: 20px; height: 20px; color: var(--green); }
+  .side-panel-header .region-info h3 { font-size: 1.15rem; font-weight: 700; line-height: 1.2; }
+  .side-panel-header .region-info p { font-size: 0.85rem; color: var(--muted); margin-top: 2px; }
 
-  .stat-row {
-    margin-bottom: 20px;
+  /* Stat cards */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+  .stat-card {
+    background: rgba(255,255,255,0.35); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xs); padding: 19px;
+    transition: transform 0.2s ease;
   }
-  .stat-row-label { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
-  .stat-row-value {
-    font-family: 'Space Grotesk'; font-size: 28px; font-weight: 700;
-    color: var(--text); margin-bottom: 8px;
-  }
-  .stat-row-value span { font-size: 16px; color: var(--text-muted); font-weight: 400; }
-  .mini-bar {
-    height: 6px; border-radius: 3px; background: rgba(255,255,255,0.05);
-    overflow: hidden;
-  }
-  .mini-bar-fill {
-    height: 100%; border-radius: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-  }
+  .stat-card:hover { transform: translateY(-2px); }
+  .stat-card .stat-label { font-size: 0.75rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .stat-card .stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--heading); }
+  .stat-card .stat-accent { display: inline-block; width: 4px; height: 28px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
+  .stat-card .stat-row { display: flex; align-items: center; }
 
-  .panel-sites { margin-top: 20px; }
-  .panel-sites h3 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
-  .site-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 8px; padding: 6px 12px; font-size: 13px;
-    margin-right: 8px; margin-bottom: 8px;
-  }
-  .site-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--secondary); }
+  /* Sparkline */
+  .sparkline-section { margin-bottom: 28px; }
+  .sparkline-section .spark-title { font-size: 0.8rem; font-weight: 600; color: var(--heading); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .sparkline-section svg { width: 100%; height: 60px; }
 
-  .panel-cta {
-    margin-top: auto; padding-top: 20px;
+  /* PE site tags */
+  .pe-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+  .pe-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--teal-light); color: var(--teal);
+    padding: 6px 14px; border-radius: 999px;
+    font-size: 0.8rem; font-weight: 600;
   }
-  .panel-cta a {
-    display: block; text-align: center;
-    background: var(--primary); color: #0A0F1A;
-    padding: 12px; border-radius: 12px;
-    font-weight: 600; font-size: 14px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-  }
-  .panel-cta a:hover { box-shadow: 0 0 20px rgba(0,255,136,0.4); }
+  .pe-tag svg { width: 12px; height: 12px; }
 
-  /* Upload Zone */
+  /* CTA button */
+  .cta-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; background: var(--green); color: #fff; border: none;
+    padding: 17px 28px; border-radius: 999px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+    cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 24px;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,197,94,0.25); }
+  .cta-btn svg { width: 18px; height: 18px; }
+
+  /* Upload zone */
   .upload-zone {
-    margin-top: 20px; padding: 20px;
-    border: 2px dashed var(--border); border-radius: 12px;
-    text-align: center; cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
+    border: 2px dashed rgba(0,0,0,0.06); border-radius: var(--radius-xs);
+    padding: 34px; text-align: center; cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
   }
-  .upload-zone:hover { border-color: var(--primary); background: rgba(0,255,136,0.03); }
-  .upload-zone .icon { font-size: 24px; margin-bottom: 8px; }
-  .upload-zone p { font-size: 13px; color: var(--text-muted); }
-  .upload-zone .format { font-size: 11px; color: var(--text-muted); opacity: 0.6; margin-top: 4px; }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--green); background: var(--green-light);
+  }
+  .upload-zone .upload-icon {
+    width: 48px; height: 48px; margin: 0 auto 12px;
+    background: rgba(0,0,0,0.02); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .upload-zone .upload-icon svg { width: 24px; height: 24px; color: var(--muted); }
+  .upload-zone p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .upload-zone p strong { color: var(--green); }
 
+  /* ══════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════ */
+  .footer {
+    position: relative; z-index: 2; margin-top: 96px;
+    border-top: 1px solid var(--glass-border);
+  }
+  .footer-inner {
+    max-width: 1400px; margin: 0 auto; padding: 72px 28px 38px;
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 48px;
+  }
+  .footer-brand p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-top: 12px; max-width: 320px; }
+  .footer-col h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--heading); margin-bottom: 16px; }
+  .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: 0.9rem; padding: 4px 0; transition: color 0.2s ease; }
+  .footer-col a:hover { color: var(--green); }
+  .footer-bottom {
+    max-width: 1400px; margin: 0 auto; padding: 20px 24px;
+    border-top: 1px solid var(--glass-border);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.8rem; color: var(--muted);
+  }
+  .footer-socials { display: flex; gap: 16px; }
+  .footer-socials a { color: var(--muted); transition: color 0.2s ease; }
+  .footer-socials a:hover { color: var(--green); }
+  .footer-socials svg { width: 20px; height: 20px; }
+
+  /* ══════════════════════════════════════════
+     RESPONSIVE
+     ══════════════════════════════════════════ */
   @media (max-width: 768px) {
-    .map-layout { grid-template-columns: 1fr; }
-    .map-container { min-height: 400px; }
     .nav-links { display: none; }
-    .page-header h1 { font-size: 28px; }
+    .hamburger { display: flex; }
+    .navbar { padding: 12px 20px; }
+
+    .main { padding: 100px 16px 24px; }
+    .page-header h1 { font-size: 1.6rem; }
+
+    .filter-bar { flex-wrap: wrap; padding: 12px; border-radius: var(--radius); gap: 8px; }
+    .filter-bar input { width: 100%; }
+    .filter-bar select { flex: 1; }
+    .filter-bar .search-btn { flex: 1; }
+
+    .map-layout { grid-template-columns: 1fr; }
+    .map-container { min-height: 400px; padding: 16px; }
+    .map-svg-wrap { height: 350px; }
+    .map-legend { bottom: 16px; right: 16px; padding: 10px 14px; font-size: 0.75rem; }
+    .zoom-controls { bottom: 16px; left: 16px; }
+
+    .side-panel { padding: 20px; }
+    .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stat-card .stat-value { font-size: 1.1rem; }
+
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   }
 </style>
 </head>
 <body>
 
-<div class="noise-bg"></div>
-<div class="dot-overlay"></div>
+<!-- ── WARM BACKGROUND ── -->
+<div class="warm-bg" aria-hidden="true">
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+</div>
 
+<!-- ══════════════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════════════ -->
 <nav class="navbar">
-  <a href="landing.html" class="nav-logo"><div class="diamond"></div>POLYMER ENERGY</a>
+  <a href="landing.html" class="nav-logo">
+    <div class="diamond"></div>
+    Polymer Energy
+  </a>
   <div class="nav-links">
+    <a href="landing.html">Home</a>
     <a href="mission.html">Mission</a>
     <a href="map.html" class="active">Map</a>
     <a href="calculator.html">Calculator</a>
     <a href="founders.html">Founders</a>
-    <button class="nav-cta">Get a Quote</button>
+    <a href="#" class="nav-cta">Get a Quote</a>
   </div>
+  <button class="hamburger" onclick="this.classList.toggle('active'); document.querySelector('.mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu">
+  <a href="landing.html">Home</a>
+  <a href="mission.html">Mission</a>
+  <a href="map.html">Map</a>
+  <a href="calculator.html">Calculator</a>
+  <a href="founders.html">Founders</a>
+  <a href="#" class="nav-cta" style="display:block;text-align:center;margin-top:8px;">Get a Quote</a>
+</div>
 
-<div class="content">
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+     ══════════════════════════════════════════ -->
+<main class="main">
 
+  <!-- PAGE HEADER -->
   <div class="page-header">
-    <div class="label">Data Explorer</div>
     <h1>India Plastic Data Explorer</h1>
+    <span class="label-badge">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" fill="currentColor" opacity="0.3"/><circle cx="8" cy="8" r="3" fill="currentColor"/></svg>
+      Live Data
+    </span>
   </div>
 
+  <!-- SEARCH / FILTER BAR -->
+  <div class="filter-bar">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Search cities, states, or regions..." aria-label="Search regions">
+    <select id="levelFilter" aria-label="Filter by waste level">
+      <option value="all">All Levels</option>
+      <option value="high">High Waste</option>
+      <option value="medium">Medium Waste</option>
+      <option value="low">Low Waste</option>
+      <option value="pe-site">PE Sites</option>
+    </select>
+    <button class="search-btn" onclick="applyFilters()">
+      Search
+    </button>
+  </div>
+
+  <!-- MAP LAYOUT -->
   <div class="map-layout">
 
-    <!-- Map Area -->
-    <div class="map-container">
-      <div class="india-map">
-        <div class="india-outline">
-          <!-- Simplified India outline SVG -->
-          <svg viewBox="0 0 300 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M130 10 L170 8 L200 20 L220 15 L250 30 L265 50 L270 80 L260 100 L275 120 L280 150 L270 170 L260 180 L265 200 L255 230 L240 250 L220 260 L200 280 L180 300 L170 320 L155 340 L145 350 L140 340 L135 310 L125 290 L110 270 L95 255 L80 240 L65 220 L55 200 L50 180 L45 160 L40 140 L35 120 L40 100 L50 80 L60 60 L80 40 L100 25 L120 15Z"
-              fill="rgba(0,255,136,0.03)" stroke="rgba(0,255,136,0.2)" stroke-width="1"/>
-          </svg>
+    <!-- MAP CONTAINER -->
+    <div class="glass-card map-container">
+      <div class="map-svg-wrap" id="mapWrap">
 
-          <!-- Data Points (positioned on India map) -->
-          <div class="data-point" style="top:15%;left:30%"><div class="data-dot medium"></div><div class="data-label">Punjab</div></div>
-          <div class="data-point" style="top:20%;left:50%"><div class="data-dot high"></div><div class="data-label">Delhi NCR</div></div>
-          <div class="data-point" style="top:25%;left:65%"><div class="data-dot medium"></div><div class="data-label">UP</div></div>
-          <div class="data-point" style="top:35%;left:35%"><div class="data-dot medium"></div><div class="data-label">Rajasthan</div></div>
-          <div class="data-point" style="top:40%;left:55%"><div class="data-dot low"></div><div class="data-label">MP</div></div>
-          <div class="data-point" style="top:35%;left:75%"><div class="data-dot medium"></div><div class="data-label">Bihar</div></div>
-          <div class="data-point" style="top:45%;left:80%"><div class="data-dot low"></div><div class="data-label">W. Bengal</div></div>
-          <div class="data-point" style="top:50%;left:30%"><div class="data-dot low"></div><div class="data-label">Gujarat</div></div>
-          <div class="data-point" style="top:55%;left:45%"><div class="data-dot high"></div><div class="data-label">Maharashtra</div></div>
-          <div class="data-point" style="top:60%;left:55%"><div class="data-dot medium"></div><div class="data-label">Telangana</div></div>
-          <div class="data-point" style="top:68%;left:40%"><div class="data-dot low"></div><div class="data-label">Karnataka</div></div>
-          <div class="data-point" style="top:72%;left:55%"><div class="data-dot medium"></div><div class="data-label">Tamil Nadu</div></div>
-          <div class="data-point" style="top:65%;left:30%"><div class="data-dot low"></div><div class="data-label">Kerala</div></div>
+        <!-- India SVG silhouette -->
+        <svg class="india-map" viewBox="0 0 500 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- India outline simplified -->
+          <path d="M220 20 C200 18, 180 25, 165 30 C145 38, 130 50, 120 65 C110 78, 105 85, 95 95
+                   C82 108, 70 115, 60 130 C50 148, 48 165, 50 185 C52 200, 58 215, 60 230
+                   C62 248, 55 262, 52 278 C48 298, 50 318, 55 338 C60 355, 68 370, 78 385
+                   C90 402, 100 415, 108 432 C115 448, 118 465, 125 480
+                   C130 492, 138 500, 148 510 C158 518, 170 522, 180 528
+                   C195 535, 210 540, 228 542 C245 543, 260 538, 275 530
+                   C288 522, 298 510, 308 498 C320 482, 328 465, 335 448
+                   C340 435, 342 420, 345 405 C348 388, 355 372, 360 355
+                   C365 340, 368 322, 372 305 C378 285, 385 268, 390 250
+                   C395 232, 398 215, 400 195 C402 178, 398 160, 392 145
+                   C385 128, 375 115, 362 102 C348 88, 335 78, 320 68
+                   C305 58, 290 48, 272 38 C258 30, 242 22, 220 20 Z"
+                fill="#dcfce7" stroke="#86efac" stroke-width="1.5"/>
 
-          <!-- Polymer Energy Installation Sites -->
-          <div class="data-point" style="top:53%;left:38%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Mumbai (PE)</div></div>
-          <div class="data-point" style="top:57%;left:50%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Pune (PE)</div></div>
-          <div class="data-point" style="top:19%;left:45%"><div class="data-dot site"></div><div class="data-label" style="color:var(--secondary)">Delhi (PE)</div></div>
+          <!-- State boundary lines -->
+          <line x1="120" y1="180" x2="380" y2="180" stroke="#bbf7d0" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <line x1="100" y1="280" x2="370" y2="280" stroke="#bbf7d0" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <line x1="130" y1="380" x2="340" y2="380" stroke="#bbf7d0" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <line x1="220" y1="50" x2="220" y2="520" stroke="#bbf7d0" stroke-width="0.8" stroke-dasharray="4,4"/>
+          <line x1="310" y1="80" x2="310" y2="460" stroke="#bbf7d0" stroke-width="0.8" stroke-dasharray="4,4"/>
+        </svg>
+
+        <!-- Data points -->
+        <div class="data-point high" style="top:28%;left:38%" data-region="Delhi NCR" data-waste="12,400" data-recyclable="34" data-revenue="2.8" data-co2="890" data-level="high" tabindex="0" aria-label="Delhi NCR - High waste"></div>
+        <div class="data-point high" style="top:42%;left:62%" data-region="Kolkata" data-waste="9,800" data-recyclable="29" data-revenue="2.1" data-co2="720" data-level="high" tabindex="0" aria-label="Kolkata - High waste"></div>
+        <div class="data-point high" style="top:32%;left:58%" data-region="Lucknow" data-waste="8,200" data-recyclable="31" data-revenue="1.8" data-co2="610" data-level="high" tabindex="0" aria-label="Lucknow - High waste"></div>
+        <div class="data-point medium" style="top:56%;left:48%" data-region="Mumbai" data-waste="6,500" data-recyclable="42" data-revenue="1.9" data-co2="480" data-level="medium" tabindex="0" aria-label="Mumbai - Medium waste"></div>
+        <div class="data-point medium" style="top:60%;left:38%" data-region="Pune" data-waste="4,800" data-recyclable="45" data-revenue="1.4" data-co2="350" data-level="medium" tabindex="0" aria-label="Pune - Medium waste"></div>
+        <div class="data-point medium" style="top:48%;left:30%" data-region="Ahmedabad" data-waste="5,200" data-recyclable="38" data-revenue="1.5" data-co2="390" data-level="medium" tabindex="0" aria-label="Ahmedabad - Medium waste"></div>
+        <div class="data-point low" style="top:70%;left:55%" data-region="Hyderabad" data-waste="3,100" data-recyclable="52" data-revenue="1.1" data-co2="220" data-level="low" tabindex="0" aria-label="Hyderabad - Low waste"></div>
+        <div class="data-point low" style="top:82%;left:48%" data-region="Bengaluru" data-waste="2,800" data-recyclable="58" data-revenue="1.0" data-co2="190" data-level="low" tabindex="0" aria-label="Bengaluru - Low waste"></div>
+        <div class="data-point low" style="top:88%;left:38%" data-region="Kochi" data-waste="1,900" data-recyclable="61" data-revenue="0.7" data-co2="130" data-level="low" tabindex="0" aria-label="Kochi - Low waste"></div>
+        <div class="data-point pe-site" style="top:35%;left:42%" data-region="Jaipur PE Facility" data-waste="7,600" data-recyclable="68" data-revenue="3.2" data-co2="95" data-level="pe-site" tabindex="0" aria-label="Jaipur PE Facility"></div>
+        <div class="data-point pe-site" style="top:76%;left:42%" data-region="Chennai PE Facility" data-waste="5,400" data-recyclable="72" data-revenue="2.8" data-co2="78" data-level="pe-site" tabindex="0" aria-label="Chennai PE Facility"></div>
+        <div class="data-point pe-site" style="top:50%;left:52%" data-region="Nagpur PE Facility" data-waste="4,100" data-recyclable="65" data-revenue="2.2" data-co2="88" data-level="pe-site" tabindex="0" aria-label="Nagpur PE Facility"></div>
+
+        <!-- Tooltip -->
+        <div class="map-tooltip" id="mapTooltip">
+          <div class="tt-title" id="ttTitle">Region</div>
+          <div class="tt-stat">Waste: <strong id="ttWaste">--</strong> tons/day</div>
+          <div class="tt-stat">Recyclable: <strong id="ttRecyclable">--</strong>%</div>
+        </div>
+
+        <!-- Legend -->
+        <div class="map-legend">
+          <div class="legend-title">Legend</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--red)"></span> High waste</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--amber)"></span> Medium waste</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--green)"></span> Low waste</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--teal)"></span> PE facility</div>
+        </div>
+
+        <!-- Zoom controls -->
+        <div class="zoom-controls">
+          <button class="zoom-btn" aria-label="Zoom in" onclick="zoomMap(1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button class="zoom-btn" aria-label="Zoom out" onclick="zoomMap(-1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDE PANEL -->
+    <div class="glass-card side-panel" id="sidePanel">
+
+      <!-- Selected region header -->
+      <div class="side-panel-header">
+        <div class="pin-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="region-info">
+          <h3 id="panelRegion">Delhi NCR</h3>
+          <p id="panelSubtitle">Northern India &middot; High waste zone</p>
         </div>
       </div>
 
-      <div class="map-controls">
-        <button class="map-btn">+</button>
-        <button class="map-btn">-</button>
-        <button class="map-btn">&#8634;</button>
+      <!-- Stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-label">Daily Waste</div>
+          <div class="stat-row">
+            <span class="stat-accent" style="background:var(--red)"></span>
+            <span class="stat-value" id="statWaste">12,400<small style="font-size:0.65em;color:var(--muted);font-weight:400"> t</small></span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Recyclable</div>
+          <div class="stat-row">
+            <span class="stat-accent" style="background:var(--green)"></span>
+            <span class="stat-value" id="statRecyclable">34<small style="font-size:0.65em;color:var(--muted);font-weight:400">%</small></span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Revenue Pot.</div>
+          <div class="stat-row">
+            <span class="stat-accent" style="background:var(--amber)"></span>
+            <span class="stat-value" id="statRevenue">$2.8<small style="font-size:0.65em;color:var(--muted);font-weight:400">M</small></span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">CO2 Saved</div>
+          <div class="stat-row">
+            <span class="stat-accent" style="background:var(--teal)"></span>
+            <span class="stat-value" id="statCO2">890<small style="font-size:0.65em;color:var(--muted);font-weight:400"> t</small></span>
+          </div>
+        </div>
       </div>
 
-      <div class="map-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#22C55E"></div> Low (&lt;100 tons/day)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> Medium (100-500 tons)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> High (&gt;500 tons/day)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--secondary)"></div> PE Installation</div>
+      <!-- Sparkline chart -->
+      <div class="sparkline-section">
+        <div class="spark-title">Waste Trend (12 months)</div>
+        <svg id="sparklineSvg" viewBox="0 0 320 60" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#22C55E" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#22C55E" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path id="sparkArea" d="M0,40 L27,35 L53,42 L80,30 L107,38 L133,25 L160,32 L187,20 L213,28 L240,15 L267,22 L293,10 L320,18 L320,60 L0,60 Z" fill="url(#sparkGrad)"/>
+          <polyline id="sparkLine" points="0,40 27,35 53,42 80,30 107,38 133,25 160,32 187,20 213,28 240,15 267,22 293,10 320,18" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
+
+      <!-- PE site tags -->
+      <div class="pe-tags" id="peTags">
+        <span class="pe-tag">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a5 5 0 0 0-5 5c0 3.5 5 9 5 9s5-5.5 5-9a5 5 0 0 0-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+          Jaipur PE
+        </span>
+        <span class="pe-tag">
+          <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a5 5 0 0 0-5 5c0 3.5 5 9 5 9s5-5.5 5-9a5 5 0 0 0-5-5zm0 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/></svg>
+          Nearest: 180 km
+        </span>
+      </div>
+
+      <!-- CTA button -->
+      <button class="cta-btn" onclick="window.location.href='calculator.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+        Calculate ROI
+      </button>
+
+      <!-- Upload zone -->
+      <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="Upload data file">
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <p>Drag &amp; drop your data file or <strong>browse</strong></p>
+        <p style="font-size:0.75rem;margin-top:4px;">CSV, XLSX, JSON up to 10MB</p>
+      </div>
+
     </div>
-
-    <!-- Side Panel -->
-    <div class="side-panel">
-      <div class="panel-header">
-        <h2>Region Details</h2>
-      </div>
-
-      <div class="panel-state">&#128205; Selected Region</div>
-      <div class="panel-state-name">Maharashtra</div>
-
-      <div class="stat-row">
-        <div class="stat-row-label">Daily Plastic Waste</div>
-        <div class="stat-row-value">2,847 <span>tons/day</span></div>
-        <div class="mini-bar"><div class="mini-bar-fill" style="width:85%"></div></div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-row-label">Recyclable Potential</div>
-        <div class="stat-row-value" style="color:var(--primary)">1,994 <span>tons (70%)</span></div>
-        <div class="mini-bar"><div class="mini-bar-fill" style="width:70%"></div></div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-row-label">Revenue Potential</div>
-        <div class="stat-row-value" style="color:var(--amber)">&#8377;4.2 Cr <span>/month</span></div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-row-label">CO&#8322; Reduction Potential</div>
-        <div class="stat-row-value" style="color:var(--secondary)">892 <span>tons CO&#8322;/month</span></div>
-      </div>
-
-      <div class="panel-sites">
-        <h3>Polymer Energy Sites</h3>
-        <div class="site-tag"><div class="dot"></div> Mumbai</div>
-        <div class="site-tag"><div class="dot"></div> Pune</div>
-        <div class="site-tag"><div class="dot"></div> Nagpur</div>
-      </div>
-
-      <div class="panel-cta">
-        <a href="calculator.html">Calculate ROI for this region &rarr;</a>
-      </div>
-
-      <div class="upload-zone">
-        <div class="icon">&#128196;</div>
-        <p>Upload Excel data</p>
-        <div class="format">Drag & drop .xlsx or .csv</div>
-      </div>
-    </div>
-
   </div>
-</div>
+</main>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="landing.html" class="nav-logo" style="text-decoration:none;">
+        <svg viewBox="0 0 32 32" fill="none" width="32" height="32"><circle cx="16" cy="16" r="14" stroke="#22C55E" stroke-width="2.5"/><path d="M10 20 L16 8 L22 20 Z" fill="#22C55E" opacity="0.85"/><circle cx="16" cy="18" r="3" fill="#fff"/></svg>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:var(--heading);">Polymer Energy</span>
+      </a>
+      <p>Converting India's plastic waste crisis into clean energy and sustainable livelihoods through advanced pyrolysis technology.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="map.html">Data Explorer</a>
+      <a href="calculator.html">ROI Calculator</a>
+      <a href="mission.html">Our Mission</a>
+      <a href="founders.html">Team</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Documentation</a>
+      <a href="#">API Access</a>
+      <a href="#">Research Papers</a>
+      <a href="#">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>2026 Polymer Energy. All rights reserved.</span>
+    <div class="footer-socials">
+      <a href="#" aria-label="Twitter">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="#" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+     ══════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ── Mobile menu toggle (handled inline on hamburger button) ──
+
+  // ── Data point interactions ──
+  const points = document.querySelectorAll('.data-point');
+  const tooltip = document.getElementById('mapTooltip');
+  const ttTitle = document.getElementById('ttTitle');
+  const ttWaste = document.getElementById('ttWaste');
+  const ttRecyclable = document.getElementById('ttRecyclable');
+  let activePoint = null;
+
+  const levelLabels = {
+    'high': 'High waste zone',
+    'medium': 'Medium waste zone',
+    'low': 'Low waste zone',
+    'pe-site': 'PE Facility'
+  };
+
+  const levelRegions = {
+    'high': 'Northern India',
+    'medium': 'Western India',
+    'low': 'Southern India',
+    'pe-site': 'Processing Hub'
+  };
+
+  const accentColors = {
+    'high': 'var(--red)',
+    'medium': 'var(--amber)',
+    'low': 'var(--green)',
+    'pe-site': 'var(--teal)'
+  };
+
+  function updateSidePanel(el) {
+    const region = el.dataset.region;
+    const waste = el.dataset.waste;
+    const recyclable = el.dataset.recyclable;
+    const revenue = el.dataset.revenue;
+    const co2 = el.dataset.co2;
+    const level = el.dataset.level;
+
+    document.getElementById('panelRegion').textContent = region;
+    document.getElementById('panelSubtitle').textContent = levelRegions[level] + ' \u00B7 ' + levelLabels[level];
+    document.getElementById('statWaste').innerHTML = waste + '<small style="font-size:0.65em;color:var(--muted);font-weight:400"> t</small>';
+    document.getElementById('statRecyclable').innerHTML = recyclable + '<small style="font-size:0.65em;color:var(--muted);font-weight:400">%</small>';
+    document.getElementById('statRevenue').innerHTML = '$' + revenue + '<small style="font-size:0.65em;color:var(--muted);font-weight:400">M</small>';
+    document.getElementById('statCO2').innerHTML = co2 + '<small style="font-size:0.65em;color:var(--muted);font-weight:400"> t</small>';
+
+    // Update accent colors
+    const accents = document.querySelectorAll('.stat-accent');
+    if (accents[0]) accents[0].style.background = accentColors[level];
+
+    // Randomize sparkline
+    const pts = [];
+    const areaPts = [];
+    for (let i = 0; i <= 11; i++) {
+      const x = Math.round((i / 11) * 320);
+      const y = Math.round(10 + Math.random() * 40);
+      pts.push(x + ',' + y);
+      areaPts.push(x + ',' + y);
+    }
+    document.getElementById('sparkLine').setAttribute('points', pts.join(' '));
+    document.getElementById('sparkArea').setAttribute('d', 'M' + areaPts.join(' L') + ' L320,60 L0,60 Z');
+
+    // Active state
+    if (activePoint) activePoint.classList.remove('active');
+    el.classList.add('active');
+    activePoint = el;
+  }
+
+  points.forEach(function(point) {
+    // Click
+    point.addEventListener('click', function() {
+      updateSidePanel(this);
+    });
+
+    // Keyboard
+    point.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        updateSidePanel(this);
+      }
+    });
+
+    // Hover tooltip
+    point.addEventListener('mouseenter', function(e) {
+      ttTitle.textContent = this.dataset.region;
+      ttWaste.textContent = this.dataset.waste;
+      ttRecyclable.textContent = this.dataset.recyclable;
+      tooltip.style.display = 'block';
+      positionTooltip(e);
+    });
+
+    point.addEventListener('mousemove', positionTooltip);
+
+    point.addEventListener('mouseleave', function() {
+      tooltip.style.display = 'none';
+    });
+  });
+
+  function positionTooltip(e) {
+    const wrap = document.getElementById('mapWrap');
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left + 16;
+    const y = e.clientY - rect.top - 10;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+  }
+
+  // ── Search / Filter ──
+  window.applyFilters = function() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const level = document.getElementById('levelFilter').value;
+
+    points.forEach(function(point) {
+      const region = point.dataset.region.toLowerCase();
+      const ptLevel = point.dataset.level;
+      const matchQuery = !query || region.indexOf(query) !== -1;
+      const matchLevel = level === 'all' || ptLevel === level;
+      point.style.display = (matchQuery && matchLevel) ? '' : 'none';
+    });
+  };
+
+  // Live search on input
+  document.getElementById('searchInput').addEventListener('input', window.applyFilters);
+  document.getElementById('levelFilter').addEventListener('change', window.applyFilters);
+
+  // ── Upload zone drag feedback ──
+  var uploadZone = document.getElementById('uploadZone');
+  uploadZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    this.classList.add('dragover');
+  });
+  uploadZone.addEventListener('dragleave', function() {
+    this.classList.remove('dragover');
+  });
+  uploadZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.classList.remove('dragover');
+  });
+  uploadZone.addEventListener('click', function() {
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv,.xlsx,.json';
+    input.click();
+  });
+  uploadZone.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.click();
+    }
+  });
+
+  // ── Zoom controls ──
+  var currentScale = 1;
+  var mapSvg = document.querySelector('.india-map');
+  window.zoomMap = function(dir) {
+    currentScale = Math.min(Math.max(currentScale + dir * 0.2, 0.6), 2.5);
+    mapSvg.style.transform = 'scale(' + currentScale + ')';
+    mapSvg.style.transition = 'transform 0.3s ease';
+  };
+
+})();
+</script>
 </body>
 </html>

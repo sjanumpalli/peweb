@@ -33,8 +33,8 @@ const pillars = [
 
 export function PillarsGrid() {
   return (
-    <section className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-5xl">
+    <section className="px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl">
         <FadeIn>
           <SectionHeader
             label="Our Pillars"
@@ -45,8 +45,8 @@ export function PillarsGrid() {
         <div className="grid gap-5 sm:grid-cols-2">
           {pillars.map((pillar, i) => (
             <FadeIn key={pillar.title} delay={0.1 * i}>
-              <div className="group cursor-pointer rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-card-hover md:p-10">
-                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-bg-peach transition-colors duration-200 group-hover:border-brand/30 group-hover:bg-brand/10">
+              <div className="group cursor-pointer rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/40 hover:bg-surface-hover hover:shadow-card-hover md:p-10">
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-brand/10 transition-colors duration-200 group-hover:border-brand/30 group-hover:bg-brand/20">
                   <pillar.icon className="h-6 w-6 text-brand transition-colors duration-200" />
                 </div>
 

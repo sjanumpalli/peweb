@@ -39,7 +39,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="px-6 py-24 md:py-32">
+    <section className="px-8 py-24 md:py-32">
       <div className="mx-auto max-w-7xl">
         <FadeIn>
           <SectionHeader
@@ -60,15 +60,15 @@ export function HowItWorks() {
                 <FadeIn key={step.title} delay={0.15 * i}>
                   <div className="flex flex-col items-center text-center">
                     {/* Numbered dot */}
-                    <div className="mb-6 flex h-[1.625rem] w-[1.625rem] items-center justify-center rounded-full border-2 border-brand bg-white shadow-sm">
+                    <div className="mb-6 flex h-[1.625rem] w-[1.625rem] items-center justify-center rounded-full border-2 border-brand bg-surface shadow-sm">
                       <span className="text-xs font-bold text-brand">
                         {i + 1}
                       </span>
                     </div>
 
                     {/* Card */}
-                    <div className="w-full rounded-2xl border border-border bg-white p-6 shadow-card transition-all duration-200 hover:shadow-card-hover">
-                      <div className="mb-4 inline-flex rounded-xl bg-bg-peach p-2.5">
+                    <div className="w-full rounded-2xl border border-border bg-surface p-6 shadow-card transition-all duration-200 hover:shadow-card-hover hover:bg-surface-hover">
+                      <div className="mb-4 inline-flex rounded-xl bg-brand/10 p-2.5">
                         <step.icon className="h-5 w-5 text-brand" />
                       </div>
                       <h3 className="mb-2 font-heading text-lg font-bold text-heading">
@@ -96,15 +96,15 @@ export function HowItWorks() {
                 <FadeIn key={step.title} delay={0.1 * i}>
                   <div className="relative flex gap-5">
                     {/* Dot */}
-                    <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-brand bg-white shadow-sm">
+                    <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-brand bg-surface shadow-sm">
                       <span className="text-xs font-bold text-brand">
                         {i + 1}
                       </span>
                     </div>
 
                     {/* Card */}
-                    <div className="flex-1 rounded-2xl border border-border bg-white p-5 shadow-card">
-                      <div className="mb-3 inline-flex rounded-xl bg-bg-peach p-2.5">
+                    <div className="flex-1 rounded-2xl border border-border bg-surface p-5 shadow-card hover:bg-surface-hover">
+                      <div className="mb-3 inline-flex rounded-xl bg-brand/10 p-2.5">
                         <step.icon className="h-5 w-5 text-brand" />
                       </div>
                       <h3 className="mb-1 font-heading text-lg font-bold text-heading">

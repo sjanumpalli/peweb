@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Linkedin, Twitter } from "lucide-react";
+import { Linkedin } from "lucide-react";
+import { XIcon } from "@/components/ui/x-icon";
 import { NAV_LINKS, SOCIAL_LINKS, SITE_CONFIG, CONTACT_INFO } from "@/lib/constants";
 
 const LEGAL_LINKS = [
@@ -9,8 +10,8 @@ const LEGAL_LINKS = [
 
 export function Footer() {
   return (
-    <footer className="relative z-10 border-t border-border bg-bg-cream/50">
-      <div className="mx-auto max-w-6xl px-6 py-16">
+    <footer className="relative z-10 border-t border-border bg-surface">
+      <div className="mx-auto max-w-7xl px-6 py-16">
         {/* 3-column grid */}
         <div className="grid gap-12 md:grid-cols-3">
           {/* Col 1: Brand + mission */}
@@ -38,10 +39,10 @@ export function Footer() {
                 href={SOCIAL_LINKS.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Twitter"
+                aria-label="X"
                 className="rounded-full border border-border p-2 text-muted transition-colors hover:border-brand hover:text-brand"
               >
-                <Twitter className="h-4 w-4" />
+                <XIcon className="h-4 w-4" />
               </a>
             </div>
           </div>

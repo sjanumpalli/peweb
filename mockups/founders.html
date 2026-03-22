@@ -3,240 +3,860 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Polymer Energy — Founders Mockup</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Polymer Energy — Founders</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0A0F1A; --surface: #111827; --primary: #00FF88; --secondary: #00D4FF;
-    --text: #F0FDF4; --text-muted: #94A3B8;
-    --border: rgba(0, 255, 136, 0.15); --glow: 0 0 30px rgba(0, 255, 136, 0.2);
+    --bg-peach: #FFF5EB;
+    --bg-blue: #F0F7FF;
+    --bg-warm: #FEFCFA;
+    --glass: rgba(255,255,255,0.45);
+    --glass-hover: rgba(255,255,255,0.55);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.04);
+    --glass-border: rgba(0,0,0,0.03);
+    --heading: #2D2D3F;
+    --body: #64748B;
+    --muted: #94A3B8;
+    --green: #22C55E;
+    --green-light: rgba(34,197,94,0.1);
+    --teal: #0EA5E9;
+    --red: #EF4444;
+    --amber: #F59E0B;
+    --radius: 24px;
+    --radius-sm: 20px;
+    --radius-xs: 14px;
+    --transition: 300ms ease;
   }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
-
-  /* Gradient Mesh BG */
-  .mesh-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
-  .blob {
-    position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.06;
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-warm);
+    color: var(--body);
+    overflow-x: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  .blob:nth-child(1) { width: 600px; height: 600px; background: var(--primary); top: -10%; left: -10%; animation: drift1 20s infinite ease-in-out; }
-  .blob:nth-child(2) { width: 500px; height: 500px; background: var(--secondary); bottom: -10%; right: -10%; animation: drift2 25s infinite ease-in-out; }
-  .blob:nth-child(3) { width: 400px; height: 400px; background: var(--primary); top: 50%; left: 50%; animation: drift1 30s infinite ease-in-out reverse; opacity: 0.03; }
-  @keyframes drift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(80px, -60px); } }
-  @keyframes drift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-60px, 40px); } }
+  h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; color: var(--heading); }
 
-  .dot-overlay { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: radial-gradient(rgba(0,255,136,0.07) 1px, transparent 1px); background-size: 30px 30px; }
-
-  .navbar { position: fixed; top: 24px; left: 24px; right: 24px; z-index: 100; background: rgba(17,24,39,0.8); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-logo { font-family: 'Space Grotesk'; font-weight: 700; font-size: 20px; color: var(--primary); text-shadow: 0 0 20px rgba(0,255,136,0.3); display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .nav-logo .diamond { width: 28px; height: 28px; background: linear-gradient(135deg, var(--primary), var(--secondary)); transform: rotate(45deg); border-radius: 4px; }
-  .nav-links { display: flex; gap: 32px; align-items: center; }
-  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav-links a.active { color: var(--primary); }
-  .nav-cta { background: var(--primary); color: #0A0F1A; padding: 10px 24px; border-radius: 999px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; }
-
-  .content { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; padding: 140px 40px 80px; }
-
-  .page-header { text-align: center; margin-bottom: 80px; }
-  .page-header .label { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--primary); margin-bottom: 24px; opacity: 0.7; }
-  .page-header h1 {
-    font-size: 48px; font-weight: 700; line-height: 1.2;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  /* ======== BACKGROUND ======== */
+  .warm-bg {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background: linear-gradient(135deg, var(--bg-peach) 0%, var(--bg-blue) 50%, var(--bg-warm) 100%);
   }
-  .page-header .tagline { color: var(--text-muted); font-size: 18px; margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
-
-  /* Founder Cards */
-  .founder-card {
-    background: rgba(17,24,39,0.6); backdrop-filter: blur(10px);
-    border: 1px solid var(--border); border-radius: 20px;
-    padding: 48px; margin-bottom: 32px;
-    display: flex; align-items: center; gap: 48px;
-    transition: border-color 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-    position: relative; overflow: hidden;
+  .warm-blob {
+    position: absolute; border-radius: 50%;
+    filter: blur(160px); will-change: transform;
   }
-  .founder-card:hover { border-color: rgba(0,255,136,0.3); box-shadow: var(--glow); }
-  .founder-card.reverse { flex-direction: row-reverse; }
-  /* Spotlight effect */
-  .founder-card::after {
+  .warm-blob:nth-child(1) { width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,236,210,0.35) 0%, transparent 70%); top: -15%; left: -5%; animation: drift1 22s infinite ease-in-out; }
+  .warm-blob:nth-child(2) { width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,244,253,0.3) 0%, transparent 70%); bottom: -10%; right: -5%; animation: drift2 26s infinite ease-in-out; }
+  .warm-blob:nth-child(3) { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,248,240,0.25) 0%, transparent 70%); top: 45%; left: 35%; animation: drift3 30s infinite ease-in-out; }
+  .warm-blob:nth-child(4) { width: 400px; height: 400px; background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%); top: 25%; right: 15%; animation: drift1 24s infinite ease-in-out reverse; }
+
+  @keyframes drift1 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(80px, -50px); } 66% { transform: translate(-30px, 30px); } }
+  @keyframes drift2 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(-60px, 40px); } 66% { transform: translate(50px, -20px); } }
+  @keyframes drift3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-50px, -30px) scale(1.08); } }
+
+  /* ======== NAVBAR ======== */
+  .navbar {
+    position: fixed; top: 20px; left: 24px; right: 24px; z-index: 100;
+    background: rgba(255,255,255,0.5);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    padding: 12px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background var(--transition);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
+  }
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--heading);
+    display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+    transition: opacity var(--transition);
+  }
+  .nav-logo:hover { opacity: 0.8; }
+  .nav-logo .diamond {
+    width: 22px; height: 22px;
+    background: linear-gradient(135deg, var(--green), var(--teal));
+    transform: rotate(45deg);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    color: var(--body); text-decoration: none;
+    font-size: 14px; font-weight: 500;
+    transition: color var(--transition);
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--heading); }
+  .nav-links a.active { color: var(--green); font-weight: 600; }
+  .nav-links a.active::after {
     content: '';
-    position: absolute; width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(0,255,136,0.08), transparent 70%);
-    border-radius: 50%; pointer-events: none;
-    top: -150px; left: -150px;
-    transition: top 0.3s, left 0.3s;
+    position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--green);
+  }
+  .nav-cta {
+    background: var(--green); color: #fff;
+    padding: 10px 24px; border-radius: 999px;
+    font-weight: 600; font-size: 14px; font-family: 'DM Sans', sans-serif;
+    text-decoration: none; cursor: pointer; border: none;
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+  .nav-cta:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 8px; z-index: 101;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--heading); border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+  }
+  .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed; top: 80px; left: 24px; right: 24px; z-index: 99;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-shadow);
+    padding: 16px;
+  }
+  .mobile-menu.open { display: block; }
+  .mobile-menu a {
+    display: block; padding: 12px 16px;
+    text-decoration: none; color: var(--body);
+    font-weight: 500; border-radius: var(--radius-xs);
+    transition: background var(--transition), color var(--transition);
+  }
+  .mobile-menu a:hover { background: var(--green-light); color: var(--green); }
+
+  /* ======== CONTENT ======== */
+  .content {
+    position: relative; z-index: 2;
+    max-width: 1100px; margin: 0 auto;
+    padding: 168px 48px 48px;
   }
 
+  /* ======== FADE-IN ======== */
+  .fade-in {
+    opacity: 0; transform: translateY(36px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ======== PAGE HEADER ======== */
+  .page-header { text-align: center; margin-bottom: 115px; }
+  .page-header .label {
+    font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 4px;
+    color: var(--green); margin-bottom: 24px;
+  }
+  .page-header h1 {
+    font-size: 56px; font-weight: 700; line-height: 1.15;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+  }
+  .page-header .tagline {
+    color: var(--muted); font-size: 18px; margin-top: 20px;
+    max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.7;
+  }
+
+  /* ======== FOUNDER CARDS ======== */
+  .founder-card {
+    position: relative; overflow: hidden;
+    background: var(--glass);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius); padding: 58px;
+    margin-bottom: 48px;
+    display: flex; align-items: center; gap: 48px;
+    transition: border-color 0.4s, box-shadow 0.4s;
+    cursor: default;
+  }
+  .founder-card:hover {
+    border-color: rgba(0,0,0,0.06);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+  }
+  .founder-card.reverse { flex-direction: row-reverse; }
+
+  /* Cursor spotlight */
+  .founder-card .spotlight {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0;
+    transition: opacity 0.4s ease; border-radius: var(--radius);
+  }
+  .founder-card:hover .spotlight { opacity: 1; }
+
+  /* Photo / Avatar area */
   .founder-photo {
-    flex-shrink: 0; width: 200px; height: 240px;
-    background: linear-gradient(135deg, #1a2332, #0f1724);
-    border-radius: 16px; overflow: hidden;
-    border: 1px solid var(--border);
+    flex-shrink: 0; width: 220px; height: 260px;
+    border-radius: var(--radius-sm); overflow: hidden;
+    border: 1px solid var(--glass-border);
     display: flex; align-items: center; justify-content: center;
-    filter: grayscale(100%);
-    transition: filter 0.4s ease;
+    position: relative;
+    transition: border-color 0.4s;
   }
-  .founder-card:hover .founder-photo { filter: grayscale(0%); }
-  .founder-photo .placeholder {
-    font-size: 64px; opacity: 0.3;
+  .founder-card:hover .founder-photo {
+    border-color: rgba(0,0,0,0.06);
   }
+  .avatar-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #E5FAF0 0%, #E8F0FE 50%, #F0F7FF 100%);
+  }
+  .avatar-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(34,197,94,0.12) 0%, transparent 60%);
+    transition: background 0.4s;
+  }
+  .founder-card:hover .avatar-glow {
+    background: radial-gradient(circle at 50% 40%, rgba(34,197,94,0.2) 0%, transparent 60%);
+  }
+  .avatar-initials {
+    position: relative; z-index: 2;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 64px; font-weight: 700;
+    color: var(--heading);
+    opacity: 0.7;
+    transition: opacity 0.4s;
+  }
+  .founder-card:hover .avatar-initials {
+    opacity: 1;
+  }
+  /* Concentric rings */
+  .avatar-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.05);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    transition: border-color 0.4s;
+  }
+  .avatar-ring:nth-child(4) { width: 100px; height: 100px; }
+  .avatar-ring:nth-child(5) { width: 150px; height: 150px; }
+  .avatar-ring:nth-child(6) { width: 200px; height: 200px; }
+  .founder-card:hover .avatar-ring {
+    border-color: rgba(34,197,94,0.15);
+  }
+
   .founder-info { flex: 1; }
-  .founder-info h2 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
-  .founder-info .role { color: var(--primary); font-size: 16px; font-weight: 500; margin-bottom: 16px; }
-  .founder-info .bio { color: var(--text-muted); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+  .founder-info h2 { font-size: 30px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .founder-info .role {
+    color: var(--green); font-size: 15px; font-weight: 600; margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .founder-info .bio { color: var(--body); font-size: 15px; line-height: 1.75; margin-bottom: 24px; }
   .social-links { display: flex; gap: 12px; }
   .social-link {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: rgba(0,255,136,0.05); border: 1px solid var(--border);
+    width: 42px; height: 42px; border-radius: 12px;
+    background: rgba(255,255,255,0.35); border: 1px solid var(--glass-border);
     display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted); text-decoration: none; font-size: 16px;
-    transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    color: var(--muted); text-decoration: none;
+    transition: all 0.3s;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
   .social-link:hover {
-    background: rgba(0,212,255,0.1); border-color: var(--secondary);
-    color: var(--secondary); box-shadow: 0 0 15px rgba(0,212,255,0.2);
+    background: rgba(14,165,233,0.08); border-color: rgba(14,165,233,0.2);
+    color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(14,165,233,0.1);
+  }
+  .social-link:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .social-link svg { width: 18px; height: 18px; }
+
+  /* ======== TESTIMONIAL STRIP ======== */
+  .testimonial-strip {
+    position: relative; z-index: 2;
+    margin: 80px calc(-50vw + 50%) 0;
+    width: 100vw;
+    overflow: hidden; padding: 58px 0;
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    background: rgba(255,255,255,0.2);
+  }
+  .testimonial-strip .label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+    color: var(--green); text-align: center; margin-bottom: 36px;
+  }
+  .testimonial-track {
+    display: flex; gap: 28px;
+    animation: scroll-testimonials 35s linear infinite;
+    width: max-content;
+  }
+  .testimonial-track:hover { animation-play-state: paused; }
+  .testimonial-item {
+    flex-shrink: 0; width: 420px;
+    background: var(--glass);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-sm); padding: 38px 43px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .testimonial-item:hover {
+    border-color: rgba(0,0,0,0.06);
+    transform: translateY(-2px);
+  }
+  .testimonial-item .quote-icon { position: absolute; top: 20px; left: 28px; opacity: 0.15; }
+  .testimonial-item blockquote {
+    color: var(--body); font-size: 15px; line-height: 1.75;
+    font-style: italic; margin-bottom: 20px; padding-top: 12px;
+  }
+  .testimonial-item .attribution { font-size: 14px; font-weight: 600; color: var(--heading); }
+  .testimonial-item .attribution span { color: var(--muted); font-weight: 400; }
+  @keyframes scroll-testimonials {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
-  /* Advisors */
-  .advisors-section { margin-top: 80px; }
-  .advisors-section h2 { font-size: 32px; font-weight: 700; margin-bottom: 40px; }
+  /* ======== ADVISORS ======== */
+  .advisors-section { margin-top: 115px; }
+  .advisors-section .section-label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;
+    color: var(--green); margin-bottom: 16px;
+  }
+  .advisors-section h2 { font-size: 36px; font-weight: 700; margin-bottom: 58px; letter-spacing: -0.01em; }
   .advisors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
   .advisor-card {
-    background: rgba(17,24,39,0.6); border: 1px solid var(--border);
-    border-radius: 16px; padding: 28px 20px; text-align: center;
-    transition: transform 0.2s, border-color 0.3s; cursor: pointer;
+    background: var(--glass);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: var(--radius-sm); padding: 38px 29px; text-align: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, box-shadow 0.3s;
+    cursor: pointer; position: relative; overflow: hidden;
   }
-  .advisor-card:hover { transform: scale(1.03); border-color: var(--primary); }
+  .advisor-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,0,0,0.06);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.05);
+  }
+  .advisor-card:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
   .advisor-avatar {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.2));
-    margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;
-    font-size: 28px; border: 2px solid var(--border);
+    width: 76px; height: 76px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(14,165,233,0.15));
+    margin: 0 auto 18px; display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--glass-border);
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
+  .advisor-card:hover .advisor-avatar {
+    border-color: rgba(34,197,94,0.25);
+    box-shadow: 0 0 20px rgba(34,197,94,0.08);
+  }
+  .advisor-avatar svg { width: 28px; height: 28px; }
   .advisor-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .advisor-card p { font-size: 13px; color: var(--text-muted); }
+  .advisor-card .advisor-role { font-size: 13px; color: var(--muted); margin-bottom: 0; line-height: 1.5; }
+  .advisor-tags {
+    display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+    max-height: 0; overflow: hidden; opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s, margin 0.4s;
+    margin-top: 0;
+  }
+  .advisor-card:hover .advisor-tags { max-height: 80px; opacity: 1; margin-top: 14px; }
+  .advisor-tag {
+    font-size: 11px; font-weight: 500;
+    padding: 5px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    color: var(--green);
+  }
 
+  /* ======== JOIN CTA ======== */
+  .join-section {
+    position: relative; z-index: 2;
+    padding: 115px 0 48px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .join-banner {
+    position: relative; overflow: hidden;
+    background: var(--glass);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border-radius: var(--radius); padding: 77px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .join-banner::before {
+    content: '';
+    position: absolute; inset: -2px;
+    border-radius: calc(var(--radius) + 2px);
+    background: linear-gradient(135deg, var(--green), var(--teal), var(--green));
+    background-size: 300% 300%;
+    z-index: -1;
+    animation: border-rotate 5s ease infinite;
+    opacity: 0.5;
+  }
+  .join-banner::after {
+    content: '';
+    position: absolute; inset: 2px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(40px);
+    border-radius: calc(var(--radius) - 2px);
+    z-index: -1;
+  }
+  @keyframes border-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .join-text h2 { font-size: 34px; font-weight: 700; margin-bottom: 10px; }
+  .join-text p { color: var(--body); font-size: 16px; line-height: 1.7; max-width: 480px; }
+  .btn-primary {
+    background: var(--green); color: #fff;
+    padding: 16px 40px; border-radius: 999px;
+    font-weight: 600; font-size: 17px;
+    text-decoration: none; cursor: pointer; border: none;
+    position: relative; overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+    transition: box-shadow 0.3s, transform 0.2s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 6px 24px rgba(34,197,94,0.3);
+    transform: translateY(-2px);
+  }
+  .btn-primary:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; }
+
+  /* ======== FOOTER ======== */
+  .footer {
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--glass-border);
+    padding: 77px 48px 38px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px; margin-bottom: 48px;
+  }
+  .footer-brand { color: var(--muted); font-size: 14px; line-height: 1.7; }
+  .footer-brand .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--green); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .footer-brand .logo .diamond-sm {
+    width: 18px; height: 18px;
+    background: linear-gradient(135deg, var(--green), var(--teal));
+    transform: rotate(45deg); border-radius: 2px; flex-shrink: 0;
+  }
+  .footer-col h4 {
+    font-size: 13px; font-weight: 600; color: var(--heading);
+    margin-bottom: 18px; text-transform: uppercase; letter-spacing: 2px;
+  }
+  .footer-col a {
+    display: block; color: var(--muted); text-decoration: none;
+    font-size: 14px; margin-bottom: 10px; transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--green); }
+  .footer-col a:focus-visible { outline: 1px solid var(--green); outline-offset: 2px; border-radius: 4px; }
+  .footer-bottom {
+    border-top: 1px solid var(--glass-border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--muted);
+  }
+
+  /* ======== RESPONSIVE ======== */
   @media (max-width: 768px) {
-    .founder-card, .founder-card.reverse { flex-direction: column; padding: 32px 24px; gap: 24px; }
-    .founder-photo { width: 100%; height: 200px; }
-    .advisors-grid { grid-template-columns: 1fr 1fr; }
-    .page-header h1 { font-size: 32px; }
     .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .navbar { padding: 12px 20px; }
+    .content { padding: 120px 20px 20px; }
+    .page-header { margin-bottom: 64px; }
+    .page-header h1 { font-size: 34px; }
+    .page-header .tagline { font-size: 16px; }
+    .founder-card, .founder-card.reverse {
+      flex-direction: column; padding: 32px 24px; gap: 28px;
+    }
+    .founder-photo { width: 100%; height: 200px; }
+    .advisors-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .advisor-card { padding: 24px 16px; }
+    .mobile-menu { top: 72px; left: 12px; right: 12px; }
+    .join-banner { flex-direction: column; text-align: center; gap: 28px; padding: 40px 24px; }
+    .join-text p { max-width: 100%; }
+    .footer { padding: 48px 20px 24px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; }
+    .testimonial-item { width: 300px; padding: 24px; }
+    .testimonial-strip { margin: 64px calc(-50vw + 50%) 0; padding: 36px 0; }
+    .advisors-section { margin-top: 64px; }
+    .join-section { padding: 64px 0 20px; }
+  }
+
+  /* ======== REDUCED MOTION ======== */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .fade-in { opacity: 1; transform: none; }
+    .testimonial-track { animation: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="mesh-bg"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
-<div class="dot-overlay"></div>
+<div class="warm-bg">
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+  <div class="warm-blob"></div>
+</div>
 
+<!-- Navbar -->
 <nav class="navbar">
-  <a href="landing.html" class="nav-logo"><div class="diamond"></div>POLYMER ENERGY</a>
+  <a href="landing.html" class="nav-logo">
+    <div class="diamond"></div>
+    Polymer Energy
+  </a>
   <div class="nav-links">
+    <a href="landing.html">Home</a>
     <a href="mission.html">Mission</a>
     <a href="map.html">Map</a>
     <a href="calculator.html">Calculator</a>
     <a href="founders.html" class="active">Founders</a>
-    <button class="nav-cta">Get a Quote</button>
+    <a href="#" class="nav-cta">Get a Quote</a>
   </div>
+  <button class="hamburger" onclick="this.classList.toggle('active'); document.querySelector('.mobile-menu').classList.toggle('open');" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu">
+  <a href="landing.html">Home</a>
+  <a href="mission.html">Mission</a>
+  <a href="map.html">Map</a>
+  <a href="calculator.html">Calculator</a>
+  <a href="founders.html">Founders</a>
+  <a href="#" class="nav-cta" style="display:block;text-align:center;margin-top:8px;">Get a Quote</a>
+</div>
 
 <div class="content">
 
-  <div class="page-header">
+  <!-- Page Header -->
+  <div class="page-header fade-in">
     <div class="label">Our Team</div>
     <h1>The People Behind Polymer Energy</h1>
     <p class="tagline">Born from frustration with India's plastic crisis, we quit our corporate jobs to build solutions that work.</p>
   </div>
 
-  <!-- Founder 1 -->
-  <div class="founder-card">
-    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+  <!-- Founder 1: Photo Left -->
+  <div class="founder-card fade-in">
+    <div class="spotlight"></div>
+    <div class="founder-photo">
+      <div class="avatar-bg"></div>
+      <div class="avatar-glow"></div>
+      <div class="avatar-initials">RK</div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+    </div>
     <div class="founder-info">
       <h2>Founder Name</h2>
       <div class="role">Co-Founder & CEO</div>
-      <p class="bio">
-        With 12 years in sustainable energy and waste management, [Name] saw firsthand
-        how India's plastic crisis was growing faster than any solution could address.
-        After leading operations at [Previous Company], they founded Polymer Energy to
-        make recycling not just sustainable — but profitable for local communities.
-      </p>
+      <p class="bio">With 12 years in sustainable energy and waste management, [Name] saw firsthand how India's plastic crisis was growing faster than any solution could address. After leading operations at [Previous Company], they founded Polymer Energy to make recycling not just sustainable -- but profitable for local communities.</p>
       <div class="social-links">
-        <a href="#" class="social-link" title="LinkedIn">in</a>
-        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+        <a href="#" class="social-link" title="LinkedIn" aria-label="LinkedIn profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social-link" title="X (Twitter)" aria-label="X profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Founder 2 -->
-  <div class="founder-card reverse">
-    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+  <!-- Founder 2: Photo Right -->
+  <div class="founder-card reverse fade-in">
+    <div class="spotlight"></div>
+    <div class="founder-photo">
+      <div class="avatar-bg"></div>
+      <div class="avatar-glow"></div>
+      <div class="avatar-initials">AP</div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+    </div>
     <div class="founder-info">
       <h2>Founder Name</h2>
       <div class="role">Co-Founder & CTO</div>
-      <p class="bio">
-        An engineer by training with expertise in polymer chemistry and machine design,
-        [Name] spent 8 years building industrial recycling systems before designing the
-        compact micro-recycler that became Polymer Energy's core product. Their vision:
-        a recycling system so small and efficient it can go anywhere.
-      </p>
+      <p class="bio">An engineer by training with expertise in polymer chemistry and machine design, [Name] spent 8 years building industrial recycling systems before designing the compact micro-recycler that became Polymer Energy's core product. Their vision: a recycling system so small and efficient it can go anywhere.</p>
       <div class="social-links">
-        <a href="#" class="social-link" title="LinkedIn">in</a>
-        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+        <a href="#" class="social-link" title="LinkedIn" aria-label="LinkedIn profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social-link" title="X (Twitter)" aria-label="X profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Founder 3 -->
-  <div class="founder-card">
-    <div class="founder-photo"><div class="placeholder">&#128100;</div></div>
+  <!-- Founder 3: Photo Left -->
+  <div class="founder-card fade-in">
+    <div class="spotlight"></div>
+    <div class="founder-photo">
+      <div class="avatar-bg"></div>
+      <div class="avatar-glow"></div>
+      <div class="avatar-initials">SM</div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+    </div>
     <div class="founder-info">
       <h2>Founder Name</h2>
       <div class="role">Co-Founder & COO</div>
-      <p class="bio">
-        With deep roots in social enterprise and community development across rural India,
-        [Name] brings the operational expertise to deploy and scale micro-recycling units
-        in underserved regions. Their focus is on building sustainable partnerships with
-        local governments, waste pickers, and community leaders.
-      </p>
+      <p class="bio">With deep roots in social enterprise and community development across rural India, [Name] brings the operational expertise to deploy and scale micro-recycling units in underserved regions. Their focus is on building sustainable partnerships with local governments, waste pickers, and community leaders.</p>
       <div class="social-links">
-        <a href="#" class="social-link" title="LinkedIn">in</a>
-        <a href="#" class="social-link" title="Twitter">&#120143;</a>
+        <a href="#" class="social-link" title="LinkedIn" aria-label="LinkedIn profile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="social-link" title="X (Twitter)" aria-label="X profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
       </div>
     </div>
   </div>
 
+</div><!-- end .content -->
+
+<!-- Testimonial Strip (full width) -->
+<div class="testimonial-strip fade-in">
+  <div class="label">What Partners Say</div>
+  <div class="testimonial-track">
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"Polymer Energy transformed our municipality's waste problem into a revenue stream. The micro-recycler paid for itself in 14 months."</blockquote>
+      <div class="attribution">Rajesh Mehta <span>-- Municipal Commissioner, Pune District</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"We've partnered with many green-tech startups. Polymer Energy is the first one where the economics actually work at the community level."</blockquote>
+      <div class="attribution">Priya Sharma <span>-- Impact Investor, CleanTech Capital</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"As a waste picker cooperative, this technology gave us dignity and income stability. Our members now earn 3x what they did before."</blockquote>
+      <div class="attribution">Anita Devi <span>-- President, Swachh Sahyog Cooperative</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"The technical elegance of their micro-recycler is remarkable. It solves a real engineering challenge with practical, scalable design."</blockquote>
+      <div class="attribution">Dr. Venkat Rao <span>-- Professor of Materials Science, IISc</span></div>
+    </div>
+    <!-- Duplicate set for seamless loop -->
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"Polymer Energy transformed our municipality's waste problem into a revenue stream. The micro-recycler paid for itself in 14 months."</blockquote>
+      <div class="attribution">Rajesh Mehta <span>-- Municipal Commissioner, Pune District</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"We've partnered with many green-tech startups. Polymer Energy is the first one where the economics actually work at the community level."</blockquote>
+      <div class="attribution">Priya Sharma <span>-- Impact Investor, CleanTech Capital</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"As a waste picker cooperative, this technology gave us dignity and income stability. Our members now earn 3x what they did before."</blockquote>
+      <div class="attribution">Anita Devi <span>-- President, Swachh Sahyog Cooperative</span></div>
+    </div>
+    <div class="testimonial-item">
+      <div class="quote-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#22C55E"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10H0z"/></svg>
+      </div>
+      <blockquote>"The technical elegance of their micro-recycler is remarkable. It solves a real engineering challenge with practical, scalable design."</blockquote>
+      <div class="attribution">Dr. Venkat Rao <span>-- Professor of Materials Science, IISc</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Advisors + Join CTA (inside content wrapper) -->
+<div class="content" style="padding-top: 0;">
+
   <!-- Advisors -->
-  <div class="advisors-section">
-    <div style="font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--primary);margin-bottom:16px;opacity:0.6;">Advisors</div>
+  <div class="advisors-section fade-in">
+    <div class="section-label">Advisors</div>
     <h2>Our Advisory Board</h2>
     <div class="advisors-grid">
-      <div class="advisor-card">
-        <div class="advisor-avatar">&#128218;</div>
+      <div class="advisor-card" tabindex="0">
+        <div class="advisor-avatar">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            <line x1="9" y1="7" x2="16" y2="7"/>
+            <line x1="9" y1="11" x2="14" y2="11"/>
+          </svg>
+        </div>
         <h3>Dr. Advisor Name</h3>
-        <p>Polymer Science, IIT Bombay</p>
+        <p class="advisor-role">Polymer Science, IIT Bombay</p>
+        <div class="advisor-tags">
+          <span class="advisor-tag">Polymer Chemistry</span>
+          <span class="advisor-tag">R&D</span>
+          <span class="advisor-tag">Materials</span>
+        </div>
       </div>
-      <div class="advisor-card">
-        <div class="advisor-avatar">&#128188;</div>
+      <div class="advisor-card" tabindex="0">
+        <div class="advisor-avatar">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
         <h3>Advisor Name</h3>
-        <p>Ex-CEO, Waste Solutions Ltd</p>
+        <p class="advisor-role">Ex-CEO, Waste Solutions Ltd</p>
+        <div class="advisor-tags">
+          <span class="advisor-tag">Operations</span>
+          <span class="advisor-tag">Scale-up</span>
+          <span class="advisor-tag">Strategy</span>
+        </div>
       </div>
-      <div class="advisor-card">
-        <div class="advisor-avatar">&#127758;</div>
+      <div class="advisor-card" tabindex="0">
+        <div class="advisor-avatar">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
         <h3>Advisor Name</h3>
-        <p>Climate Finance Expert</p>
+        <p class="advisor-role">Climate Finance Expert</p>
+        <div class="advisor-tags">
+          <span class="advisor-tag">Carbon Credits</span>
+          <span class="advisor-tag">ESG</span>
+          <span class="advisor-tag">Finance</span>
+        </div>
       </div>
-      <div class="advisor-card">
-        <div class="advisor-avatar">&#9878;</div>
+      <div class="advisor-card" tabindex="0">
+        <div class="advisor-avatar">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="3" x2="12" y2="21"/>
+            <polyline points="1 14 5 10 9 14"/>
+            <polyline points="15 14 19 10 23 14"/>
+            <line x1="5" y1="10" x2="19" y2="10"/>
+            <path d="M1 14a4 4 0 0 0 8 0"/>
+            <path d="M15 14a4 4 0 0 0 8 0"/>
+          </svg>
+        </div>
         <h3>Advisor Name</h3>
-        <p>Environmental Policy, Govt of India</p>
+        <p class="advisor-role">Environmental Policy, Govt of India</p>
+        <div class="advisor-tags">
+          <span class="advisor-tag">Regulation</span>
+          <span class="advisor-tag">Policy</span>
+          <span class="advisor-tag">Compliance</span>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Join Our Team CTA -->
+  <div class="join-section fade-in">
+    <div class="join-banner">
+      <div class="join-text">
+        <h2>Join Our Team</h2>
+        <p>We're building the future of decentralized recycling. If you're passionate about sustainability and impact, we want to hear from you.</p>
+      </div>
+      <button class="btn-primary">View Open Roles</button>
     </div>
   </div>
 
 </div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo"><div class="diamond-sm"></div> Polymer Energy</div>
+      Making plastic recycling accessible, profitable, and impactful for every community in India.
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="mission.html">Mission</a>
+      <a href="map.html">Data Map</a>
+      <a href="calculator.html">ROI Calculator</a>
+      <a href="founders.html">Founders</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="#">info@polymerenergy.in</a>
+      <a href="#">+91 98XXX XXXXX</a>
+      <a href="#">Mumbai, India</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Polymer Energy Pvt. Ltd.</span>
+    <span>Privacy &middot; Terms</span>
+  </div>
+</footer>
+
+<script>
+// Cursor-follow spotlight effect on founder cards
+document.querySelectorAll('.founder-card').forEach(card => {
+  const spotlight = card.querySelector('.spotlight');
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    spotlight.style.background =
+      `radial-gradient(600px circle at ${x}px ${y}px, rgba(34,197,94,0.04), transparent 60%)`;
+  });
+  card.addEventListener('mouseenter', () => { spotlight.style.opacity = '1'; });
+  card.addEventListener('mouseleave', () => { spotlight.style.opacity = '0'; });
+});
+
+// Scroll-triggered fade-in animations
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!prefersReducedMotion) {
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        fadeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach((el, i) => {
+    el.style.transitionDelay = `${i * 0.08}s`;
+    fadeObserver.observe(el);
+  });
+} else {
+  document.querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', e => {
+  const menu = document.querySelector('.mobile-menu');
+  const hamburger = document.querySelector('.hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+    menu.classList.remove('open');
+    hamburger.classList.remove('active');
+  }
+});
+</script>
 </body>
 </html>

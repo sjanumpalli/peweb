@@ -26,7 +26,7 @@ const initialState: FormState = {
 };
 
 const fieldClass =
-  "w-full border border-border rounded-xl px-4 py-3 text-sm text-heading placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition";
+  "w-full border border-border rounded-xl bg-input px-4 py-3 text-sm text-heading placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition";
 
 export function ContactForm() {
   const [form, setForm] = useState<FormState>(initialState);
@@ -43,7 +43,7 @@ export function ContactForm() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-white p-8 shadow-card">
+    <div className="rounded-2xl border border-border bg-surface p-8 shadow-card">
       <h2 className="mb-6 font-heading text-xl font-bold text-heading">
         Send us a Message
       </h2>
@@ -60,7 +60,7 @@ export function ContactForm() {
               name="fullName"
               value={form.fullName}
               onChange={handleChange}
-              placeholder="Rajesh Kumar"
+              placeholder="Your full name"
               className={fieldClass}
             />
           </div>
@@ -73,7 +73,7 @@ export function ContactForm() {
               name="email"
               value={form.email}
               onChange={handleChange}
-              placeholder="rajesh@example.com"
+              placeholder="you@example.com"
               className={fieldClass}
             />
           </div>
@@ -90,7 +90,7 @@ export function ContactForm() {
               name="company"
               value={form.company}
               onChange={handleChange}
-              placeholder="Acme Industries Pvt. Ltd."
+              placeholder="Your company name"
               className={fieldClass}
             />
           </div>
@@ -103,7 +103,7 @@ export function ContactForm() {
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              placeholder="+91 98765 43210"
+              placeholder="+91 XXXXX XXXXX"
               className={fieldClass}
             />
           </div>
@@ -120,7 +120,7 @@ export function ContactForm() {
               name="gst"
               value={form.gst}
               onChange={handleChange}
-              placeholder="22AAAAA0000A1Z5"
+              placeholder="Your GST number"
               className={fieldClass}
             />
           </div>
@@ -133,7 +133,7 @@ export function ContactForm() {
               name="state"
               value={form.state}
               onChange={handleChange}
-              placeholder="Maharashtra"
+              placeholder="Your state"
               className={fieldClass}
             />
           </div>

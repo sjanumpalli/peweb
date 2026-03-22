@@ -3,7 +3,8 @@
 import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/ui/fade-in";
 import { SectionHeader } from "@/components/ui/section-header";
-import { Linkedin, Twitter, Quote } from "lucide-react";
+import { Linkedin, Quote } from "lucide-react";
+import { XIcon } from "@/components/ui/x-icon";
 
 interface Founder {
   name: string;
@@ -34,8 +35,8 @@ const founders: Founder[] = [
 
 function FounderAvatar({ initials }: { initials: string }) {
   return (
-    <div className="relative flex h-48 w-44 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-bg-cream md:h-64 md:w-56">
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-warm to-bg-cream" />
+    <div className="relative flex h-48 w-44 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-border bg-surface md:h-64 md:w-56">
+      <div className="absolute inset-0 bg-gradient-to-br from-surface to-transparent" />
       {[80, 130, 180].map((size) => (
         <div
           key={size}
@@ -55,17 +56,17 @@ function SocialLinks() {
     <div className="flex gap-3">
       <a
         href="#"
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-white text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:text-brand hover:shadow-card"
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:text-brand hover:shadow-card"
         aria-label="LinkedIn profile"
       >
         <Linkedin className="h-4 w-4" />
       </a>
       <a
         href="#"
-        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-white text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:text-brand hover:shadow-card"
+        className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-muted transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:text-brand hover:shadow-card"
         aria-label="X profile"
       >
-        <Twitter className="h-4 w-4" />
+        <XIcon className="h-4 w-4" />
       </a>
     </div>
   );
@@ -73,7 +74,7 @@ function SocialLinks() {
 
 export function FounderCards() {
   return (
-    <section className="mx-auto max-w-5xl px-6 pb-16">
+    <section className="mx-auto max-w-7xl px-6 pb-16">
       <FadeIn>
         <SectionHeader
           label="Leadership"
@@ -87,7 +88,7 @@ export function FounderCards() {
           const isReversed = i % 2 !== 0;
           return (
             <FadeIn key={founder.name} delay={i * 0.15}>
-              <div className="rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover md:p-12">
+              <div className="rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover md:p-12">
                 <div
                   className={cn(
                     "flex flex-col items-start gap-8 md:flex-row md:items-center",
@@ -107,7 +108,7 @@ export function FounderCards() {
                     </p>
 
                     {/* Quote */}
-                    <div className="mt-5 flex gap-3 rounded-xl border border-brand/15 bg-brand/5 p-4">
+                    <div className="mt-5 flex gap-3 rounded-xl border border-brand/15 bg-brand/10 p-4">
                       <Quote className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand" />
                       <p className="text-sm italic leading-relaxed text-heading">
                         {founder.quote}

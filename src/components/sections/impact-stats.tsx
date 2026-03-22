@@ -13,7 +13,7 @@ const stats = [
     unit: "Revenue",
     label: "Generated for partners",
     color: "text-brand",
-    bg: "bg-bg-peach",
+    bg: "bg-brand/10",
   },
   {
     icon: Recycle,
@@ -23,7 +23,7 @@ const stats = [
     unit: "Tonnes/Day",
     label: "Plastic processed",
     color: "text-brand",
-    bg: "bg-bg-peach",
+    bg: "bg-brand/10",
   },
   {
     icon: Wind,
@@ -33,7 +33,7 @@ const stats = [
     unit: "CO₂ Avoided",
     label: "Carbon emissions saved",
     color: "text-brand",
-    bg: "bg-bg-peach",
+    bg: "bg-brand/10",
   },
   {
     icon: Users,
@@ -43,18 +43,18 @@ const stats = [
     unit: "Communities",
     label: "Across India served",
     color: "text-brand",
-    bg: "bg-bg-peach",
+    bg: "bg-brand/10",
   },
 ] as const;
 
 export function ImpactStats() {
   return (
-    <section className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-8 py-24 md:py-32">
+      <div className="mx-auto max-w-7xl">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, i) => (
             <FadeIn key={stat.label} delay={0.1 * i} className="h-full">
-              <div className="group flex h-full flex-col rounded-2xl border border-border bg-white p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
+              <div className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-8 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/20 hover:shadow-card-hover">
                 <div className={`mb-5 inline-flex w-fit rounded-xl ${stat.bg} p-3`}>
                   <stat.icon className={`h-5 w-5 ${stat.color}`} />
                 </div>

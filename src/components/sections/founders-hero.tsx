@@ -6,7 +6,7 @@ import { TextGenerateEffect } from "@/components/magicui/text-generate-effect";
 
 export function FoundersHero() {
   return (
-    <section className="bg-gradient-to-b from-bg-warm to-bg-cream px-6 pb-24 pt-40 md:pt-52">
+    <section className="px-8 pb-24 pt-40 md:pt-52">
       <div className="mx-auto max-w-4xl text-center">
         <FadeIn delay={0.1}>
           <Badge>Our Story</Badge>
@@ -32,7 +32,7 @@ export function FoundersHero() {
 
         {/* Pull quote */}
         <FadeIn delay={1.0}>
-          <blockquote className="mx-auto mt-12 max-w-2xl rounded-2xl border border-brand/20 bg-brand/5 px-8 py-6">
+          <blockquote className="mx-auto mt-12 max-w-2xl rounded-2xl border border-brand/20 bg-brand/10 px-8 py-6">
             <p className="font-heading text-xl font-medium leading-snug text-heading md:text-2xl">
               &ldquo;What if every industrial facility could turn its own waste
               into fuel? That&apos;s the India we&apos;re building.&rdquo;

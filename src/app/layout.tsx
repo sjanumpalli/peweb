@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from "next/font/google";
 import { ConditionalNavbar } from "@/components/layout/conditional-navbar";
 import { Footer } from "@/components/layout/footer";
 import { PageBackground } from "@/components/layout/page-background";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { SITE_CONFIG } from "@/lib/constants";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+// Plus Jakarta Sans — polished, refined grotesque for display & headings
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-heading",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+// Inter — ultra-clean neutral body font
+const inter = Inter({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-body",
   display: "swap",
 });
 
+// JetBrains Mono — data/numbers
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -40,13 +46,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+      className={`${plusJakartaSans.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen overflow-x-hidden antialiased">
-        <PageBackground />
-        <ConditionalNavbar />
-        <main className="relative z-10">{children}</main>
-        <Footer />
+      <body className="min-h-screen antialiased">
+        <ThemeProvider>
+          <PageBackground />
+          <ConditionalNavbar />
+          <main className="relative z-10">{children}</main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -5,11 +5,11 @@ const variants = {
   primary:
     "bg-brand text-white hover:bg-brand-dark shadow-sm hover:shadow-md hover:-translate-y-0.5",
   secondary:
-    "bg-white border border-border text-heading hover:border-brand hover:text-brand",
+    "bg-surface border border-border text-heading hover:border-brand hover:text-brand hover:bg-surface-hover",
   outline:
     "border-2 border-brand text-brand bg-transparent hover:bg-brand hover:text-white hover:-translate-y-0.5",
   ghost:
-    "text-body hover:text-heading hover:bg-black/[0.03]",
+    "text-body hover:text-heading hover:bg-surface-hover",
 } as const;
 
 const sizes = {

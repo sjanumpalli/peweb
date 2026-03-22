@@ -47,8 +47,8 @@ function Stat({
     <div
       className={`rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card ${
         accent
-          ? "border-brand/25 bg-gradient-to-br from-brand/5 to-bg-cream"
-          : "border-border bg-white"
+          ? "border-brand/25 bg-brand/10"
+          : "border-border bg-surface"
       }`}
     >
       <p className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</p>
@@ -103,12 +103,12 @@ export function CalculatorTool() {
   const isProfit = calc.monthlyProfit > 0;
 
   return (
-    <section className="px-6 pb-16">
-      <div className="mx-auto max-w-6xl">
+    <section className="px-8 pb-16">
+      <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-5">
           {/* ── Inputs ─────────────────────────────────────────────────── */}
           <FadeIn delay={0.1} className="lg:col-span-2">
-            <div className="rounded-2xl border border-border bg-white p-8 shadow-card">
+            <div className="rounded-2xl border border-border bg-surface p-8 shadow-card">
               <h2 className="mb-6 flex items-center gap-2 font-heading text-lg font-bold text-heading">
                 <SlidersHorizontal className="h-5 w-5 text-brand" />
                 Your Parameters
@@ -144,7 +144,7 @@ export function CalculatorTool() {
               />
 
               {/* Assumptions box */}
-              <div className="mt-6 rounded-xl border border-border bg-bg-warm p-4 text-xs text-muted">
+              <div className="mt-6 rounded-xl border border-border bg-surface p-4 text-xs text-muted">
                 <p className="mb-2 font-semibold text-heading">Fixed Assumptions</p>
                 <div className="space-y-1">
                   <div className="flex justify-between">
@@ -170,7 +170,7 @@ export function CalculatorTool() {
 
           {/* ── Results ────────────────────────────────────────────────── */}
           <FadeIn delay={0.2} className="lg:col-span-3">
-            <div className="rounded-2xl border border-border bg-white p-8 shadow-card">
+            <div className="rounded-2xl border border-border bg-surface p-8 shadow-card">
               <h2 className="mb-6 flex items-center gap-2 font-heading text-lg font-bold text-heading">
                 <TrendingUp className="h-5 w-5 text-brand" />
                 Projected Returns
@@ -204,8 +204,8 @@ export function CalculatorTool() {
               <div
                 className={`mt-4 rounded-2xl border p-6 ${
                   isProfit
-                    ? "border-brand/25 bg-gradient-to-br from-brand/8 to-bg-cream"
-                    : "border-red/25 bg-red/5"
+                    ? "border-brand/25 bg-brand/10"
+                    : "border-red-500/25 bg-red-500/10"
                 }`}
               >
                 <div className="flex items-start justify-between gap-4">
@@ -240,21 +240,21 @@ export function CalculatorTool() {
 
               {/* Payback + secondary stats */}
               <div className="mt-4 grid grid-cols-3 gap-3">
-                <div className="flex flex-col items-center rounded-xl border border-border bg-bg-warm p-4 text-center">
+                <div className="flex flex-col items-center rounded-xl border border-border bg-surface p-4 text-center">
                   <Clock className="mb-1.5 h-4 w-4 text-brand" />
                   <p className="font-mono text-xl font-bold text-heading">
                     {isProfit ? `${calc.paybackMonths}mo` : "—"}
                   </p>
                   <p className="mt-0.5 text-[11px] text-muted">Payback Period</p>
                 </div>
-                <div className="flex flex-col items-center rounded-xl border border-border bg-bg-warm p-4 text-center">
+                <div className="flex flex-col items-center rounded-xl border border-border bg-surface p-4 text-center">
                   <Droplets className="mb-1.5 h-4 w-4 text-brand" />
                   <p className="font-mono text-xl font-bold text-heading">
                     {(calc.fuelPerDay * operatingDays).toLocaleString("en-IN")}L
                   </p>
                   <p className="mt-0.5 text-[11px] text-muted">Monthly Fuel</p>
                 </div>
-                <div className="flex flex-col items-center rounded-xl border border-border bg-bg-warm p-4 text-center">
+                <div className="flex flex-col items-center rounded-xl border border-border bg-surface p-4 text-center">
                   <Flame className="mb-1.5 h-4 w-4 text-brand" />
                   <p className="font-mono text-xl font-bold text-heading">
                     {(dailyWaste * operatingDays / 1000).toFixed(1)}T

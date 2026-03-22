@@ -1,52 +1,56 @@
 @import "tailwindcss";
 
 /* ══════════════════════════════════════════
-   DESIGN TOKENS — "Ocean Breeze"
-   Green energy + ocean blue freshness
+   DESIGN TOKENS — "Deep Space"
+   Dark navy · green energy · white type
    ══════════════════════════════════════════ */
 
-@theme inline {
-  /* Brand Colors — Ocean Breeze Green Energy */
+@theme {
+  /* Brand Colors */
   --color-brand: #22C55E;
-  --color-brand-light: oklch(0.87 0.08 145 / 0.1);
+  --color-brand-light: oklch(0.87 0.08 145 / 0.15);
   --color-brand-dark: #16A34A;
-  --color-accent: #d1fae5;
-  --color-secondary: #e0f2fe;
-  --color-secondary-fg: #4b5563;
-  --color-red: #EF4444;
+  --color-accent: #166534;
+  --color-secondary: #0f2044;
+  --color-secondary-fg: #93c5fd;
+  --color-red: #f87171;
 
-  /* Backgrounds — Ocean Breeze */
-  --color-bg-warm: #f0f8ff;
-  --color-bg-peach: #ecfdf5;
-  --color-bg-sky: #e0f2fe;
-  --color-bg-cream: #f0fdf4;
-  --color-bg-dark: #111111;
+  /* Backgrounds — Deep Space (dark default) */
+  --color-bg-warm: #080e1f;
+  --color-bg-peach: #0d1527;
+  --color-bg-sky: #0a1224;
+  --color-bg-cream: #0c1322;
+  --color-bg-dark: #030711;
 
-  /* Text — Ocean Breeze */
-  --color-heading: #374151;
-  --color-body: #4b5563;
-  --color-muted: #6b7280;
+  /* Surface — card backgrounds */
+  --color-surface: oklch(1 0 0 / 0.04);
+  --color-surface-hover: oklch(1 0 0 / 0.07);
+
+  /* Text — Light on dark */
+  --color-heading: #ffffff;
+  --color-body: #cbd5e1;
+  --color-muted: #64748b;
 
   /* Borders & Input */
-  --color-border: #e5e7eb;
-  --color-input: #e5e7eb;
+  --color-border: oklch(1 0 0 / 0.08);
+  --color-input: oklch(1 0 0 / 0.06);
   --color-ring: #22C55E;
 
-  /* Glass — fresh ocean glass */
-  --color-glass: oklch(1 0 0 / 0.7);
-  --color-glass-hover: oklch(1 0 0 / 0.85);
-  --color-glass-border: oklch(0 0 0 / 0.04);
+  /* Glass — dark glass */
+  --color-glass: oklch(1 0 0 / 0.04);
+  --color-glass-hover: oklch(1 0 0 / 0.07);
+  --color-glass-border: oklch(1 0 0 / 0.08);
 
-  /* Shadows — clean, lifted */
-  --shadow-glass: 0 8px 32px oklch(0 0 0 / 0.05);
-  --shadow-glass-hover: 0 16px 48px oklch(0 0 0 / 0.1);
-  --shadow-soft: 0 2px 16px oklch(0 0 0 / 0.04);
-  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.06), 0 6px 20px oklch(0 0 0 / 0.04);
-  --shadow-card-hover: 0 8px 32px oklch(0 0 0 / 0.1);
+  /* Shadows — deep */
+  --shadow-glass: 0 8px 32px oklch(0 0 0 / 0.4);
+  --shadow-glass-hover: 0 16px 48px oklch(0 0 0 / 0.5);
+  --shadow-soft: 0 2px 16px oklch(0 0 0 / 0.3);
+  --shadow-card: 0 1px 3px oklch(0 0 0 / 0.3), 0 6px 20px oklch(0 0 0 / 0.2);
+  --shadow-card-hover: 0 8px 32px oklch(0 0 0 / 0.5);
 
   /* Typography */
-  --font-heading: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "DM Sans", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Radius */
@@ -133,6 +137,16 @@
   100% { transform: translateX(400%); }
 }
 
+/* Energy Orb */
+@keyframes orb-spin-cw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes orb-spin-ccw {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
 /* Neon rotate */
 @property --neon-angle {
   syntax: "<angle>";
@@ -146,11 +160,46 @@
 }
 
 /* ══════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Applied when <html data-theme="light">
+   ══════════════════════════════════════════ */
+
+[data-theme="light"] {
+  --color-bg-warm: #ffffff;
+  --color-bg-peach: #ffffff;
+  --color-bg-sky: #ffffff;
+  --color-bg-cream: #fafafa;
+  --color-bg-dark: #111827;
+
+  --color-surface: #ffffff;
+  --color-surface-hover: #f9fafb;
+
+  --color-heading: #111827;
+  --color-body: #374151;
+  --color-muted: #6b7280;
+
+  --color-border: #e5e7eb;
+  --color-input: #f9fafb;
+
+  --color-glass: rgba(255, 255, 255, 0.85);
+  --color-glass-hover: rgba(255, 255, 255, 0.95);
+  --color-glass-border: rgba(0, 0, 0, 0.06);
+
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --shadow-glass-hover: 0 16px 48px rgba(0, 0, 0, 0.1);
+  --shadow-soft: 0 2px 16px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 6px 20px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ══════════════════════════════════════════
    BASE STYLES
    ══════════════════════════════════════════ */
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  overflow-x: clip;
 }
 
 body {
